@@ -1,0 +1,62 @@
+#main-nav-menu a {
+    text-transform: uppercase;
+}
+
+#main-nav-menu ul {
+    margin: 0;
+}
+
+/* Убирает возможность фиксированного меню. Пока не понятно как хочет клиент */
+#main-nav-menu.fixed-top {
+    position: absolute;!important;
+}
+
+.bg-dark {
+    transition: 0.6s;
+}
+
+@media screen and (max-width: 768px)  {
+     /* Фон для мобильного меню пока оно прозрачное */
+    #main-menu ul {
+        background-color: #212529;
+        border-radius: 0.5em;
+    }
+}
+
+.main-logo-menu {
+    width: 75px;
+    height: 75px;
+}
+
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link {
+    color: #fff!important;
+    transition: 0.6s;
+    margin: 0 15px;
+}
+
+.bg-dark .navbar-brand,
+.bg-dark .navbar-nav .nav-link {
+    color: #fff!important;
+}
+
+.stars-img li {
+    position: relative;
+}
+
+.stars-img li a:not(.dropdown-toggle, .dropdown-item):after{
+    content: url("http://localhost/wp-content/themes/hashtag/assets/img/site/stars.svg");
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 40%;
+    top: 80px;
+    opacity: 0%; 
+    transition: all 1.5s; 
+}
+
+.stars-img li a:hover::after{
+    top: 35px;
+    opacity: 100%;  
+}

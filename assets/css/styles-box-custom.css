@@ -1,0 +1,43 @@
+.hashtag-imagebox-link {
+	text-decoration: none;!important;
+	color: #6c757d!important;
+}
+
+.hashtag-imagebox-link .hashtag-imagebox-custom img {
+	transition: all 1s;
+	filter: drop-shadow(0 .1rem 1rem rgba(0,0,0,.4))!important;
+	position: relative;
+	top: 0;
+}
+
+.hashtag-imagebox-link:hover .hashtag-imagebox-custom img {
+	filter: drop-shadow(0 .7rem 1rem rgba(0,0,0,.5))!important;
+	position: relative;
+	top: -15px;
+}
+
+.hashtag-imagebox-custom {
+	padding: 30px 0;
+}
+
+.hashtag-imagebox-custom .hashtag-imagebox-title h3 {
+	margin-top: 0;
+	font-size: 23px;
+	font-weight: bold;
+}
+
+.hashtag-imagebox-custom .hashtag-imagebox-text {
+	padding-bottom: 10px;
+}
+
+.hashtag-imagebox-custom .hashtag-imagebox-text p:last-child {
+	margin-bottom: 0;
+}
+
+.hashtag-imagebox-1 {
+	text-align: center;
+}
+
+.hashtag-imagebox-1 .hashtag-imagebox-title h3 {
+	margin-top: 0.6em;
+}
