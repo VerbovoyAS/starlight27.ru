@@ -6,9 +6,8 @@
  */
 
 use Carbon_Fields\Carbon_Fields;
-use Carbon_Fields\Container;
-use Carbon_Fields\Field;
 use HashtagCore\GutenbergBlock;
+use HashtagCore\GutenbergContainer;
 use HashtagCore\TaxonomyCreate;
 
 const POST_TYPE_STAFF = 'staff';
@@ -162,22 +161,6 @@ add_action( 'wp_enqueue_scripts', 'hashtag_scripts' );
 
 
 function hashtag_create_post_type() {
-    register_post_type(
-        'hashtag_blog',
-        [
-            'labels'             => [
-                'name' => __('Полезные статьи'),
-                'singular_name' => __('Полезная статья')
-            ],
-            'public'             => true,
-            'has_archive'        => false,
-            'rewrite'            => ['slug' => 'blog'],
-            'show_in_rest'       => true,
-            'publicly_queryable' => true,
-        ]
-    );
-
-
 
     $taxonomy = new TaxonomyCreate();
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Должность', 'positions_staffs');
@@ -191,7 +174,6 @@ function hashtag_create_post_type() {
         'menu_icon'   => 'dashicons-groups',
         'rewrite'     => ['slug' => 'staffs'],
         'label'       => 'Сотрудники',
-//        'show_in_rest'       => true,
         'taxonomies'       => ['positions_staffs', 'post_tag', 'taxonomy_cabinet', 'taxonomy_education', 'taxonomy_education_category'],
     ]);
 }
@@ -209,72 +191,9 @@ function crb_load() {
     GutenbergBlock::postCarouselSection();
     GutenbergBlock::blockTextSection();
 
+    GutenbergContainer::settingSite();
+    GutenbergContainer::fieldsStaff();
 
-    /**
-     * Дополнительные поля для СТАНИЦЫ
-     */
-    Container::make('post_meta', 'Дополнительные поля Страниц')
-        ->where('post_type', '=', 'page')
-        ->add_fields([
-                         Field::make('sidebar', 'crb_custom_sidebar'),
-                         Field::make('image', 'crb_photo'),
-
-                     ]);
-
-    /**
-     * Дополнительные поля для "Полезные статьи" - hashtag_blog
-     */
-    Container::make('post_meta', __('Дополнительные поля полезных статей'))
-        ->where('post_type', '=', 'hashtag_blog')
-        ->add_tab( __( 'Profile' ), array(
-            Field::make( 'text', 'crb_first_name', __( 'First Name' ) ),
-            Field::make( 'text', 'crb_last_name', __( 'Last Name' ) ),
-            Field::make( 'text', 'crb_position', __( 'Position' ) ),
-        ) )
-        ->add_tab( __( 'Notification' ), array(
-            Field::make( 'text', 'crb_email', __( 'Notification Email' ) ),
-            Field::make( 'text', 'crb_phone', __( 'Phone Number' ) ),
-        ) );
-
-    /**
-     * Дополнительные поля для "Сотрудников" - staff
-     */
-    Container::make('post_meta', __('Дополнительные поля Сотрудников'))
-        ->where('post_type', '=', POST_TYPE_STAFF)
-        ->add_fields([
-                         Field::make( 'text', 'staff_phone_number', 'Номер телефона' )
-                             ->set_attribute( 'placeholder', '(***) ***-****' ),
-                         Field::make( 'text', 'staff_mail', 'Почта' ),
-                         Field::make( 'text', 'staff_working_hours', 'Время работы (приёма)' ),
-                         Field::make( 'date_time', 'staff_year_advanced_training', 'Год повышения квалификации' ),
-                         Field::make( 'date_time', 'staff_general_experience', 'Год и месяц начала общего стажа' ),
-                         Field::make( 'date_time', 'staff_teaching_experience', 'Год и месяц начала педагогического стажа' ),
-                         Field::make( 'checkbox', 'staff_active', 'Активировать' )->set_default_value(true),
-                     ]);
-
-    // Default options page
-    /** @var Carbon_Fields\Container\Theme_Options_Container $basic_options_container */
-    $basic_options_container = Container::make('theme_options', __('Theme Options'))
-        ->add_fields([
-                         Field::make('text', 'default_phone', __('Номер телефона')),
-                         Field::make('text', 'default_mail', __('E-mail')),
-                     ]);
-
-    // Add second options page under 'Theme Options'
-    Container::make('theme_options', __('Social Links'))
-        ->set_page_parent($basic_options_container) // reference to a top level container
-        ->add_fields([
-                         Field::make('text', 'crb_facebook_link', __('Facebook Link')),
-                         Field::make('text', 'crb_twitter_link', __('Twitter Link')),
-                     ]);
-
-    // Настройки внутри меню "Внешний вид"
-    Container::make('theme_options', __('Customize Background'))
-        ->set_page_parent('themes.php') // identificator of the "Appearance" admin section
-        ->add_fields([
-                         Field::make('color', 'crb_background_color', __('Background Color')),
-                         Field::make('image', 'crb_background_image', __('Background Image')),
-                     ]);
 }
 
 function getPostViews($postID): string

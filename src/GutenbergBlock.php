@@ -42,7 +42,6 @@ final class GutenbergBlock
                     $blocks = $fields['blocks'];
                 }
                 ?>
-<!--                <section class="main-row px-1 block-style" >-->
                 <div class="row my-2">
                     <div class="p-0 owl-carousel owl-theme">
                         <?php
@@ -70,7 +69,6 @@ final class GutenbergBlock
                         ?>
                     </div>
                 </div>
-<!--                </section>-->
 
                 <script>
                     $('.owl-carousel').owlCarousel({
