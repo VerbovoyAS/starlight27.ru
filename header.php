@@ -11,6 +11,11 @@
 
 use HashtagCore\BootstrapNavMenu;
 
+$title = get_the_title();
+if (is_archive()) {
+    $title = get_the_archive_title();
+}
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -18,12 +23,13 @@ use HashtagCore\BootstrapNavMenu;
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $title;?></title>
     <?php wp_head();?>
 </head>
 
 <body>
 <header>
-    <nav id="main-nav-menu" class="navbar navbar-expand-md navbar-dark fixed-top mt-3">
+    <nav id="main-nav-menu" class="navbar navbar-expand-md navbar-dark fixed-top ">
         <div class="container-fluid container-lg">
             <a class="navbar-brand d-lg-block d-none" href="#">
                 <img class="main-logo-menu" src="https://starlight27.ru/wp-content/uploads/2018/10/герб-лицей-88.png" alt="" width="88" height="88">

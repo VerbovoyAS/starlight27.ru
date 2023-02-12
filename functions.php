@@ -11,6 +11,9 @@ use HashtagCore\GutenbergContainer;
 use HashtagCore\TaxonomyCreate;
 
 const POST_TYPE_STAFF = 'staff';
+const DEFAULT_EMAIL = "default_email";
+const DEFAULT_PHONE = "default_phone";
+const DEFAULT_WORK_TIME = "default_work_time";
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
@@ -26,6 +29,12 @@ function hashtag_setup() {
             'header-menu' => esc_html__('Primary', 'hashtag'),
         ]
     );
+
+    // Позволяет устанавливать миниатюру в записях
+    add_theme_support( 'post-thumbnails' );
+
+    // Удаляет префикс заголовка архивов
+    add_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
 }
 
 add_action( 'after_setup_theme', 'hashtag_setup' );
@@ -174,7 +183,7 @@ function hashtag_create_post_type() {
         'menu_icon'   => 'dashicons-groups',
         'rewrite'     => ['slug' => 'staffs'],
         'label'       => 'Сотрудники',
-        'taxonomies'       => ['positions_staffs', 'post_tag', 'taxonomy_cabinet', 'taxonomy_education', 'taxonomy_education_category'],
+        'supports' => [ 'title', 'editor', 'thumbnail', 'post-formats']
     ]);
 }
 

@@ -29,9 +29,7 @@ var_dump('content-post');
         <div class="row pb-2">
             <div class="col-12 col-lg-8 text-muted">
                 <!-- Breadcrumbs -->
-                <?php if (function_exists('fw_ext_breadcrumbs')) {
-                    fw_ext_breadcrumbs();
-                } ?>
+                <?php //TODO Сделать хлебные крошки на content-post.php ?>
                 <!-- /breadcrumb -->
 
             </div>
@@ -78,7 +76,7 @@ var_dump('content-post');
                             $getPrevPostImg = get_the_post_thumbnail_url($prevPost->ID);
                             $prevPostImg = $getPrevPostImg ?: Hashtag::getDefaultImg();
                             ?>
-                            <h4 class="text-center text-md-start">Предыдущая запись</h4>
+                            <h5 class="text-center text-md-start">Предыдущая запись</h5>
                             <div class="col">
                                 <div class="d-flex row g-0">
                                     <div class="col-md-4 d-flex align-items-start p-1">
@@ -116,7 +114,7 @@ var_dump('content-post');
                             $getPrevPostImg = get_the_post_thumbnail_url($nextPost->ID);
                             $nextPostImg = $getPrevPostImg ?: Hashtag::getDefaultImg();
                             ?>
-                            <h4 class="text-center text-md-end">Следующая запись</h4>
+                            <h5 class="text-center text-md-end">Следующая запись</h5>
                             <div class="col">
                                 <div class="d-flex row g-0">
                                     <div class="col-md-8 p-1">

@@ -12,18 +12,6 @@ use HashtagCore\Hashtag;
 var_dump('content');
 ?>
 
-<!--	<header class="entry-header">-->
-<!--		--><?php
-//		if ( is_singular() ) :
-//			the_title( '<h1 class="entry-title">', '</h1>' );
-//		else :
-//			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-//		endif;
-//
-//		if ( 'post' === get_post_type() ) :
-//			?>
-<!--		--><?php //endif; ?>
-<!--	</header>-->
     <div class="container ">
         <div class="row">
             <div class="col px-0">
@@ -42,9 +30,7 @@ var_dump('content');
         <div class="row pb-2">
             <div class="col-12 col-lg-8 text-muted">
                 <!-- Breadcrumbs -->
-                <?php if (function_exists('fw_ext_breadcrumbs')) {
-                    fw_ext_breadcrumbs();
-                } ?>
+                <?php //TODO Сделать хлебные крошки на content.php ?>
                 <!-- /breadcrumb -->
 
             </div>
@@ -91,7 +77,7 @@ var_dump('content');
                             $getPrevPostImg = get_the_post_thumbnail_url($prevPost->ID);
                             $prevPostImg = $getPrevPostImg ?: Hashtag::getDefaultImg();
                             ?>
-                            <h4 class="text-center text-md-start">Предыдущая запись</h4>
+                            <h5 class="text-center text-md-start">Предыдущая запись</h5>
                             <div class="col">
                                 <div class="d-flex row g-0">
                                     <div class="col-md-4 d-flex align-items-start p-1">
@@ -129,7 +115,7 @@ var_dump('content');
                             $getPrevPostImg = get_the_post_thumbnail_url($nextPost->ID);
                             $nextPostImg = $getPrevPostImg ?: Hashtag::getDefaultImg();
                             ?>
-                            <h4 class="text-center text-md-end">Следующая запись</h4>
+                            <h5 class="text-center text-md-end">Следующая запись</h5>
                             <div class="col">
                                 <div class="d-flex row g-0">
                                     <div class="col-md-8 p-1">
@@ -200,7 +186,11 @@ var_dump('content');
                     </div>
 
                     <?php else: ?>
-                        <p>TEST</p>
+                        <div class="col">
+                            <div class="alert alert-warning" role="alert">
+                                Записи не найдены
+                            </div>
+                        </div>
                     <?php endif; ?>
                 </div>
                 <div class="row">
@@ -212,30 +202,4 @@ var_dump('content');
         </div>
     </div>
 
-<!--    <div class="container">-->
-<!--		--><?php
-//		the_content(
-//			sprintf(
-//				wp_kses(
-//					/* translators: %s: Name of current post. Only visible to screen readers */
-//					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'hashtag' ),
-//					array(
-//						'span' => array(
-//							'class' => array(),
-//						),
-//					)
-//				),
-//				wp_kses_post( get_the_title() )
-//			)
-//		);
-
-//		wp_link_pages(
-//			array(
-//				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'hashtag' ),
-//				'after'  => '</div>',
-//			)
-//		);
-//		?>
-<!--	</div>-->
-    <!-- .entry-content -->
 
