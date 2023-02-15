@@ -231,3 +231,26 @@ function setPostViews($postID): void
         update_post_meta($postID, $count_key, $count);
     }
 }
+
+add_shortcode( 'get-main-site', 'get_main_setting_shortcode' );
+
+/**
+ * Shortcode для вывода значений по умолчанию
+ * Пример: [get-main-site option="phone"]
+ *
+ * @param $atts
+ * @return mixed|string|null
+ */
+function get_main_setting_shortcode( $atts ) {
+
+    switch ($atts['option']){
+        case 'phone':
+            return carbon_get_theme_option(DEFAULT_PHONE);
+        case 'email':
+            return carbon_get_theme_option(DEFAULT_EMAIL);
+        case 'work_time':
+            return carbon_get_theme_option(DEFAULT_WORK_TIME);
+        default:
+            return '';
+    }
+}
