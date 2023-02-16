@@ -346,11 +346,14 @@ final class GutenbergBlock
     public static function blockTextSection(): void
     {
         Block::make('beautiful_list_section', 'Блок с текстом')
-            ->add_fields([
+            ->add_tab('Текст', [
+                Field::make('rich_text', 'text', 'Текст'),
+            ])
+            ->add_tab('Настройки', [
                              Field::make( 'checkbox', 'show_border', 'Отображать рамки' ),
                              Field::make( 'checkbox', 'show_stars', 'Отображать список с звёздами' ),
                              Field::make( 'checkbox', 'full_height', 'Блок во всю высоту' ),
-                             Field::make('rich_text', 'text', 'Текст'),
+                             Field::make( 'checkbox', 'search', 'Включить поиск по списку' ),
                          ])
             ->set_render_callback(function ($fields) {
                 $class = '';
@@ -366,7 +369,24 @@ final class GutenbergBlock
                     $class .= 'h-100';
                 }
                 ?>
-                <div class="<?=$class;?>">
+                <?php if ($fields['search']) {?>
+                <div class="mb-3">
+                    <input type="text" id="inputSearch" class="form-control" placeholder="Поиск по списку..." title="Что вы хотите найти?">
+                </div>
+                    <?php
+                    // Подключение стилей. Надо потом вынести в отдельный метод
+                    wp_enqueue_script(
+                        'custom-search-form-list',
+                        get_template_directory_uri() . '/assets/js/custom-search-form-list.js',
+                        array(),
+                        false,
+                        true
+                    );
+
+                    ?>
+                <?php } ?>
+
+                <div id="fast_search" class="<?=$class;?>">
                     <?= $fields['text'];?>
                 </div>
                 <?php
