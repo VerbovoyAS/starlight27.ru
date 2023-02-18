@@ -264,7 +264,7 @@ final class GutenbergBlock
                 $query = new WP_Query(
                     [
                         'category_name'  => $category,
-                        'posts_per_page' => $fields['posts_per_page'] ?? '6'
+                        'posts_per_page' => $fields['posts_per_page'] ?: '6'
                     ]
                 );
                 ?>
@@ -300,7 +300,7 @@ final class GutenbergBlock
                                                 <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
                                                 <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                             </svg>
-                                            <small><?php the_time('j F Y'); ?></small>
+                                            <small><?= get_the_time('j F Y', $WPost->ID); ?></small>
                                         </li>
                                     </ul>
                                 </div>
@@ -448,6 +448,90 @@ final class GutenbergBlock
                         </div>
                         <?php endforeach; ?>
                     </div>
+                <?php
+            });
+    }
+
+    public static function postListSection(): void
+    {
+        Block::make('post_list_section', __('Список постов'))
+            ->add_fields(
+                    [
+                Field::make('separator', 'separator', 'Список постов'),
+                Field::make( 'select', 'category_post', __( 'Choose Options' ) )
+                    ->set_options(Hashtag::getPostCategories()),
+                Field::make('text', 'posts_per_page', 'Количество постов на странице'),
+                Field::make( 'checkbox', 'show_header', 'Отображать заголовок' )->set_default_value(1),
+            ])
+            ->set_render_callback(function ($fields) {
+                $category = $fields['category_post'] ?? 'home-news';
+                $cat = get_category_by_slug($category);
+                $catName = $cat->name ?: 'Новости';
+
+                $query = new WP_Query(
+                    [
+                        'category_name'  => $category,
+                        'posts_per_page' => $fields['posts_per_page'] ?: '6'
+                    ]
+                );
+
+                ?>
+                <?php if ($query->have_posts()) :?>
+                    <div class="row">
+                        <?php  if ($fields['show_header']) :?>
+                            <h2 class="pb-2 border-bottom"><?= $catName; ?></h2>
+                        <?php endif; ?>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2 g-4 my-2">
+                            <?php
+                            foreach ($query->get_posts() as $WPost):
+
+                                $img_url = get_the_post_thumbnail_url() ?: Hashtag::getDefaultImg();
+                                if (!has_post_thumbnail($WPost->ID)) {
+                                    $img_url = Hashtag::getDefaultImg();
+                                }
+                                ?>
+
+                                <div class="col">
+                                    <div class="d-flex row g-0">
+                                        <div class="col-md-4 d-flex align-items-start p-1">
+                                            <a href="<?= get_the_permalink($WPost->ID); ?>">
+                                                <img src="<?php echo $img_url; ?>"
+                                                     alt="..." class="img-fluid rounded d-inline-block">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-8 p-1">
+                                            <div class="pb-2">
+                                                <a class="text-decoration-none link-secondary"
+                                                   href="<?php the_permalink(); ?>">
+                                                    <h5 class="card-title"><?= $WPost->post_title; ?></h5>
+                                                </a>
+                                                <div class="d-flex justify-content-between flex-column">
+                                                    <p class="card-text">
+                                                        <small class="text-muted">
+                                                            <?= get_the_time('j F Y', $WPost->ID); ?>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <?php endforeach; ?>
+                    </div>
+
+                <?php else: ?>
+                    <div class="row my-2">
+                        <div class="col">
+                            <div class="alert alert-warning" role="alert">
+                                Записи не найдены
+                            </div>
+                        </div>
+                    </div>
+
+                <?php endif; ?>
+
                 <?php
             });
     }

@@ -22,7 +22,7 @@ var_dump('content-page');
 </div>
 
 <div class="container ">
-    <div class="row">
+    <div class="row pb-2">
         <div class="col-12 col-lg-8 text-muted">
             <!-- Breadcrumbs -->
             <?php if (function_exists('fw_ext_breadcrumbs')) {
@@ -56,7 +56,6 @@ var_dump('content-page');
                 </div>
 
             </div>
-
         </div>
     </div>
     <div class="row ">
@@ -67,6 +66,11 @@ var_dump('content-page');
         </div>
 
         <div class="col-12 col-lg-4">
+            <div class="row">
+                <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
+                    <?php get_sidebar(); ?>
+                </div>
+            </div>
             <div class="row">
                 <div class="col shadow mb-2 p-3 bg-body rounded-3">
                     <h3 class="text-center">Свежие записи</h3>
@@ -111,11 +115,6 @@ var_dump('content-page');
                 <?php else: ?>
                     <p>TEST</p>
                 <?php endif; ?>
-            </div>
-            <div class="row">
-                <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
-                    <?php get_sidebar(); ?>
-                </div>
             </div>
         </div>
     </div>

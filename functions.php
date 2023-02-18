@@ -225,6 +225,7 @@ function crb_load() {
     GutenbergBlock::blockTextSection();
     GutenbergBlock::postCardStyleCarouselSection();
     GutenbergBlock::blockAccordion();
+    GutenbergBlock::postListSection();
 
     GutenbergContainer::settingSite();
     GutenbergContainer::fieldsStaff();
