@@ -393,4 +393,63 @@ final class GutenbergBlock
             });
     }
 
+    public static function blockAccordion()
+    {
+        Block::make('block_accordion', 'Блок Аккордеон')
+            ->add_fields([
+                             Field::make('complex', 'accordion', 'Аккордеон')
+                                 ->setup_labels(['singular_name' => 'вкладку'])
+                                 ->set_collapsed(true)
+                                 ->add_fields(
+                                 [
+                                     Field::make('text', 'accordion_header', __('Заголовок')),
+                                     Field::make('rich_text', 'accordion_text', __('Текст')),
+                                     Field::make('media_gallery', 'accordion_gallery', __('Галерея')),
+                                 ]
+                             )->set_header_template(
+                                     '
+                                        <% if (accordion_header) { %>
+                                            <%- accordion_header %>
+                                        <% } %>
+                                     '
+                                 )
+                         ])
+                ->set_render_callback(function ($fields) {
+                        $id = rand(1,100);
+                    ?>
+                    <div class="accordion py-2" id="accordion-<?= $id;?>">
+                    <?php foreach ($fields['accordion'] as $key => $item): ?>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading-<?= $id.'-'.$key;?>">
+                                <button class="accordion-button <?php echo $key ? 'collapsed' : '';?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $id.'-'.$key;?>" aria-expanded="<?php echo $key ? 'false' : 'true';?>" aria-controls="collapse-<?= $id.'-'.$key;?>">
+                                    <?= $item['accordion_header'];?>
+                                </button>
+                            </h2>
+                            <div id="collapse-<?= $id.'-'.$key;?>" class="accordion-collapse collapse <?php echo $key ? '' : 'show';?>" aria-labelledby="heading-<?= $id.'-'.$key;?>" data-bs-parent="#accordion-<?= $id;?>">
+                                <div class="accordion-body">
+                                    <?= $item['accordion_text'];?>
+
+                                    <div id="featured-<?= $id.'-'.$key;?>" class="list-unstyled row clearfix">
+                                        <?php foreach ($item['accordion_gallery'] as $img):?>
+
+                                            <?php
+                                            $srcFull = wp_get_attachment_image_url( $img, 'full' );
+                                            $description = wp_get_attachment_caption($img) ?? '';
+                                            $alt = get_post_meta($img, '_wp_attachment_image_alt', true);
+                                            ?>
+                                            <a href="<?= $srcFull; ?>" data-exthumbimage="<?= $srcFull; ?>" data-src="<?= $srcFull; ?>" data-sub-html="<?= $description; ?>" class="col-lg-3 col-md-6 mb-4">
+                                                <img class="img-fluid img-thumbnail mx-auto d-block" src="<?= $srcFull; ?>" alt="<?= $alt; ?>" style="width:100%;">
+                                            </a>
+                                        <?php endforeach;?>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php
+            });
+    }
+
 }

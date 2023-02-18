@@ -110,13 +110,15 @@ function hashtag_scripts() {
     wp_enqueue_style('hashtag-style-main-css', get_template_directory_uri() . '/assets/css/main.css');
     wp_enqueue_style('hashtag-style-menu-css', get_template_directory_uri() . '/assets/css/style-menu.css');
 
+    /** Parallax для главной страницы */
     wp_enqueue_script(
-        'hashtag-paralax-js',
+        'hashtag-parallax-js',
         'https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js',
         [],
         '',
         true
     );
+
     wp_enqueue_script(
         'hashtag-boostrap-5-bundle-js',
         'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
@@ -165,6 +167,28 @@ function hashtag_scripts() {
             $path . 'css/owl.theme.default.min.css',
         );
     }
+
+    /** Подключение Галереи */
+    wp_enqueue_script(
+        'custom-gallery-lightgallery-js',
+        get_template_directory_uri() . '/assets/gallery/js/lightgallery-all.min.js',
+        array(),
+        false,
+        true
+    );
+
+    wp_enqueue_script(
+        'custom-gallery-setting',
+        get_template_directory_uri() . '/assets/gallery/js/gallery-setting.js',
+        array(),
+        false,
+        true
+    );
+
+    wp_enqueue_style(
+        'custom-gallery-lightgallery-style',
+        get_template_directory_uri() . '/assets/gallery/css/lightgallery.min.css',
+    );
 }
 add_action( 'wp_enqueue_scripts', 'hashtag_scripts' );
 
@@ -200,6 +224,7 @@ function crb_load() {
     GutenbergBlock::postCarouselSection();
     GutenbergBlock::blockTextSection();
     GutenbergBlock::postCardStyleCarouselSection();
+    GutenbergBlock::blockAccordion();
 
     GutenbergContainer::settingSite();
     GutenbergContainer::fieldsStaff();

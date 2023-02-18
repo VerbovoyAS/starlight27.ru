@@ -22,3 +22,8 @@
     </section>
 
 <?php get_footer();?>
+
+<script type="text/javascript">
+    var scene = document.getElementById('scene');
+    var parallaxInstance = new Parallax(scene);
+</script>
