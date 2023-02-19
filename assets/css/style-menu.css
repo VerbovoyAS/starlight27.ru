@@ -21,6 +21,10 @@
         background-color: #212529;
         border-radius: 0.5em;
     }
+
+    #main-nav-menu a {
+        color: white;!important;
+    }
 }
 
 .main-logo-menu {

@@ -189,6 +189,10 @@ function hashtag_scripts() {
         'custom-gallery-lightgallery-style',
         get_template_directory_uri() . '/assets/gallery/css/lightgallery.min.css',
     );
+
+    /** Загрузка постов */
+    wp_enqueue_script( 'true_loadmore', get_template_directory_uri() . '/assets/js/loadmore.js', array('jquery') );
+
 }
 add_action( 'wp_enqueue_scripts', 'hashtag_scripts' );
 
@@ -258,6 +262,29 @@ function setPostViews($postID): void
         update_post_meta($postID, $count_key, $count);
     }
 }
+
+/** Автозагрузка постов */
+function true_load_posts(){
+
+    $args = unserialize( stripslashes( $_POST['query'] ) );
+    $args['paged'] = $_POST['page'] + 1; // следующая страница
+    $args['post_status'] = 'publish';
+
+    query_posts( $args );
+    if( have_posts() ) :
+
+        while( have_posts() ): the_post();
+
+            get_template_part( 'template-parts/category/category', get_post_type() );
+
+        endwhile;
+
+    endif;
+    die();
+}
+
+add_action('wp_ajax_loadmore', 'true_load_posts');
+add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
 
 add_shortcode( 'get-main-site', 'get_main_setting_shortcode' );
 

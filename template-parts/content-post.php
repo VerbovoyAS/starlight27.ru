@@ -190,7 +190,13 @@ var_dump('content-post');
                     </div>
 
                     <?php else: ?>
-                        <p>TEST</p>
+                        <div class="row my-2">
+                            <div class="col">
+                                <div class="alert alert-warning" role="alert">
+                                    Записи не найдены
+                                </div>
+                            </div>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>

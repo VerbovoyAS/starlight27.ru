@@ -11,7 +11,7 @@
 
 ?>
 
-<div class="container">
+<div class="container p-0">
     <footer class="bd-footer mt-5 bg-light shadow bg-body rounded-3 stars">
         <div class="container py-5">
             <div class="row">
