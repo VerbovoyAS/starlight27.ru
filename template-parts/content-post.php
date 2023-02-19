@@ -148,6 +148,11 @@ var_dump('content-post');
 
             <div class="col-12 col-lg-4">
                 <div class="row">
+                    <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
+                        <?php get_sidebar(); ?>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col shadow mb-2 p-3 bg-body rounded-3">
                         <h3 class="text-center">Свежие записи</h3>
 
@@ -188,40 +193,6 @@ var_dump('content-post');
                         <p>TEST</p>
                     <?php endif; ?>
                 </div>
-                <div class="row">
-                    <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
-                        <?php get_sidebar(); ?>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-
-
-<!--    <div class="container">-->
-<!--		--><?php
-//		the_content(
-//			sprintf(
-//				wp_kses(
-//					/* translators: %s: Name of current post. Only visible to screen readers */
-//					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'hashtag' ),
-//					array(
-//						'span' => array(
-//							'class' => array(),
-//						),
-//					)
-//				),
-//				wp_kses_post( get_the_title() )
-//			)
-//		);
-
-//		wp_link_pages(
-//			array(
-//				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'hashtag' ),
-//				'after'  => '</div>',
-//			)
-//		);
-//		?>
-<!--	</div>-->
-    <!-- .entry-content -->
-

@@ -31,7 +31,7 @@ if (is_archive()) {
 <header>
     <nav id="main-nav-menu" class="navbar navbar-expand-md navbar-dark fixed-top ">
         <div class="container-fluid container-lg">
-            <a class="navbar-brand d-lg-block d-none" href="#">
+            <a class="navbar-brand d-lg-block d-none" href="/">
                 <img class="main-logo-menu" src="https://starlight27.ru/wp-content/uploads/2018/10/герб-лицей-88.png" alt="" width="88" height="88">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">

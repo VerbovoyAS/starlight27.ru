@@ -536,4 +536,40 @@ final class GutenbergBlock
             });
     }
 
+    public static function blockGallery()
+    {
+        Block::make('block_gallery', 'Gallery light')
+            ->add_fields([
+                             Field::make('text', 'gallery_header', __('Заголовок')),
+                             Field::make('media_gallery', 'gallery', __('Галерея')),
+                             Field::make( 'checkbox', 'show_description', 'Отображать подпись картинки' ),
+                         ])
+            ->set_render_callback(function ($fields) {
+                $id = rand(1, 100);
+                ?>
+                <div class="row">
+                    <h2 class="text-center">
+                        <?= $fields['gallery_header'];?>
+                    </h2>
+
+                    <div id="featured-<?= $id;?>" class="list-unstyled row clearfix">
+                        <?php foreach ($fields['gallery'] as $img):?>
+
+                            <?php
+                            $srcFull = wp_get_attachment_image_url( $img, 'full' );
+                            $description = wp_get_attachment_caption($img) ?? '';
+                            $alt = get_post_meta($img, '_wp_attachment_image_alt', true);
+                            ?>
+                            <a href="<?= $srcFull; ?>" data-exthumbimage="<?= $srcFull; ?>" data-src="<?= $srcFull; ?>" data-sub-html="<?= $description; ?>" class="col-lg-3 col-md-6 mb-4 text-decoration-none link-secondary text-center">
+                                <img class="img-fluid img-thumbnail mx-auto d-block" src="<?= $srcFull; ?>" alt="<?= $alt; ?>" style="width:100%;">
+                                <?php if ($fields['show_description']):?>
+                                <p class="pt-2"><?= $description; ?></p>
+                                <?php endif;?>
+                            </a>
+                        <?php endforeach;?>
+                    </div>
+                </div>
+                <?php
+            });
+    }
 }
