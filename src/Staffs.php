@@ -25,6 +25,7 @@ final class Staffs
      */
     public static function terms_select(string $taxName, string $text = ""): void
     {
+        /** @SEE https://wp-kama.ru/function/wp_dropdown_categories */
         wp_dropdown_categories(
             [
                 'taxonomy'        => $taxName,
@@ -154,6 +155,48 @@ final class Staffs
             $badge,
             $text
         );
+    }
+
+    /**
+     * Возвращает массив Terms с отступами имен
+     *
+     * @param WP_Term[]  $terms
+     * @param int    $sub
+     * @param string $tab
+     * @return array
+     */
+    public static function getListTerms(array $terms, $sub = 0, string $tab = ''): array
+    {
+        if ($sub > 0) {
+            $tab .= '-';
+        }
+
+        $category = [];
+        foreach ($terms as $term) {
+            if ($sub == $term->parent) {
+                $category[$term->term_id] = $tab . $term->name;
+                $category += self::getListTerms($terms, $term->term_id, $tab);
+            }
+        }
+        return $category;
+    }
+
+    public static function getStyleBlock(): string
+    {
+        return "
+        <style>
+            .gradient-custom {
+                /* fallback for old browsers */
+                background: #65e5f6;
+
+                /* Chrome 10-25, Safari 5.1-6 */
+                background: -webkit-linear-gradient(to right bottom, rgba(198, 101, 246, 1), rgba(133, 167, 253, 1));
+
+                /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                background: linear-gradient(to right bottom, rgba(198, 101, 246, 1), rgba(133, 167, 253, 1))
+            }
+        </style>
+        ";
     }
 
 }

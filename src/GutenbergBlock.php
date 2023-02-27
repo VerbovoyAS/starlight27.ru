@@ -123,7 +123,7 @@ final class GutenbergBlock
                             }
                             ?>
                             <div class="item">
-                                <img class="" src="<?= $img_url; ?>">
+                                <img alt="" class="" src="<?= $img_url; ?>">
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -175,8 +175,8 @@ final class GutenbergBlock
             ->set_render_callback(function ($fields) {
                 $query = new WP_Query(
                     [
-                        'category_name'  => $fields['category_post'] ?? 'home-news',
-                        'posts_per_page' => $fields['posts_per_page'] ?? '6'
+                        'category_name'  => $fields['category_post'] ?: DEFAULT_CATEGORY,
+                        'posts_per_page' => $fields['posts_per_page'] ?: '6'
                     ]
                 );
                 ?>
@@ -257,7 +257,7 @@ final class GutenbergBlock
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5]),
             ])
             ->set_render_callback(function ($fields) {
-                $category = $fields['category_post'] ?? 'home-news';
+                $category = $fields['category_post'] ?: DEFAULT_CATEGORY;
                 $cat = get_category_by_slug($category);
                 $catName = $cat->name ?: 'Новости';
 
@@ -375,14 +375,15 @@ final class GutenbergBlock
                 </div>
                     <?php
                     // Подключение стилей. Надо потом вынести в отдельный метод
-                    wp_enqueue_script(
-                        'custom-search-form-list',
-                        get_template_directory_uri() . '/assets/js/custom-search-form-list.js',
-                        array(),
-                        false,
-                        true
-                    );
-
+                    if( !wp_script_is( 'custom-search-form-block' ) ){
+                        wp_enqueue_script(
+                            'custom-search-form-list',
+                            get_template_directory_uri() . '/assets/js/custom-search-form-list.js',
+                            array(),
+                            false,
+                            true
+                        );
+                    }
                     ?>
                 <?php } ?>
 
@@ -464,7 +465,7 @@ final class GutenbergBlock
                 Field::make( 'checkbox', 'show_header', 'Отображать заголовок' )->set_default_value(1),
             ])
             ->set_render_callback(function ($fields) {
-                $category = $fields['category_post'] ?? 'home-news';
+                $category = $fields['category_post'] ?: DEFAULT_CATEGORY;
                 $cat = get_category_by_slug($category);
                 $catName = $cat->name ?: 'Новости';
 
@@ -568,6 +569,166 @@ final class GutenbergBlock
                             </a>
                         <?php endforeach;?>
                     </div>
+                </div>
+                <?php
+            });
+    }
+
+    public static function blockStaffList()
+    {
+        Block::make('staff_list_section', __('Список сотрудников'))
+            ->add_fields(
+                [
+                    Field::make('separator', 'separator', 'Список сотрудников'),
+                    Field::make( 'select', 'position', 'Должность' )
+                        ->set_options(function () {
+
+                            $terms = get_terms([
+                                                            'taxonomy'   => 'positions_staffs',
+                                                            'hide_empty' => false,
+                                                            'orderby' => 'parent',
+                                                        ]);
+
+                            return Staffs::getListTerms($terms);
+                        }),
+                    Field::make('checkbox', 'show_header', 'Отображать заголовок')->set_default_value(1),
+                    Field::make( 'checkbox', 'search', 'Включить поиск по списку' ),
+                ]
+            )
+            ->set_render_callback(function ($fields) {
+                // Стили для блоков
+                echo Staffs::getStyleBlock();
+
+                $arg = [
+                    'post_type'      => POST_TYPE_STAFF,
+                    'posts_per_page' => -1,
+                    'orderby'        => 'meta_query',
+                    'order'          => 'DESC',
+                    'meta_query'     => [
+                        'key' => 'parent',
+                    ],
+                    'tax_query'      => [
+                        [
+                            'taxonomy' => 'positions_staffs',
+                            'terms'    => $fields['position']
+                        ]
+                    ]
+                ];
+
+                ?>
+
+                <?php if ($fields['search']) {?>
+                    <div class="mb-3">
+                        <input type="text" id="inputSearchBlock" class="form-control" placeholder="Поиск по сотрудникам..." title="Что вы хотите найти?">
+                    </div>
+                    <?php
+                    // Подключение стилей. Надо потом вынести в отдельный метод
+                    if( !wp_script_is( 'custom-search-form-block' ) ){
+                        wp_enqueue_script(
+                            'custom-search-form-block',
+                            get_template_directory_uri() . '/assets/js/custom-search-form-block.js',
+                            array(),
+                            false,
+                            true
+                        );
+                    }
+                    ?>
+                <?php } ?>
+
+                <div id="fast_search_block" class="row row-cols-1 g-3">
+                <?php
+                $query = new WP_Query($arg);
+                if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post();
+                    // пропускаем не активные записи
+                    if (!carbon_get_the_post_meta(Staffs::STAFF_ACTIVE)) {
+                        continue;
+                    }
+
+                    //  Получаем terms таксонов
+                    $positions_staffs = Staffs::get_terms_by_tax(get_the_ID(), 'positions_staffs');
+                    $taxonomy_education = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education');
+                    $taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education_category');
+                    //  Получаем metaBox
+                    $phone = carbon_get_the_post_meta( Staffs::STAFF_PHONE);
+                    $mail = carbon_get_the_post_meta( Staffs::STAFF_MAIL);
+                    $working_hours = carbon_get_the_post_meta( Staffs::STAFF_WORKING_HOURS);
+                    $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
+                    $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
+                    $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
+
+                    ?>
+
+                    <div class="col search-block">
+                        <div class="card h-100 ">
+                            <div class="row g-0">
+                                <div class="col-md-4 gradient-custom text-center text-white"
+                                     style="border-top-left-radius: 0.3rem; border-bottom-left-radius: 0.3rem;">
+                                    <img src="<?php echo get_the_post_thumbnail_url() ?? '' ?>"
+                                         class="img-fluid mt-5 mb-2 rounded-3 w-75" alt=""/>
+                                    <a class="text-decoration-none link-light" href="<?php the_permalink();?>">
+                                        <h5><?php Staffs::explodeName(the_title('','', false));?></h5>
+                                    </a>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h4><?= Staffs::getTermsParameters($positions_staffs);?></h4>
+                                        <hr class="mt-0 mb-4">
+                                        <div class="row pt-1">
+                                            <div class="col-4 mb-3">
+                                                <h6>Email</h6>
+                                                <p class="text-muted"><?= $mail ?: carbon_get_theme_option(DEFAULT_EMAIL);?></p>
+                                            </div>
+                                            <div class="col-4 mb-3">
+                                                <h6>Телефон</h6>
+                                                <p class="text-muted"><?= $phone ?: carbon_get_theme_option(DEFAULT_PHONE);?></p>
+                                            </div>
+                                            <div class="col-4 mb-3">
+                                                <h6>Время работы (приёма)</h6>
+                                                <p class="text-muted"><?= $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME);?></p>
+                                            </div>
+                                        </div>
+                                        <hr class="mt-0 mb-4">
+                                        <div class="row pt-1">
+                                            <div class="col-4 mb-3">
+                                                <h6>Образование</h6>
+                                                <p class="text-muted"><?= Staffs::getTermsParameters($taxonomy_education); ?></p>
+                                            </div>
+                                            <div class="col-4 mb-3">
+                                                <h6>Категория</h6>
+                                                <p class="text-muted"><?= Staffs::getTermsParameters($taxonomy_education); ?></p>
+                                            </div>
+                                            <div class="col-4 mb-3">
+                                                <h6>Год повышения квалификации</h6>
+                                                <p class="text-muted"><?= $year_advanced_training ?: ''; ?></p>
+                                            </div>
+                                        </div>
+                                        <hr class="mt-0 mb-4">
+                                        <div class="row pt-1">
+                                            <div class="col-6 mb-3">
+                                                <h6>Общий стаж работы</h6>
+                                                <p class="text-muted"><?= Staffs::getTimeDiff($general_experience); ?></p>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <h6>Педагогический стаж работы</h6>
+                                                <p class="text-muted"><?= Staffs::getTimeDiff($teaching_experience); ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <?php endwhile; ?>
+
+                <?php else: ?>
+                    <div class="col">
+                        <div class="alert alert-warning" role="alert">
+                            Записи не найдены
+                        </div>
+                    </div>
+
+                <?php endif; ?>
                 </div>
                 <?php
             });

@@ -76,7 +76,7 @@ var_dump('content-page');
                     <h3 class="text-center">Свежие записи</h3>
 
                     <?php
-                    $query = new WP_Query(['category_name' => 'home-news']);
+                    $query = new WP_Query(['category_name' => DEFAULT_CATEGORY]);
                     if ($query->have_posts()) :
                     while ($query->have_posts()) : $query->the_post();
                         ?>

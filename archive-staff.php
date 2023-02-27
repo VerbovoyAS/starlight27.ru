@@ -51,11 +51,18 @@ get_header();
                 </div>
                 <div class="row row-cols-1 g-3">
                     <?php
-                    $arg = ['post_type' => POST_TYPE_STAFF, 'posts_per_page' => 4];
+                    $arg = [
+                        'post_type'      => POST_TYPE_STAFF,
+                        'posts_per_page' => -1,
+                        'orderby'        => 'meta_query',
+                        'order'          => 'DESC',
+                        'meta_query'     => [
+                            'key' => 'parent',
+                        ]
+                    ];
 
                     if (isset($_POST['submit'])) {
                         $arg['tax_query'] = ['relation' => 'AND'];
-                        $arg['post_per_page'] = -1;
 
                         if (isset($_POST['positions_staffs_select']) && !empty($_POST['positions_staffs_select'])) {
                             $arg['tax_query'][] = [
@@ -83,9 +90,6 @@ get_header();
                         $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
                         $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
                         $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
-
-                        $img_url = get_the_post_thumbnail_url(
-                        ) ?: 'https://i.pinimg.com/originals/c3/5d/f3/c35df3a6a3b629a7170837d73ed41b93.jpg';
                         ?>
                         <div class="col">
                             <div class="card h-100 ">
@@ -163,11 +167,16 @@ get_header();
 
             <div class="col-12 col-lg-4">
                 <div class="row">
+                    <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
+                        <?php get_sidebar(); ?>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col shadow mb-2 p-3 bg-body rounded-3">
                         <h3 class="text-center">Свежие записи</h3>
 
                         <?php
-                        $query = new WP_Query(['category_name' => 'home-news']);
+                        $query = new WP_Query(['category_name' => DEFAULT_CATEGORY]);
                         if ($query->have_posts()) :
                         while ($query->have_posts()) : $query->the_post();
                             $img_url = get_the_post_thumbnail_url() ?: Hashtag::getDefaultImg();
@@ -200,13 +209,12 @@ get_header();
                     </div>
 
                     <?php else: ?>
-                        <p>TEST</p>
+                        <div class="col">
+                            <div class="alert alert-warning" role="alert">
+                                Записи не найдены
+                            </div>
+                        </div>
                     <?php endif; ?>
-                </div>
-                <div class="row">
-                    <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
-                        <?php get_sidebar(); ?>
-                    </div>
                 </div>
             </div>
         </div>

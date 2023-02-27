@@ -15,6 +15,9 @@ const DEFAULT_EMAIL = "default_email";
 const DEFAULT_PHONE = "default_phone";
 const DEFAULT_WORK_TIME = "default_work_time";
 
+/** Название рубрики по умолчанию */
+const DEFAULT_CATEGORY = 'news';
+
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
 	define( '_S_VERSION', '1.0.0' );
@@ -231,6 +234,7 @@ function crb_load() {
     GutenbergBlock::blockAccordion();
     GutenbergBlock::postListSection();
     GutenbergBlock::blockGallery();
+    GutenbergBlock::blockStaffList();
 
     GutenbergContainer::settingSite();
     GutenbergContainer::fieldsStaff();
