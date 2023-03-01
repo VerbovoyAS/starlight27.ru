@@ -591,7 +591,7 @@ final class GutenbergBlock
 
                             return Staffs::getListTerms($terms);
                         }),
-                    Field::make('checkbox', 'show_header', 'Отображать заголовок')->set_default_value(1),
+                    Field::make('text', 'header', 'Заголовок'),
                     Field::make( 'checkbox', 'search', 'Включить поиск по списку' ),
                 ]
             )
@@ -635,6 +635,10 @@ final class GutenbergBlock
                     ?>
                 <?php } ?>
 
+                <?php  if ($fields['show_header']) :?>
+                    <h2 class="pb-2 border-bottom"><?= $fields['header'] ?: ''; ?></h2>
+                <?php endif; ?>
+
                 <div id="fast_search_block" class="row row-cols-1 g-3">
                 <?php
                 $query = new WP_Query($arg);
@@ -646,6 +650,7 @@ final class GutenbergBlock
 
                     //  Получаем terms таксонов
                     $positions_staffs = Staffs::get_terms_by_tax(get_the_ID(), 'positions_staffs');
+                    $cabinet = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_cabinet');
                     $taxonomy_education = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education');
                     $taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education_category');
                     //  Получаем metaBox
@@ -659,61 +664,59 @@ final class GutenbergBlock
                     ?>
 
                     <div class="col search-block">
-                        <div class="card h-100 ">
-                            <div class="row g-0">
-                                <div class="col-md-4 gradient-custom text-center text-white"
-                                     style="border-top-left-radius: 0.3rem; border-bottom-left-radius: 0.3rem;">
-                                    <img src="<?php echo get_the_post_thumbnail_url() ?? '' ?>"
-                                         class="img-fluid mt-5 mb-2 rounded-3 w-75" alt=""/>
-                                    <a class="text-decoration-none link-light" href="<?php the_permalink();?>">
-                                        <h5><?php Staffs::explodeName(the_title('','', false));?></h5>
-                                    </a>
+                        <div class="card h-100">
+                            <div class="row gx-1">
+                                <div class="col-lg-4 gradient-custom d-flex align-items-center justify-content-center gx-5" style="border-top-left-radius: 0.3rem; border-bottom-left-radius: 0.3rem;">
+                                    <img src="<?php echo get_the_post_thumbnail_url() ?? '' ?>" class="img-fluid rounded-3 my-3" alt="">
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h4><?= Staffs::getTermsParameters($positions_staffs);?></h4>
-                                        <hr class="mt-0 mb-4">
-                                        <div class="row pt-1">
-                                            <div class="col-4 mb-3">
-                                                <h6>Email</h6>
-                                                <p class="text-muted"><?= $mail ?: carbon_get_theme_option(DEFAULT_EMAIL);?></p>
-                                            </div>
-                                            <div class="col-4 mb-3">
-                                                <h6>Телефон</h6>
-                                                <p class="text-muted"><?= $phone ?: carbon_get_theme_option(DEFAULT_PHONE);?></p>
-                                            </div>
-                                            <div class="col-4 mb-3">
-                                                <h6>Время работы (приёма)</h6>
-                                                <p class="text-muted"><?= $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME);?></p>
-                                            </div>
-                                        </div>
-                                        <hr class="mt-0 mb-4">
-                                        <div class="row pt-1">
-                                            <div class="col-4 mb-3">
-                                                <h6>Образование</h6>
-                                                <p class="text-muted"><?= Staffs::getTermsParameters($taxonomy_education); ?></p>
-                                            </div>
-                                            <div class="col-4 mb-3">
-                                                <h6>Категория</h6>
-                                                <p class="text-muted"><?= Staffs::getTermsParameters($taxonomy_education); ?></p>
-                                            </div>
-                                            <div class="col-4 mb-3">
-                                                <h6>Год повышения квалификации</h6>
-                                                <p class="text-muted"><?= $year_advanced_training ?: ''; ?></p>
-                                            </div>
-                                        </div>
-                                        <hr class="mt-0 mb-4">
-                                        <div class="row pt-1">
-                                            <div class="col-6 mb-3">
-                                                <h6>Общий стаж работы</h6>
-                                                <p class="text-muted"><?= Staffs::getTimeDiff($general_experience); ?></p>
-                                            </div>
-                                            <div class="col-6 mb-3">
-                                                <h6>Педагогический стаж работы</h6>
-                                                <p class="text-muted"><?= Staffs::getTimeDiff($teaching_experience); ?></p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-12 col-lg-8 ps-3">
+                                    <h3 class="py-2 border-bottom text-black-75"><?php the_title('','');?></h3>
+                                    <h5 class="text-secondary"><?= Staffs::getTermsParameters($positions_staffs);?></h5>
+                                    <p class="text-secondary"></p>
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr class="mb-2">
+                                            <th scope="row" class="p-1" style="width: 35%;">Email:</th>
+                                            <td class="p-1 text-600"><?= $mail ?: carbon_get_theme_option(DEFAULT_EMAIL);?></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  class="p-1" style="width: 35%;">Телефон:</th>
+                                            <td class="p-1 text-600"><?= $phone ?: carbon_get_theme_option(DEFAULT_PHONE);?></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  class="p-1" style="width: 35%;">Время работы (приёма):</th>
+                                            <td class="p-1">
+                                                <?= $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME);?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  class="p-1" style="width: 35%;">Кабинет:</th>
+                                            <td class="p-1">
+                                                <?= $cabinet->name ?: '';?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  class="p-1" style="width: 35%;">Образование:</th>
+                                            <td class="p-1"><?= Staffs::getTermsParameters($taxonomy_education); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  class="p-1" style="width: 35%;">Категория:</th>
+                                            <td class="p-1"><?= Staffs::getTermsParameters($taxonomy_education_category); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  class="p-1" style="width: 35%;">Год повышения квалификации:</th>
+                                            <td class="p-1"><?= $year_advanced_training ?: ''; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  class="p-1" style="width: 35%;">Общий стаж работы:</th>
+                                            <td class="p-1"><?= Staffs::getTimeDiff($general_experience); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"  class="p-1" style="width: 35%;">Педагогический стаж работы:</th>
+                                            <td class="p-1"><?= Staffs::getTimeDiff($teaching_experience); ?></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
