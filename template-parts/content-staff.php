@@ -33,9 +33,9 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
         <div class="row">
             <div class="col-lg-4 ps-0">
                 <div class="card mb-4">
-                    <div class="card-body text-center">
+                    <div class="card-body text-center p-4">
                         <img src="<?php echo get_the_post_thumbnail_url() ?>" alt="avatar"
-                             class="rounded img-fluid" style="width: 150px;">
+                             class="rounded img-fluid">
                         <h5 class="my-3"><?php the_title();?></h5>
                         <p class="text-muted mb-4"><?= Staffs::getTermsParameters($positions_staffs);?></p>
                         <div class="d-flex justify-content-center mb-2">

@@ -398,6 +398,7 @@ final class GutenbergBlock
     {
         Block::make('block_accordion', 'Блок Аккордеон')
             ->add_fields([
+                             Field::make( 'checkbox', 'close_all_tab', 'Закрыть все вкладки' ),
                              Field::make('complex', 'accordion', 'Аккордеон')
                                  ->setup_labels(['singular_name' => 'вкладку'])
                                  ->set_collapsed(true)
@@ -417,16 +418,20 @@ final class GutenbergBlock
                          ])
                 ->set_render_callback(function ($fields) {
                         $id = rand(1,100);
+                        $showTab = false;
+                        if($fields['close_all_tab']) {
+                            $showTab = true;
+                        }
                     ?>
                     <div class="accordion py-2" id="accordion-<?= $id;?>">
                     <?php foreach ($fields['accordion'] as $key => $item): ?>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading-<?= $id.'-'.$key;?>">
-                                <button class="accordion-button <?php echo $key ? 'collapsed' : '';?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $id.'-'.$key;?>" aria-expanded="<?php echo $key ? 'false' : 'true';?>" aria-controls="collapse-<?= $id.'-'.$key;?>">
+                                <button class="accordion-button <?php echo ($key || $showTab) ? 'collapsed' : '';?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $id.'-'.$key;?>" aria-expanded="<?php echo ($key || $showTab) ? 'false' : 'true';?>" aria-controls="collapse-<?= $id.'-'.$key;?>">
                                     <?= $item['accordion_header'];?>
                                 </button>
                             </h2>
-                            <div id="collapse-<?= $id.'-'.$key;?>" class="accordion-collapse collapse <?php echo $key ? '' : 'show';?>" aria-labelledby="heading-<?= $id.'-'.$key;?>" data-bs-parent="#accordion-<?= $id;?>">
+                            <div id="collapse-<?= $id.'-'.$key;?>" class="accordion-collapse collapse <?php echo ($key || $showTab) ? '' : 'show';?>" aria-labelledby="heading-<?= $id.'-'.$key;?>" data-bs-parent="#accordion-<?= $id;?>">
                                 <div class="accordion-body">
                                     <?= $item['accordion_text'];?>
 
@@ -593,6 +598,8 @@ final class GutenbergBlock
                         }),
                     Field::make('text', 'header', 'Заголовок'),
                     Field::make( 'checkbox', 'search', 'Включить поиск по списку' ),
+                    // checkbox для разделения вида отображения, отключает поиск
+                    Field::make( 'checkbox', 'small_version', 'Отображать сокращенную версию с иконками (без образования и стажа)' ),
                 ]
             )
             ->set_render_callback(function ($fields) {
@@ -618,7 +625,7 @@ final class GutenbergBlock
                 ?>
 
                 <?php if ($fields['search']) {?>
-                    <div class="mb-3">
+                    <div class="my-3">
                         <input type="text" id="inputSearchBlock" class="form-control" placeholder="Поиск по сотрудникам..." title="Что вы хотите найти?">
                     </div>
                     <?php
@@ -639,7 +646,7 @@ final class GutenbergBlock
                     <h2 class="pb-2 border-bottom"><?= $fields['header'] ?: ''; ?></h2>
                 <?php endif; ?>
 
-                <div id="fast_search_block" class="row row-cols-1 g-3">
+                <div id="<?= $fields['small_version'] ? '' : 'fast_search_block'; ?>" class="row row-cols-1 g-3">
                 <?php
                 $query = new WP_Query($arg);
                 if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post();
@@ -673,6 +680,35 @@ final class GutenbergBlock
                                     <h3 class="py-2 border-bottom text-black-75"><?php the_title('','');?></h3>
                                     <h5 class="text-secondary"><?= Staffs::getTermsParameters($positions_staffs);?></h5>
                                     <p class="text-secondary"></p>
+                                    <?php if ($fields['small_version']): ?>
+                                    <div class="row gy-3 mb-3">
+                                        <div class="col-12 col-md-6">
+                                            <span class="d-flex align-items-center justify-content-start text-muted" title="E-mail">
+                                                  <i class="bi bi-envelope-at pe-2" style="font-size: 1.5rem;"></i>
+                                                  <?= $mail ?: carbon_get_theme_option(DEFAULT_EMAIL);?>
+                                            </span>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <span class="d-flex align-items-center justify-content-start text-muted" title="Телефон">
+                                                  <i class="bi bi-telephone pe-2" style="font-size: 1.5rem;"></i>
+                                                  <?= $phone ?: carbon_get_theme_option(DEFAULT_PHONE);?>
+                                            </span>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <span class="d-flex align-items-center justify-content-start text-muted" title="Время работы (приёма):">
+                                                  <i class="bi bi-clock pe-2" style="font-size: 1.5rem;"></i>
+                                                  <?= $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME);?>
+                                            </span>
+
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <span class="d-flex align-items-center justify-content-start text-muted" title="Кабинет">
+                                                  <i class="bi bi-door-open pe-2" style="font-size: 1.5rem;"></i>
+                                                  <?= $cabinet->name ?: '';?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <?php else:?>
                                     <table class="table table-hover">
                                         <tbody>
                                         <tr class="mb-2">
@@ -717,6 +753,7 @@ final class GutenbergBlock
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <?php endif;?>
                                 </div>
                             </div>
                         </div>

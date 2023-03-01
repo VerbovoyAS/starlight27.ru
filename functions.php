@@ -110,6 +110,12 @@ function hashtag_scripts() {
         'hashtag-font-awesome',
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'
     );
+
+    wp_enqueue_style(
+        'hashtag-bootstrap-icons',
+        'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css'
+    );
+
     wp_enqueue_style('hashtag-style-main-css', get_template_directory_uri() . '/assets/css/main.css');
     wp_enqueue_style('hashtag-style-menu-css', get_template_directory_uri() . '/assets/css/style-menu.css');
 
