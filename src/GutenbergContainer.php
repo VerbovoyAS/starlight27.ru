@@ -46,4 +46,20 @@ final class GutenbergContainer
                              Field::make('checkbox', Staffs::STAFF_ACTIVE, 'Активировать')->set_default_value(true),
                          ]);
     }
+
+    /**
+     * Дополнительные поля для "Основные сведения"
+     *
+     * @return void
+     */
+    public static function fieldsBasicInfo()
+    {
+        Container::make('post_meta', 'Дополнительные поля')
+            ->where('post_type', '=', POST_TYPE_BASIC_INFO)
+            ->add_fields(
+                [
+                    Field::make('text', BASIC_INFO_ICON, 'Иконка'),
+                ]
+            );
+    }
 }

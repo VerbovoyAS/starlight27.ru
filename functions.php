@@ -10,7 +10,13 @@ use HashtagCore\GutenbergBlock;
 use HashtagCore\GutenbergContainer;
 use HashtagCore\TaxonomyCreate;
 
+/** Тип записи - Сотрудники */
 const POST_TYPE_STAFF = 'staff';
+
+/** Тип записи - Основные сведения */
+const POST_TYPE_BASIC_INFO = 'info_edu';
+const BASIC_INFO_ICON = 'basic_info_icon';
+
 const DEFAULT_EMAIL = "default_email";
 const DEFAULT_PHONE = "default_phone";
 const DEFAULT_WORK_TIME = "default_work_time";
@@ -19,7 +25,6 @@ const DEFAULT_WORK_TIME = "default_work_time";
 const DEFAULT_CATEGORY = 'news';
 
 if ( ! defined( '_S_VERSION' ) ) {
-	// Replace the version number of the theme on each release.
 	define( '_S_VERSION', '1.0.0' );
 }
 
@@ -94,6 +99,18 @@ function hashtag_widgets_init() {
             'after_title'   => '</h5>',
         ]
     );
+
+    register_sidebar(
+        array(
+            'name'          => esc_html__( 'Sidebar info edu', 'hashtag' ),
+            'id'            => 'sidebar-info-edu',
+            'description'   => esc_html__( 'Add widgets here.', 'hashtag' ),
+            'before_widget' => '<section id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</section>',
+            'before_title'  => '<h2 class="widget-title">',
+            'after_title'   => '</h2>',
+        )
+    );
 }
 add_action( 'widgets_init', 'hashtag_widgets_init' );
 
@@ -132,7 +149,6 @@ function hashtag_scripts() {
         'hashtag-boostrap-5-bundle-js',
         'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
     );
-    // wp_enqueue_script('hashtag-boostrap-5-popper-js', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js', [], '', true);
 
     wp_enqueue_script('hashtag-boostrap-5-js', 'https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js', [], '', true);
 
@@ -220,7 +236,20 @@ function hashtag_create_post_type() {
         'menu_icon'   => 'dashicons-groups',
         'rewrite'     => ['slug' => 'staffs'],
         'label'       => 'Сотрудники',
-        'supports' => [ 'title', 'editor', 'thumbnail', 'post-formats']
+        'supports' => ['title', 'editor', 'thumbnail', 'post-formats']
+    ]);
+
+    register_post_type(POST_TYPE_BASIC_INFO, [
+        'public'       => true,
+        'has_archive'  => true,
+        'menu_icon'    => 'dashicons-media-document',
+        'labels'       => [
+            'name'          => 'Сведения об образовательной организации',
+            'singular_name' => 'Сведения ОУ',
+            'menu_name'     => 'Сведения ОУ'
+        ],
+        'show_in_rest' => true,
+        'supports'     => ['title', 'editor', 'thumbnail', 'post-formats']
     ]);
 }
 
@@ -245,55 +274,24 @@ function crb_load() {
 
     GutenbergContainer::settingSite();
     GutenbergContainer::fieldsStaff();
+    GutenbergContainer::fieldsBasicInfo();
 
-}
-
-function getPostViews($postID): string
-{
-    $count_key = 'post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if ($count == '') {
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '0');
-        return "0";
-    }
-    return $count;
-}
-
-function setPostViews($postID): void
-{
-    $count_key = 'post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if ($count == '') {
-        $count = 0;
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '0');
-    } else {
-        $count++;
-        update_post_meta($postID, $count_key, $count);
-    }
 }
 
 /** Автозагрузка постов */
 function true_load_posts(){
-
     $args = unserialize( stripslashes( $_POST['query'] ) );
     $args['paged'] = $_POST['page'] + 1; // следующая страница
     $args['post_status'] = 'publish';
 
     query_posts( $args );
     if( have_posts() ) :
-
         while( have_posts() ): the_post();
-
             get_template_part( 'template-parts/category/category', get_post_type() );
-
         endwhile;
-
     endif;
     die();
 }
-
 add_action('wp_ajax_loadmore', 'true_load_posts');
 add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
 
