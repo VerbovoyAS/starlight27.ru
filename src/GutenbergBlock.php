@@ -773,4 +773,66 @@ final class GutenbergBlock
                 <?php
             });
     }
+
+    public static function blockPageCardAndIcon()
+    {
+        Block::make('block_page_card_and_icon', 'Карточки с иконками')
+            ->add_fields([
+                             Field::make('separator', 'separator', 'Карточки с иконками'),
+                             Field::make('text', 'header', 'Заголовок'),
+                             Field::make('checkbox', 'show_header', 'Отображать заголовок' ),
+                             Field::make('complex', 'card_and_icon', 'Карточки')
+                                 ->setup_labels(['singular_name' => 'вкладку'])
+                                 ->set_collapsed(true)
+                                 ->add_fields(
+                                     [
+                                         Field::make('association', 'associations', 'Выберите запись')
+                                             ->set_max(1)
+                                             ->set_types([
+                                                             [
+                                                                 'type'      => 'post',
+                                                                 'post_type' => 'page',
+                                                             ],
+                                                             [
+                                                                 'type'      => 'post',
+                                                                 'post_type' => 'post',
+                                                             ],
+                                                         ]),
+                                         Field::make('text', 'icon_code', __('Иконка')),
+                                     ]
+                                 ),
+
+                         ])
+            ->set_render_callback(function ($fields) {
+                $posts = $fields['card_and_icon'] ?: [];
+                if (empty($posts)) {
+                    return;
+                }
+                $countPosts = count($posts);
+                $isNotEven = (bool)($countPosts % 2);
+                ?>
+                <?php  if ($fields['show_header']) :?>
+                    <h2 class="pb-2 text-center"><?= $fields['header'] ?: ''; ?></h2>
+                <?php endif; ?>
+                <div class="row g-3 row-cols-1 row-cols-md-2 row-cols-lg-2 py-2">
+                <?php
+                foreach ($fields['card_and_icon'] as $key => $card):
+                    $postId = $card['associations'][0]['id'];
+                    $icon = $card['icon_code'] ?: 'bi bi-envelope-at';
+                    $post = get_post($postId);
+                    $offset= (($key + 1 === $countPosts) && $isNotEven)  ? 'offset-md-3' : '';
+                    ?>
+                    <a class="text-decoration-none link-secondary <?= $offset; ?>" href="<?= get_permalink($postId);?>">
+                        <div class="col">
+                            <div class="d-flex align-items-center rounded-3 shadow mb-2 p-3 bg-body">
+                                <i class="<?= $icon; ?> px-4" style="font-size: 1.75rem;"></i>
+                                <h4 class="fw-bold mb-0"><?= $post->post_title;?></h4>
+                            </div>
+                        </div>
+                    </a>
+                <?php endforeach;?>
+                </div>
+                <?php
+            });
+    }
 }
