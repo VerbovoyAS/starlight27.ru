@@ -34,7 +34,8 @@ function hashtag_setup() {
 
     register_nav_menus(
         [
-            'header-menu' => esc_html__('Primary', 'hashtag'),
+            'header-menu'   => esc_html__('Главное меню', 'hashtag'),
+            'info-edu-menu' => esc_html__('Меню Сведения ОУ', 'hashtag'),
         ]
     );
 
