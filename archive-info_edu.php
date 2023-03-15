@@ -44,12 +44,10 @@ get_header();
                     $icon = carbon_get_the_post_meta(BASIC_INFO_ICON) ?: 'bi bi-envelope-at';
                     $offset = (($query->current_post + 1 === $countPosts) && $isNotEven) ? 'offset-md-3' : '';
                     ?>
-                    <a class="text-decoration-none link-secondary <?= $offset ?: ''; ?>" href="<? the_permalink(); ?>">
-                        <div class="col">
-                            <div class="d-flex align-items-center rounded-3 shadow mb-2 p-3 bg-body">
-                                <i class="<?= $icon; ?> px-4" style="font-size: 1.75rem;"></i>
-                                <h4 class="fw-bold mb-0"><?= the_title(); ?></h4>
-                            </div>
+                    <a class="text-decoration-none link-secondary <?= $offset ?: ''; ?>" href="<?php the_permalink(); ?>">
+                        <div class="d-flex align-items-center rounded-3 shadow mb-2 p-3 bg-body h-100">
+                            <i class="<?= $icon; ?> px-4" style="font-size: 1.75rem;"></i>
+                            <h4 class="fw-bold mb-0"><?= the_title(); ?></h4>
                         </div>
                     </a>
                 <?php endwhile; ?>
