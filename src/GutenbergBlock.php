@@ -555,6 +555,7 @@ final class GutenbergBlock
     {
         Block::make('block_gallery', 'Gallery light')
             ->add_fields([
+                             Field::make('separator', 'separator', 'Галерея'),
                              Field::make('text', 'gallery_header', __('Заголовок')),
                              Field::make('media_gallery', 'gallery', __('Галерея')),
                              Field::make( 'checkbox', 'show_description', 'Отображать подпись картинки' ),
