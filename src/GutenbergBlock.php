@@ -623,13 +623,16 @@ final class GutenbergBlock
                     'meta_query'     => [
                         'key' => 'parent',
                     ],
-                    'tax_query'      => [
+                ];
+
+                if ($fields['position']) {
+                    $arg['tax_query'] = [
                         [
                             'taxonomy' => 'positions_staffs',
                             'terms'    => $fields['position']
                         ]
-                    ]
-                ];
+                    ];
+                }
 
                 ?>
 

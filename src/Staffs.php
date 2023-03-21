@@ -172,6 +172,7 @@ final class Staffs
         }
 
         $category = [];
+        $category[0] = 'Выберите категорию записей';
         foreach ($terms as $term) {
             if ($sub == $term->parent) {
                 $category[$term->term_id] = $tab . $term->name;
