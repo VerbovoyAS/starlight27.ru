@@ -75,6 +75,7 @@ final class GutenbergBlock
                         loop: true,
                         margin: 10,
                         nav: true,
+                        autoHeight:true,
                         responsive: {
                             0: {
                                 items: <?= $fields['carousel_mob'] ?? 1;?>
@@ -134,6 +135,7 @@ final class GutenbergBlock
                         loop: true,
                         margin: 10,
                         nav: true,
+                        autoHeight:true,
                         responsive: {
                             0: {
                                 items: <?= $fields['carousel_mob'] ?? 1;?>
@@ -239,7 +241,7 @@ final class GutenbergBlock
     {
         Block::make('post_card_style_carousel_section', __('Карусель стильных постов'))
             ->add_tab("Боксы", [
-                Field::make('separator', 'separator', 'Карусель постов'),
+                Field::make('separator', 'separator', 'Карусель стильных постов'),
                 Field::make( 'select', 'category_post', __( 'Choose Options' ) )
                     ->set_options(Hashtag::getPostCategories()),
                 Field::make('text', 'posts_per_page', 'Количество постов на странице'),
@@ -268,6 +270,12 @@ final class GutenbergBlock
                     ]
                 );
                 ?>
+                <style>
+                    .owl-item,
+                    .owl-stage {
+                        height: 100%;!important;
+                    }
+                </style>
                 <?php if ($query->have_posts()) :?>
                 <div class="row row-cols-1 row-cols-md-3 g-4 my-2">
                     <?php if ($fields['show_header']) :?>
@@ -275,18 +283,19 @@ final class GutenbergBlock
                     <?php endif; ?>
                     <div class="owl-carousel owl-theme">
                         <?php
-                        foreach ($query->get_posts() as $WPost):
-
-                            $img_url = get_the_post_thumbnail_url() ?: Hashtag::getDefaultImg();
+                        foreach ($query->get_posts() as $i => $WPost):
+                            $imgList = Hashtag::getImageList();
+                            $defaultImg = $imgList[$i] ?: $imgList[rand(0, $query->post_count)] ?: Hashtag::getDefaultImg();
+                            $img_url = get_the_post_thumbnail_url($WPost) ?: $defaultImg;
                             if (!has_post_thumbnail($WPost->ID)) {
-                                $img_url = Hashtag::getDefaultImg();
+                                $img_url = $defaultImg;
                             }
                             ?>
 
-                            <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 " style="background-image: url(<?= $img_url; ?>);">
+                            <div class="card card-cover h-100 overflow-hidden bg-dark rounded-5 " style="background-image: url(<?= $img_url; ?>); text-shadow: black 0.1em 0.1em 0.2em;">
                                 <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-3">
                                     <a class="mt-auto link-light text-decoration-none" href="<?= get_the_permalink($WPost->ID); ?>">
-                                        <h2 class="lh-2 fw-bold"><?= $WPost->post_title; ?></h2>
+                                        <h2 class="lh-2 fw-bold text-white" ><?= $WPost->post_title; ?></h2>
                                     </a>
                                     <ul class="d-flex list-unstyled justify-content-end flex-wrap mt-auto">
                                         <li class="d-flex align-items-center me-3">
@@ -646,7 +655,7 @@ final class GutenbergBlock
                     <h2 class="pb-2 border-bottom"><?= $fields['header'] ?: ''; ?></h2>
                 <?php endif; ?>
 
-                <div id="<?= $fields['small_version'] ? '' : 'fast_search_block'; ?>" class="row row-cols-1 g-3">
+                <div id="<?= !$fields['small_version'] ? '' : 'fast_search_block'; ?>" class="row row-cols-1 g-3">
                 <?php
                 $query = new WP_Query($arg);
                 if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post();
@@ -797,6 +806,10 @@ final class GutenbergBlock
                                                                  'type'      => 'post',
                                                                  'post_type' => 'post',
                                                              ],
+                                                             [
+                                                                 'type'      => 'post',
+                                                                 'post_type' => POST_TYPE_BASIC_INFO,
+                                                             ],
                                                          ]),
                                          Field::make('text', 'icon_code', __('Иконка')),
                                      ]
@@ -818,16 +831,14 @@ final class GutenbergBlock
                 <?php
                 foreach ($fields['card_and_icon'] as $key => $card):
                     $postId = $card['associations'][0]['id'];
-                    $icon = $card['icon_code'] ?: 'bi bi-envelope-at';
                     $post = get_post($postId);
+                    $icon = $card['icon_code'] ?: carbon_get_post_meta($post->ID, BASIC_INFO_ICON) ?: 'bi bi-envelope-at';
                     $offset= (($key + 1 === $countPosts) && $isNotEven)  ? 'offset-md-3' : '';
                     ?>
                     <a class="text-decoration-none link-secondary <?= $offset; ?>" href="<?= get_permalink($postId);?>">
-                        <div class="col">
-                            <div class="d-flex align-items-center rounded-3 shadow mb-2 p-3 bg-body">
-                                <i class="<?= $icon; ?> px-4" style="font-size: 1.75rem;"></i>
-                                <h4 class="fw-bold mb-0"><?= $post->post_title;?></h4>
-                            </div>
+                        <div class="d-flex align-items-center rounded-3 shadow mb-2 p-3 bg-body h-100">
+                            <i class="<?= $icon; ?> px-4" style="font-size: 1.75rem;"></i>
+                            <h4 class="fw-bold mb-0"><?= $post->post_title;?></h4>
                         </div>
                     </a>
                 <?php endforeach;?>
