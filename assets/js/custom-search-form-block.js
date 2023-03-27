@@ -1,4 +1,4 @@
-function searchThow() {
+function searchBlock() {
     let input = document.getElementById("inputSearchBlock");
     let filter = input.value.toUpperCase();
     let ul = document.getElementById("fast_search_block");
@@ -14,4 +14,4 @@ function searchThow() {
     }
 }
 
-document.addEventListener('keyup', searchThow);
+document.addEventListener('keyup', searchBlock);

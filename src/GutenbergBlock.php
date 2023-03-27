@@ -384,7 +384,7 @@ final class GutenbergBlock
                 </div>
                     <?php
                     // Подключение стилей. Надо потом вынести в отдельный метод
-                    if( !wp_script_is( 'custom-search-form-block' ) ){
+                    if( !wp_script_is( 'custom-search-form-list' ) ){
                         wp_enqueue_script(
                             'custom-search-form-list',
                             get_template_directory_uri() . '/assets/js/custom-search-form-list.js',
