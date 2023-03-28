@@ -850,4 +850,42 @@ final class GutenbergBlock
                 <?php
             });
     }
+
+    public static function alertBlock()
+    {
+        Block::make('alert_block', 'Уведомления')->add_fields(
+                [
+                    Field::make('separator', 'separator', 'Уведомления'),
+                    Field::make('text', 'header', 'Заголовок'),
+                    Field::make('rich_text', 'text', 'Текст уведомления'),
+                    Field::make('checkbox', 'show_header', 'Отображать заголовок' )->set_default_value(1),
+                    Field::make( 'select', 'style', 'Стиль уведомления' )
+                        ->set_default_value('light')
+                        ->set_options(
+                                [
+                                        'primary'   => 'Primary',
+                                        'secondary' => 'Secondary',
+                                        'success'   => 'Success',
+                                        'danger'    => 'Danger',
+                                        'warning'   => 'Warning',
+                                        'info'      => 'Info',
+                                        'light'     => 'Light',
+                                        'dark'      => 'Dark',
+                                ]
+                        ),
+                ]
+        )->set_render_callback(function ($fields) {
+            ?>
+            <div class="alert alert-<?= $fields['style'] ?: 'light'?> my-2" role="alert">
+                <div class="d-flex justify-content-end">
+                    <?php if($fields['show_header']):?>
+                    <h4 class="alert-heading w-100 text-center"><?= $fields['header'] ?: ''; ?></h4>
+                    <?php endif;?>
+                    <div class="flex-shrink-1"><button type="button" class="btn-close flex-shrink-1" data-bs-dismiss="alert" aria-label="Close"></button></div>
+                </div>
+                <?= $fields['text'] ?: '';?>
+            </div>
+            <?php
+        });
+    }
 }
