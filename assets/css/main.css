@@ -235,3 +235,15 @@ header object svg {
       }
      
 }
+
+/* Стили для изображений записей категории */
+.img-category-post {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #464646;
+    border-top-left-radius: 0.3em;
+    border-top-right-radius: 0.3em;
+    height: 250px;
+    width: 100%;
+}

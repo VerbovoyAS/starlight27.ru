@@ -6,24 +6,21 @@
     }
     ?>
 
-    <div class="col mb-2">
-        <div class="d-flex row g-0">
-            <div class="col-md-4 d-flex align-items-start p-1">
-                <a href="<?= get_the_permalink(); ?>">
-                    <img src="<?php echo $img_url; ?>"
-                         alt="..." class="img-fluid rounded d-inline-block">
-                </a>
-            </div>
-            <div class="col-md-8 p-1">
-                <div class="d-flex flex-column h-100">
-                    <a class="text-decoration-none link-secondary mb-auto" href="<?php the_permalink(); ?>">
-                        <h5 class="card-title"><?php the_title() ?></h5>
-                    </a>
-                    <p class="card-text d-flex justify-content-end">
-                            <?php the_time('j F Y'); ?>
-                    </p>
+<div class="col">
+    <div class="card shadow-sm h-100">
+        <div class="img-category-post" style="background-image: url(<?= $img_url; ?>);">
+
+        </div>
+        <div class="card-body d-flex flex-column align-content-between">
+            <a class="text-decoration-none link-secondary mb-auto" href="<?php the_permalink(); ?>">
+                <h5 class="card-title"><?php the_title() ?></h5>
+            </a>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="<?php the_permalink(); ?>" class="btn btn-sm btn-outline-secondary">Подробнее</a>
                 </div>
+                <small class="text-body-secondary"><?php the_time('j F Y'); ?></small>
             </div>
         </div>
     </div>
-<hr>
+</div>
