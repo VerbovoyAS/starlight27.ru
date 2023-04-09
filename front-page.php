@@ -11,8 +11,8 @@
             <li class="layer layer_6" data-depth="0.40"><img src="<?= get_template_directory_uri(). '/assets/img/site/SVG/6.svg';?>" alt=""></li>
             <li class="layer layer_7" data-depth="0.45"><img src="<?= get_template_directory_uri(). '/assets/img/site/SVG/7.svg';?>" alt=""></li>
             <li class="layer layer_8" data-depth="0.50"><img src="<?= get_template_directory_uri(). '/assets/img/site/SVG/8.svg';?>" alt=""></li>
-            <li class="layer layer_9" data-depth="0.10"><h2 class="fs-2 text-white text-center">Муниципальное <br>автономное общеобразовательное учреждение<br> г. Хабаровска</h2></li>
-            <li class="layer layer_10" data-depth="0.10"><h1 class="fs-1 text-white text-center">"Лицей "Звёздный"</h1></li>
+            <li class="layer layer_9" data-depth="0.10"><h2 class="fs-2 text-white text-center main-header">Муниципальное <br>автономное общеобразовательное учреждение<br> г. Хабаровска</h2></li>
+            <li class="layer layer_10" data-depth="0.10"><h1 class="fs-1 text-white text-center text-uppercase main-header">"Лицей "Звёздный"</h1></li>
 
         </ul>
     </div>
