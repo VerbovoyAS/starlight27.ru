@@ -26,7 +26,7 @@ var_dump('content-post');
     <!-- .entry-header -->
 
     <div class="container ">
-        <div class="row pb-2">
+        <div class="row pb-2 px-2 px-sm-0">
             <div class="col-12 col-lg-8 text-muted">
                 <!-- Breadcrumbs -->
                 <?php //TODO Сделать хлебные крошки на content-post.php ?>
@@ -49,9 +49,9 @@ var_dump('content-post');
 
             </div>
         </div>
-        <div class="row ">
+        <div class="row px-2 px-sm-0">
             <div class="col-12 col-lg-8">
-                <div class="row me-1">
+                <div class="row me-lg-1">
                     <div class="col shadow mb-2 p-3 bg-body rounded-3"><?php the_content(); ?></div>
                 </div>
                 <hr>
