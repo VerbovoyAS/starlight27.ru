@@ -11,8 +11,8 @@ var_dump('content-page');
 <div class="container ">
     <div class="row">
         <div class="col px-0">
-            <div class="card bg-dark text-white mb-2">
-                <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img" alt="...">
+            <div class="card rounded-0 rounded-bottom bg-dark text-white mb-2">
+                <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img rounded-0 rounded-bottom" alt="...">
                 <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
                     <h1 class="card-title 1"><?php the_title(); ?></h1>
                 </div>
@@ -22,7 +22,7 @@ var_dump('content-page');
 </div>
 
 <div class="container ">
-    <div class="row pb-2">
+    <div class="row pb-2 px-2 px-sm-0">
         <div class="col-12 col-lg-8 text-muted">
             <!-- Breadcrumbs -->
             <?php if (function_exists('fw_ext_breadcrumbs')) {
@@ -47,9 +47,9 @@ var_dump('content-page');
             </div>
         </div>
     </div>
-    <div class="row ">
+    <div class="row px-2 px-sm-0">
         <div class="col-12 col-lg-8">
-            <div class="row me-1">
+            <div class="row me-lg-1">
                 <div class="col shadow mb-2 p-3 bg-body rounded-3"><?php the_content(); ?></div>
             </div>
         </div>
