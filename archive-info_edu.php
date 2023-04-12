@@ -14,7 +14,7 @@ get_header();
             <div class="card bg-dark text-white mb-2">
                 <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img" alt="...">
                 <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="card-title 1"><?php the_archive_title(); ?></h1>
+                    <h1 class="card-title text-center"><?php the_archive_title(); ?></h1>
                 </div>
             </div>
         </div>

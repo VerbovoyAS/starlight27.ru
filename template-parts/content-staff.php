@@ -21,7 +21,7 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
             <div class="card bg-dark text-white mb-2">
                 <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img" alt="...">
                 <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="card-title 1"><?php the_title(); ?></h1>
+                    <h1 class="card-title text-center"><?php the_title(); ?></h1>
                 </div>
             </div>
         </div>

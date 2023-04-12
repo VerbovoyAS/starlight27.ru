@@ -7,8 +7,8 @@ global $wp_query;
     <div class="container">
         <div class="row">
             <div class="col px-0">
-                <div class="card bg-dark text-white mb-2">
-                    <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img" alt="...">
+                <div class="card rounded-0 rounded-bottom bg-dark text-white mb-2">
+                    <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img rounded-0 rounded-bottom" alt="...">
                     <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
                         <?php the_archive_title( '<h1 class="card-title 1">', '</h1>' ); ?>
                     </div>
@@ -18,9 +18,9 @@ global $wp_query;
     </div>
 
     <div class="container mt-2">
-        <div class="row ">
+        <div class="row px-2 px-sm-0">
             <div class="col-12 p-0">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
                         <?php
                         while ( have_posts() ) :
                             the_post();
@@ -38,7 +38,7 @@ global $wp_query;
                         var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
                     </script>
                     <div class="d-flex items-justified-center justify-content-center pt-3">
-                        <button id="true_loadmore" class="btn btn-outline-secondary w-25 d-block" type="button">Загрузить ещё</button>
+                        <button id="true_loadmore" class="btn btn-outline-secondary d-block" type="button">Загрузить ещё</button>
                     </div>
                 <?php endif; ?>
             </div>

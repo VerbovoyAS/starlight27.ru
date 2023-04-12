@@ -17,7 +17,7 @@ var_dump('content-post');
                 <div class="card rounded-0 rounded-bottom bg-dark text-white mb-2">
                     <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img rounded-0 rounded-bottom" alt="...">
                     <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
-                        <h1 class="card-title 1"><?php the_title(); ?></h1>
+                        <h1 class="card-title text-center"><?php the_title(); ?></h1>
                     </div>
                 </div>
             </div>
@@ -50,13 +50,13 @@ var_dump('content-post');
             </div>
         </div>
         <div class="row px-2 px-sm-0">
-            <div class="col-12 col-lg-8">
+            <div class="col-12 col-lg-8 mb-2">
                 <div class="row me-lg-1">
                     <div class="col shadow mb-2 p-3 bg-body rounded-3"><?php the_content(); ?></div>
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="col-12 col-md-6">
+                <div class="row me-lg-1">
+                    <div class="col-12 col-md-6 p-0">
                         <?php
                         /** @var WP_Post $prevPost */
                         $prevPost = get_previous_post();
@@ -64,16 +64,16 @@ var_dump('content-post');
                             $getPrevPostImg = get_the_post_thumbnail_url($prevPost->ID);
                             $prevPostImg = $getPrevPostImg ?: Hashtag::getDefaultImg();
                             ?>
-                            <h5 class="text-center text-md-start">Предыдущая запись</h5>
+                            <h4 class="text-center text-md-start">Предыдущая запись</h4>
                             <div class="col">
                                 <div class="d-flex row g-0">
-                                    <div class="col-md-4 d-flex align-items-start p-1">
+                                    <div class="col-md-4 d-flex align-items-start px-sm-0">
                                         <a href="">
                                             <img src="<?php echo esc_html($prevPostImg); ?>" alt="..."
                                                  class="img-fluid rounded d-inline-block">
                                         </a>
                                     </div>
-                                    <div class="col-md-8 p-1">
+                                    <div class="col-md-8 ps-2">
                                         <div class="pb-2">
                                             <a class="text-decoration-none link-secondary" href="<?php echo get_permalink($prevPost); ?>">
                                                 <h5 class="card-title text-center text-md-start"><?php echo esc_html(
@@ -94,7 +94,7 @@ var_dump('content-post');
 
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 p-0">
                         <?php
                         /** @var WP_Post $nextPost */
                         $nextPost = get_next_post();
@@ -102,10 +102,10 @@ var_dump('content-post');
                             $getPrevPostImg = get_the_post_thumbnail_url($nextPost->ID);
                             $nextPostImg = $getPrevPostImg ?: Hashtag::getDefaultImg();
                             ?>
-                            <h5 class="text-center text-md-end">Следующая запись</h5>
+                            <h4 class="text-center text-md-end">Следующая запись</h4>
                             <div class="col">
                                 <div class="d-flex row g-0">
-                                    <div class="col-md-8 p-1">
+                                    <div class="col-md-8 pe-2">
                                         <div class="pb-2">
                                             <a class="text-decoration-none link-secondary" href="<?php echo get_permalink($nextPost); ?>">
                                                 <h5 class="card-title text-center text-md-end"><?php echo esc_html(
@@ -119,7 +119,7 @@ var_dump('content-post');
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 d-flex align-items-end p-1">
+                                    <div class="col-md-4 d-flex align-items-start px-sm-0">
                                         <a href="">
                                             <img src="<?php echo esc_html($nextPostImg); ?>" alt="..."
                                                  class="img-fluid rounded d-inline-block">
