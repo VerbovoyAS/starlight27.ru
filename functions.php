@@ -222,6 +222,12 @@ function hashtag_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'hashtag_scripts' );
 
+/* Отключения стилей Gutenberg */
+function disable_gutenberg_wp_enqueue_scripts() {
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
+}
+add_filter('wp_enqueue_scripts', 'disable_gutenberg_wp_enqueue_scripts', 100);
 
 function hashtag_create_post_type() {
 

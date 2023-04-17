@@ -253,3 +253,16 @@ header object svg {
     font-family: 'Russo One', sans-serif;!important;
     text-shadow: 5px 4px 7px rgba(0,0,0,0.55);
 }
+
+/* Стили для таблиц */
+table {
+    border-spacing: 0;
+    border-collapse: separate;
+    border-radius: 0.5em;
+    border: 1px solid #eaeaea;
+}
+
+th, td {
+    padding: 1em;!important;
+    border: 1px solid #eaeaea;!important;
+}
