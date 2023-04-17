@@ -260,6 +260,7 @@ table {
     border-collapse: separate;
     border-radius: 0.5em;
     border: 1px solid #eaeaea;
+    width: 100%;
 }
 
 th, td {
