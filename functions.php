@@ -20,6 +20,7 @@ const BASIC_INFO_ICON = 'basic_info_icon';
 const DEFAULT_EMAIL = "default_email";
 const DEFAULT_PHONE = "default_phone";
 const DEFAULT_WORK_TIME = "default_work_time";
+const DEFAULT_ADDRESSES = "default_addresses";
 
 /** Название рубрики по умолчанию */
 const DEFAULT_CATEGORY = 'news';
@@ -305,15 +306,17 @@ add_shortcode( 'get-main-site', 'get_main_setting_shortcode' );
  * @param $atts
  * @return mixed|string|null
  */
-function get_main_setting_shortcode( $atts ) {
-
-    switch ($atts['option']){
+function get_main_setting_shortcode($atts)
+{
+    switch ($atts['option']) {
         case 'phone':
             return carbon_get_theme_option(DEFAULT_PHONE);
         case 'email':
             return carbon_get_theme_option(DEFAULT_EMAIL);
         case 'work_time':
             return carbon_get_theme_option(DEFAULT_WORK_TIME);
+        case 'addresses':
+            return carbon_get_theme_option(DEFAULT_ADDRESSES);
         default:
             return '';
     }

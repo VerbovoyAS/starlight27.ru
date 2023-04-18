@@ -18,6 +18,7 @@ final class GutenbergContainer
             ->add_tab('Контакты', [
                 Field::make('text', DEFAULT_PHONE, 'Номер телефона'),
                 Field::make('text', DEFAULT_EMAIL, 'E-mail'),
+                Field::make('text', DEFAULT_ADDRESSES, 'Адрес'),
                 Field::make('rich_text', DEFAULT_WORK_TIME, 'Время работы (приёма)'),
             ]);
     }
