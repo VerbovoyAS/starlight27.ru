@@ -33,6 +33,10 @@ header object {
     padding: 1em;
 }
 
+a {
+    color: #6c757d;
+}
+
 /* new */
 
 /*.block-style .block-style-column {*/
@@ -254,7 +258,7 @@ header object svg {
     text-shadow: 5px 4px 7px rgba(0,0,0,0.55);
 }
 
-/* Стили для таблиц изменения стилей Gutenberg */
+/* Стили для таблиц Gutenberg */
 .wp-block-table table {
     border-spacing: 0;
     border-collapse: separate;
@@ -283,4 +287,11 @@ header object svg {
 .wp-block-table table>tbody:not(:last-child),
 .wp-block-table table>tfoot:not(:last-child) {
     border-bottom: 2px solid #eaeaea;!important;
+}
+
+/* Стили для заголовков Gutenberg */
+.wp-block-heading,
+.wp-block-heading a {
+    text-decoration: none;
+    color: #6c757d;
 }
