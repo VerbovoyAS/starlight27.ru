@@ -254,16 +254,33 @@ header object svg {
     text-shadow: 5px 4px 7px rgba(0,0,0,0.55);
 }
 
-/* Стили для таблиц */
-table {
+/* Стили для таблиц изменения стилей Gutenberg */
+.wp-block-table table {
     border-spacing: 0;
     border-collapse: separate;
     border-radius: 0.5em;
-    border: 1px solid #eaeaea;
-    width: 100%;
+    border: 2px solid #eaeaea;!important;
 }
 
-th, td {
-    padding: 1em;!important;
-    border: 1px solid #eaeaea;!important;
+.wp-block-table td, .wp-block-table th {
+    border: 0;!important;
+}
+
+.wp-block-table th:not(:last-child),
+.wp-block-table td:not(:last-child) {
+    border-right: 2px solid #eaeaea;!important;
+}
+
+.wp-block-table table>thead>tr:not(:last-child)>th,
+.wp-block-table table>thead>tr:not(:last-child)>td,
+.wp-block-table table>tbody>tr:not(:last-child)>th,
+.wp-block-table table>tbody>tr:not(:last-child)>td,
+.wp-block-table table>tfoot>tr:not(:last-child)>th,
+.wp-block-table table>tfoot>tr:not(:last-child)>td,
+.wp-block-table table>tr:not(:last-child)>td,
+.wp-block-table table>tr:not(:last-child)>th,
+.wp-block-table table>thead:not(:last-child),
+.wp-block-table table>tbody:not(:last-child),
+.wp-block-table table>tfoot:not(:last-child) {
+    border-bottom: 2px solid #eaeaea;!important;
 }
