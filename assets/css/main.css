@@ -295,3 +295,37 @@ header object svg {
     text-decoration: none;
     color: #6c757d;
 }
+
+/* Стили для таблицы Supsystic */
+.dataTables_wrapper table {
+    border-spacing: 0;
+    border-collapse: separate;
+    border-radius: 0.5em;
+    border: 2px solid #eaeaea;!important;
+}
+
+.dataTables_wrapper table.dataTable thead th,
+.dataTables_wrapper table.dataTable thead td {
+    border-bottom: 1px solid #eaeaea;!important;
+}
+
+.dataTables_wrapper table.dataTable tfoot th,
+.dataTables_wrapper table.dataTable tfoot td {
+    border-top: 1px solid #eaeaea;!important;
+}
+
+.dataTables_wrapper table.dataTable.cell-border tbody tr th:first-child,
+.dataTables_wrapper table.dataTable.cell-border tbody tr td:first-child {
+    border-left: none;!important;
+}
+
+.dataTables_wrapper table.dataTable.cell-border tbody tr,
+.dataTables_wrapper table.dataTable.cell-border tbody th:last-child,
+.dataTables_wrapper table.dataTable.cell-border tbody td:last-child {
+    border-right: none;!important;
+}
+
+table.border {
+    border: none;!important;
+}
+
