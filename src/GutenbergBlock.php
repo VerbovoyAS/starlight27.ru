@@ -790,36 +790,48 @@ final class GutenbergBlock
     public static function blockPageCardAndIcon()
     {
         Block::make('block_page_card_and_icon', 'Карточки с иконками')
-            ->add_fields([
-                             Field::make('separator', 'separator', 'Карточки с иконками'),
-                             Field::make('text', 'header', 'Заголовок'),
-                             Field::make('checkbox', 'show_header', 'Отображать заголовок' ),
-                             Field::make('complex', 'card_and_icon', 'Карточки')
-                                 ->setup_labels(['singular_name' => 'вкладку'])
-                                 ->set_collapsed(true)
-                                 ->add_fields(
-                                     [
-                                         Field::make('association', 'associations', 'Выберите запись')
-                                             ->set_max(1)
-                                             ->set_types([
-                                                             [
-                                                                 'type'      => 'post',
-                                                                 'post_type' => 'page',
-                                                             ],
-                                                             [
-                                                                 'type'      => 'post',
-                                                                 'post_type' => 'post',
-                                                             ],
-                                                             [
-                                                                 'type'      => 'post',
-                                                                 'post_type' => POST_TYPE_BASIC_INFO,
-                                                             ],
-                                                         ]),
-                                         Field::make('text', 'icon_code', __('Иконка')),
-                                     ]
-                                 ),
+            ->add_tab("Карточки", [
+                Field::make('separator', 'separator', 'Карточки с иконками'),
+                Field::make('text', 'header', 'Заголовок'),
+                Field::make('checkbox', 'show_header', 'Отображать заголовок' ),
+                Field::make('complex', 'card_and_icon', 'Карточки')
+                    ->setup_labels(['singular_name' => 'вкладку'])
+                    ->set_collapsed(true)
+                    ->add_fields(
+                        [
+                            Field::make('association', 'associations', 'Выберите запись')
+                                ->set_max(1)
+                                ->set_types([
+                                                [
+                                                    'type'      => 'post',
+                                                    'post_type' => 'page',
+                                                ],
+                                                [
+                                                    'type'      => 'post',
+                                                    'post_type' => 'post',
+                                                ],
+                                                [
+                                                    'type'      => 'post',
+                                                    'post_type' => POST_TYPE_BASIC_INFO,
+                                                ],
+                                            ]),
+                            Field::make('text', 'icon_code', __('Иконка')),
+                        ]
+                    ),
 
-                         ])
+            ])
+            ->add_tab("Настройки отображения", [
+                Field::make( 'select', 'cols_ps', 'ПК')
+                    ->set_default_value('row-cols-md-2 row-cols-lg-2')
+                    ->set_options(
+                        [
+                            'row-cols-md-1 row-cols-lg-1' => 1,
+                            'row-cols-md-2 row-cols-lg-2' => 2,
+                            'row-cols-md-1 row-cols-lg-3' => 3,
+                            'row-cols-md-2 row-cols-lg-4' => 4
+                        ]
+                    ),
+            ])
             ->set_render_callback(function ($fields) {
                 $posts = $fields['card_and_icon'] ?: [];
                 if (empty($posts)) {
@@ -827,17 +839,19 @@ final class GutenbergBlock
                 }
                 $countPosts = count($posts);
                 $isNotEven = (bool)($countPosts % 2);
+                /** Флаг проверки сколько элементов отображать, для смещения крайнего  */
+                $rowColsFlag = in_array($fields['cols_ps'], ['row-cols-md-2 row-cols-lg-2', 'row-cols-md-2 row-cols-lg-4' ])
                 ?>
                 <?php  if ($fields['show_header']) :?>
                     <h2 class="pb-2 text-center"><?= $fields['header'] ?: ''; ?></h2>
                 <?php endif; ?>
-                <div class="row g-3 row-cols-1 row-cols-md-2 row-cols-lg-2 py-2">
+                <div class="row g-3 row-cols-1 py-2 <?= $fields['cols_ps'];?>">
                 <?php
                 foreach ($fields['card_and_icon'] as $key => $card):
                     $postId = $card['associations'][0]['id'];
                     $post = get_post($postId);
                     $icon = $card['icon_code'] ?: carbon_get_post_meta($post->ID, BASIC_INFO_ICON) ?: 'bi bi-envelope-at';
-                    $offset= (($key + 1 === $countPosts) && $isNotEven)  ? 'offset-md-3' : '';
+                    $offset= (($key + 1 === $countPosts) && $isNotEven && $rowColsFlag)  ? 'offset-md-3' : '';
                     ?>
                     <a class="text-decoration-none link-secondary <?= $offset; ?>" href="<?= get_permalink($postId);?>">
                         <div class="d-flex align-items-center rounded-3 shadow mb-2 p-3 bg-body h-100">
