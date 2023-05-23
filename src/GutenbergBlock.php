@@ -655,8 +655,8 @@ final class GutenbergBlock
                     ?>
                 <?php } ?>
 
-                <?php  if ($fields['show_header']) :?>
-                    <h2 class="pb-2 border-bottom"><?= $fields['header'] ?: ''; ?></h2>
+                <?php  if ($fields['header']) :?>
+                    <h2 class="pb-2 border-bottom"><?= $fields['header']; ?></h2>
                 <?php endif; ?>
 
                 <div id="<?= !$fields['small_version'] ? '' : 'fast_search_block'; ?>" class="row row-cols-1 g-3">
