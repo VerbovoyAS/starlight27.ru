@@ -619,11 +619,8 @@ final class GutenbergBlock
                 $arg = [
                     'post_type'      => POST_TYPE_STAFF,
                     'posts_per_page' => -1,
-                    'orderby'        => 'meta_query',
+                    'orderby'        => 'menu_order',
                     'order'          => 'DESC',
-                    'meta_query'     => [
-                        'key' => 'parent',
-                    ],
                 ];
 
                 if ($fields['position']) {

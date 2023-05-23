@@ -50,6 +50,17 @@ function hashtag_setup() {
 add_action( 'after_setup_theme', 'hashtag_setup' );
 
 /**
+ * Задаем дополнительные атрибуты для записей с типом пост
+ */
+add_action( 'admin_init', 'hashtag_posts_order' );
+function hashtag_posts_order()
+{
+    add_post_type_support( 'post', 'page-attributes' );
+    add_post_type_support( POST_TYPE_STAFF, 'page-attributes' );
+    add_post_type_support( POST_TYPE_BASIC_INFO, 'page-attributes' );
+}
+
+/**
  * Register widget area.
  *
  */
