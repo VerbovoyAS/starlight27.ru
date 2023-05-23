@@ -671,6 +671,7 @@ final class GutenbergBlock
                     //  Получаем terms таксонов
                     $positions_staffs = Staffs::get_terms_by_tax(get_the_ID(), 'positions_staffs');
                     $cabinet = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_cabinet');
+                    $cabinetName = $cabinet ? $cabinet->name : '';
                     $taxonomy_education = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education');
                     $taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education_category');
                     //  Получаем metaBox
@@ -717,7 +718,7 @@ final class GutenbergBlock
                                         <div class="col-12 col-lg-6">
                                             <span class="d-flex align-items-center justify-content-start text-muted" title="Кабинет">
                                                   <i class="bi bi-door-open pe-2" style="font-size: 1.5rem;"></i>
-                                                  <?= $cabinet->name ?: '';?>
+                                                  <?= $cabinetName;?>
                                             </span>
                                         </div>
                                     </div>
@@ -741,7 +742,7 @@ final class GutenbergBlock
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Кабинет:</th>
                                             <td class="p-1">
-                                                <?= $cabinet->name ?: '';?>
+                                                <?= $cabinetName;?>
                                             </td>
                                         </tr>
                                         <tr>
