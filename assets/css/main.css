@@ -37,6 +37,18 @@ a {
     color: #6c757d;
 }
 
+
+.block h1,h2,h3,h4,h5,h6,a {
+    text-decoration: none!important;
+    color: #6c757d!important;
+}
+
+
+/** Изменение стилей WP - расстояния между колонками */
+.wp-block-columns.is-layout-flex {
+    gap: 1em;!important;
+}
+
 /* new */
 
 /*.block-style .block-style-column {*/
