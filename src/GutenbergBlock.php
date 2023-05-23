@@ -736,24 +736,30 @@ final class GutenbergBlock
                                                 <?= $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME);?>
                                             </td>
                                         </tr>
+                                        <?php if($cabinetName):?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Кабинет:</th>
                                             <td class="p-1">
                                                 <?= $cabinetName;?>
                                             </td>
                                         </tr>
+                                         <?php endif;?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Образование:</th>
                                             <td class="p-1"><?= Staffs::getTermsParameters($taxonomy_education); ?></td>
                                         </tr>
+                                        <?php if($taxonomy_education_category):?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Категория:</th>
                                             <td class="p-1"><?= Staffs::getTermsParameters($taxonomy_education_category); ?></td>
                                         </tr>
+                                        <?php endif;?>
+                                        <?php if($year_advanced_training):?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Год повышения квалификации:</th>
                                             <td class="p-1"><?= $year_advanced_training ?: ''; ?></td>
                                         </tr>
+                                        <?php endif;?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Общий стаж работы:</th>
                                             <td class="p-1"><?= Staffs::getTimeDiff($general_experience); ?></td>
