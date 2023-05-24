@@ -667,14 +667,14 @@ final class GutenbergBlock
 
                     //  Получаем terms таксонов
                     $positions_staffs = Staffs::get_terms_by_tax(get_the_ID(), 'positions_staffs');
-                    $cabinet = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_cabinet');
-                    $cabinetName = $cabinet ? $cabinet->name : '';
                     $taxonomy_education = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education');
                     $taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education_category');
                     //  Получаем metaBox
                     $phone = carbon_get_the_post_meta( Staffs::STAFF_PHONE);
                     $mail = carbon_get_the_post_meta( Staffs::STAFF_MAIL);
                     $working_hours = carbon_get_the_post_meta( Staffs::STAFF_WORKING_HOURS);
+                    $cabinet = carbon_get_the_post_meta(Staffs::STAFF_CABINET);
+                    $speciality = carbon_get_the_post_meta(Staffs::STAFF_SPECIALITY);
                     $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
                     $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
                     $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
@@ -715,7 +715,7 @@ final class GutenbergBlock
                                         <div class="col-12 col-lg-6">
                                             <span class="d-flex align-items-center justify-content-start text-muted" title="Кабинет">
                                                   <i class="bi bi-door-open pe-2" style="font-size: 1.5rem;"></i>
-                                                  <?= $cabinetName;?>
+                                                  <?= $cabinet;?>
                                             </span>
                                         </div>
                                     </div>
@@ -730,17 +730,19 @@ final class GutenbergBlock
                                             <th scope="row"  class="p-1" style="width: 35%;">Телефон:</th>
                                             <td class="p-1 text-600"><?= $phone ?: carbon_get_theme_option(DEFAULT_PHONE);?></td>
                                         </tr>
+                                        <?php if($working_hours):?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Время работы (приёма):</th>
                                             <td class="p-1">
-                                                <?= $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME);?>
+                                                <?= $working_hours;?>
                                             </td>
                                         </tr>
-                                        <?php if($cabinetName):?>
+                                        <?php endif;?>
+                                        <?php if($cabinet):?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Кабинет:</th>
                                             <td class="p-1">
-                                                <?= $cabinetName;?>
+                                                <?= $cabinet;?>
                                             </td>
                                         </tr>
                                          <?php endif;?>
@@ -754,10 +756,16 @@ final class GutenbergBlock
                                             <td class="p-1"><?= Staffs::getTermsParameters($taxonomy_education_category); ?></td>
                                         </tr>
                                         <?php endif;?>
+                                        <?php if($speciality):?>
+                                            <tr>
+                                                <th scope="row"  class="p-1" style="width: 35%;">Специальность:</th>
+                                                <td class="p-1"><?= $speciality; ?></td>
+                                            </tr>
+                                        <?php endif;?>
                                         <?php if($year_advanced_training):?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Год повышения квалификации:</th>
-                                            <td class="p-1"><?= $year_advanced_training ?: ''; ?></td>
+                                            <td class="p-1"><?= $year_advanced_training; ?></td>
                                         </tr>
                                         <?php endif;?>
                                         <tr>

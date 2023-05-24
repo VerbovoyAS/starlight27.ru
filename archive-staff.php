@@ -81,13 +81,14 @@ get_header();
 
                         //  Получаем terms таксонов
                         $positions_staffs = Staffs::get_terms_by_tax(get_the_ID(), 'positions_staffs');
-                        $cabinet = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_cabinet');
                         $taxonomy_education = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education');
                         $taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education_category');
                         //  Получаем metaBox
                         $phone = carbon_get_the_post_meta( Staffs::STAFF_PHONE);
                         $mail = carbon_get_the_post_meta( Staffs::STAFF_MAIL);
                         $working_hours = carbon_get_the_post_meta( Staffs::STAFF_WORKING_HOURS);
+                        $cabinet = carbon_get_the_post_meta( Staffs::STAFF_CABINET);
+                        $speciality = carbon_get_the_post_meta( Staffs::STAFF_SPECIALITY);
                         $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
                         $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
                         $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
@@ -118,24 +119,36 @@ get_header();
                                                     <?= $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME);?>
                                                 </td>
                                             </tr>
+                                            <?php if($cabinet):?>
                                             <tr>
                                                 <th scope="row"  class="p-1" style="width: 35%;">Кабинет:</th>
                                                 <td class="p-1">
-                                                    <?= $cabinet->name ?: '';?>
+                                                    <?= $cabinet;?>
                                                 </td>
                                             </tr>
+                                            <?php endif;?>
                                             <tr>
                                                 <th scope="row"  class="p-1" style="width: 35%;">Образование:</th>
                                                 <td class="p-1"><?= Staffs::getTermsParameters($taxonomy_education); ?></td>
                                             </tr>
+                                            <?php if($speciality):?>
+                                                <tr>
+                                                    <th scope="row"  class="p-1" style="width: 35%;">Специальность:</th>
+                                                    <td class="p-1"><?= $speciality; ?></td>
+                                                </tr>
+                                            <?php endif;?>
+                                            <?php if($taxonomy_education_category):?>
                                             <tr>
                                                 <th scope="row"  class="p-1" style="width: 35%;">Категория:</th>
                                                 <td class="p-1"><?= Staffs::getTermsParameters($taxonomy_education_category); ?></td>
                                             </tr>
+                                            <?php endif;?>
+                                            <?php if($year_advanced_training):?>
                                             <tr>
                                                 <th scope="row"  class="p-1" style="width: 35%;">Год повышения квалификации:</th>
-                                                <td class="p-1"><?= $year_advanced_training ?: ''; ?></td>
+                                                <td class="p-1"><?= $year_advanced_training; ?></td>
                                             </tr>
+                                            <?php endif;?>
                                             <tr>
                                                 <th scope="row"  class="p-1" style="width: 35%;">Общий стаж работы:</th>
                                                 <td class="p-1"><?= Staffs::getTimeDiff($general_experience); ?></td>

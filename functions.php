@@ -238,7 +238,6 @@ function hashtag_create_post_type() {
 
     $taxonomy = new TaxonomyCreate();
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Должность', 'positions_staffs');
-    $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Кабинет', 'taxonomy_cabinet');
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Образование', 'taxonomy_education');
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Категория образования', 'taxonomy_education_category');
 
@@ -248,7 +247,7 @@ function hashtag_create_post_type() {
         'menu_icon'   => 'dashicons-groups',
         'rewrite'     => ['slug' => 'staffs'],
         'label'       => 'Сотрудники',
-        'supports' => ['title', 'editor', 'thumbnail', 'post-formats']
+        'supports'    => ['title', 'editor', 'thumbnail', 'post-formats']
     ]);
 
     register_post_type(POST_TYPE_BASIC_INFO, [

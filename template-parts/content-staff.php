@@ -9,6 +9,8 @@ $taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_
 $phone = carbon_get_the_post_meta( Staffs::STAFF_PHONE);
 $mail = carbon_get_the_post_meta( Staffs::STAFF_MAIL);
 $working_hours = carbon_get_the_post_meta( Staffs::STAFF_WORKING_HOURS);
+$cabinet = carbon_get_the_post_meta( Staffs::STAFF_CABINET);
+$speciality = carbon_get_the_post_meta( Staffs::STAFF_SPECIALITY);
 $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
 $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
 $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
@@ -48,16 +50,37 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
                     <div class="card-body">
                         <?php Staffs::getParametersHtml('Образование:', Staffs::getTermsParameters($taxonomy_education)); ?>
                         <hr>
-                        <?php Staffs::getParametersHtml('Категория:', Staffs::getTermsParameters($taxonomy_education_category)); ?>
-                        <hr>
+                        <?php
+                        if ($taxonomy_education_category) {
+                            Staffs::getParametersHtml('Категория:', Staffs::getTermsParameters($taxonomy_education_category));
+                            echo "<hr>";
+                        }
+
+                        if ($speciality) {
+                            Staffs::getParametersHtml('Специальность:', $speciality);
+                            echo "<hr>";
+                        }
+                        ?>
                         <?php Staffs::getParametersHtml('Телефон:', $phone ?: carbon_get_theme_option(DEFAULT_PHONE)); ?>
                         <hr>
                         <?php Staffs::getParametersHtml('E-mail:', $mail ?: carbon_get_theme_option(DEFAULT_EMAIL)); ?>
                         <hr>
-                        <?php Staffs::getParametersHtml('Год повышения квалификации:', $year_advanced_training ?: ' '); ?>
-                        <hr>
-                        <?php Staffs::getParametersHtml('Время работы (приёма):', $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME)); ?>
-                        <hr>
+                        <?php
+                        if ($year_advanced_training) {
+                            Staffs::getParametersHtml('Год повышения квалификации:', $year_advanced_training ?: ' ');
+                            echo "<hr>";
+                        }
+
+                        if ($working_hours) {
+                            Staffs::getParametersHtml('Время работы (приёма):', $working_hours ?: carbon_get_theme_option(DEFAULT_WORK_TIME));
+                            echo "<hr>";
+                        }
+
+                        if ($cabinet) {
+                            Staffs::getParametersHtml('Кабинет:', $cabinet);
+                            echo "<hr>";
+                        }
+                        ?>
                         <?php Staffs::getParametersHtml('Общий стаж работы:', Staffs::getTimeDiff($general_experience)); ?>
                         <hr>
                         <?php Staffs::getParametersHtml('Педагогический стаж работы:', Staffs::getTimeDiff($teaching_experience)); ?>

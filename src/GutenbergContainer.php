@@ -37,13 +37,16 @@ final class GutenbergContainer
                                  ->set_attribute('placeholder', '(***) ***-****'),
                              Field::make('text', Staffs::STAFF_MAIL, 'Почта'),
                              Field::make('text', Staffs::STAFF_WORKING_HOURS, 'Время работы (приёма)'),
-                             Field::make('date_time', Staffs::STAFF_YEAR_ADVANCED_TRAINING, 'Год повышения квалификации'),
-                             Field::make('date_time', Staffs::STAFF_GENERAL_EXPERIENCE, 'Год и месяц начала общего стажа'),
+                             Field::make('text', Staffs::STAFF_SPECIALITY, 'Специальность (по диплому)'),
+                             Field::make('date', Staffs::STAFF_YEAR_ADVANCED_TRAINING, 'Год повышения квалификации')
+                                 ->set_input_format( 'Y', 'Y' ),
+                             Field::make('date', Staffs::STAFF_GENERAL_EXPERIENCE, 'Год и месяц начала общего стажа'),
                              Field::make(
-                                 'date_time',
+                                 'date',
                                  Staffs::STAFF_TEACHING_EXPERIENCE,
                                  'Год и месяц начала педагогического стажа'
                              ),
+                             Field::make('text', Staffs::STAFF_CABINET, 'Кабинет'),
                              Field::make('checkbox', Staffs::STAFF_ACTIVE, 'Активировать')->set_default_value(true),
                          ]);
     }

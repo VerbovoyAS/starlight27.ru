@@ -14,6 +14,8 @@ final class Staffs
     const  STAFF_YEAR_ADVANCED_TRAINING = 'staff_year_advanced_training';
     const  STAFF_GENERAL_EXPERIENCE = 'staff_general_experience';
     const  STAFF_TEACHING_EXPERIENCE = 'staff_teaching_experience';
+    const  STAFF_CABINET = 'staff_cabinet';
+    const  STAFF_SPECIALITY = 'staff_speciality';
     const  STAFF_ACTIVE = 'staff_active';
 
     /**
