@@ -656,7 +656,7 @@ final class GutenbergBlock
                     <h2 class="pb-2 border-bottom"><?= $fields['header']; ?></h2>
                 <?php endif; ?>
 
-                <div id="<?= !$fields['small_version'] ? '' : 'fast_search_block'; ?>" class="row row-cols-1 g-3">
+                <div id="<?= $fields['small_version'] ? '' : 'fast_search_block'; ?>" class="row row-cols-1 g-3">
                 <?php
                 $query = new WP_Query($arg);
                 if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post();
