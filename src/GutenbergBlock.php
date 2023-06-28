@@ -396,7 +396,7 @@ final class GutenbergBlock
                     ?>
                 <?php } ?>
 
-                <div id="fast_search" class="<?=$class;?>">
+                <div id="<?= $fields['search'] ? 'fast_search' : ''; ?>" class="<?=$class;?>">
                     <?= $fields['text'];?>
                 </div>
                 <?php
