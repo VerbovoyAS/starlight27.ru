@@ -2,6 +2,13 @@
     text-transform: uppercase;
 }
 
+.dropdown-item.active,
+.dropdown-item:active {
+    color: white;!important;
+    background-color: #6c757d!important;
+}
+
+
 #main-nav-menu ul {
     margin: 0;
 }

@@ -33,32 +33,15 @@ header object {
     padding: 1em;
 }
 
-a {
-    color: #6c757d;
-}
-
-
-.block h1,h2,h3,h4,h5,h6,a {
+.block h1,h2,h3,h4,h5,h6 {
     text-decoration: none!important;
     color: #6c757d!important;
 }
-
 
 /** Изменение стилей WP - расстояния между колонками */
 .wp-block-columns.is-layout-flex {
     gap: 1em;!important;
 }
-
-/* new */
-
-/*.block-style .block-style-column {*/
-/*    background-color: #fff;*/
-/*    min-height: 100%;*/
-/*    border-radius: 10px;*/
-/*    box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);*/
-/*    padding: 1em;*/
-/*    margin: 0.2em;*/
-/*}*/
 
 .main-content .block-news {
     padding: 0;
@@ -100,8 +83,19 @@ a {
     background-position: left center;
     background-size: 20px;
 }
+
+.stars .widget_nav_menu li.current-menu-item {
+    padding-left: 40px;
+    margin: 0;
+    list-style: none;
+    background-image: url("../img/site/stars.svg");
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 20px;
+}
+
 .stars ul {
-    margin: 0 0 10px 0px;
+    margin: 0 0 10px 0;
     padding: 0;
 }
 
