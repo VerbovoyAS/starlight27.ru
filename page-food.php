@@ -1,0 +1,57 @@
+<?php
+
+function getListFood(string $path)
+{
+    if (!is_dir($path)) {
+        return 'Указанная папка не найдена';
+    }
+
+    $list = scandir($path);
+    if (!$list) {
+        return 'Файлы или директория не найдена';
+    }
+    return $list;
+}
+
+get_header();
+?>
+    <div class="container ">
+        <div class="row">
+            <div class="col px-0">
+                <div class="card rounded-0 rounded-bottom bg-dark text-white mb-2">
+                    <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img rounded-0 rounded-bottom"
+                         alt="...">
+                    <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
+                        <h1 class="card-title text-center"><?php the_title(); ?></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="primary" class="site-main">
+        <?php
+        $url = '/wp-content/uploads/food/';
+        $files = $_SERVER['DOCUMENT_ROOT'] . $url;
+        $list = getListFood($files);
+        if (is_array($list)) {
+            echo '<ul>';
+            foreach ($list as $name) {
+                if (strlen($name) <= 2) {
+                    continue;
+                }
+                $nameLink = substr($name, 0, 10);
+                $link = $url . $name;
+                echo '<li>';
+                echo "<a download href='$link'>$nameLink</a>";
+                echo '</li>';
+            }
+            echo '</ul>';
+        } else {
+            echo "<h1 class=\" text-center\">{$list}</h1>";
+        }
+
+        ?>
+    </main>
+<?php
+get_footer();
