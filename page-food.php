@@ -29,29 +29,45 @@ get_header();
         </div>
     </div>
 
-    <main id="primary" class="site-main">
-        <?php
-        $url = '/wp-content/uploads/food/';
-        $files = $_SERVER['DOCUMENT_ROOT'] . $url;
-        $list = getListFood($files);
-        if (is_array($list)) {
-            echo '<ul>';
-            foreach ($list as $name) {
-                if (strlen($name) <= 2) {
-                    continue;
-                }
-                $nameLink = substr($name, 0, 10);
-                $link = $url . $name;
-                echo '<li>';
-                echo "<a download href='$link'>$nameLink</a>";
-                echo '</li>';
-            }
-            echo '</ul>';
-        } else {
-            echo "<h1 class=\" text-center\">{$list}</h1>";
-        }
+    <div class="container ">
+        <div class="row ">
+            <div class="col-12 col-lg-8">
+                <div class="row me-1">
+                    <div class="col shadow mb-2 p-3 bg-body rounded-3">
+                        <?php
+                        $url = '/wp-content/uploads/food/';
+                        $files = $_SERVER['DOCUMENT_ROOT'] . $url;
+                        $list = getListFood($files);
+                        if (is_array($list)) {
+                            echo '<ul>';
+                            foreach ($list as $name) {
+                                if (strlen($name) <= 2) {
+                                    continue;
+                                }
+                                $nameLink = substr($name, 0, 10);
+                                $link = $url . $name;
+                                echo '<li>';
+                                echo "<a download href='$link'>$nameLink</a>";
+                                echo '</li>';
+                            }
+                            echo '</ul>';
+                        } else {
+                            echo "<h1 class=\" text-center\">{$list}</h1>";
+                        }
 
-        ?>
-    </main>
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4">
+                <div class="row">
+                    <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
+                        <?php get_sidebar(); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <?php
 get_footer();
