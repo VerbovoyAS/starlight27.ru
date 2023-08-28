@@ -9,7 +9,6 @@
 
 use HashtagCore\Hashtag;
 
-var_dump('content-post');
 ?>
     <div class="container ">
         <div class="row">

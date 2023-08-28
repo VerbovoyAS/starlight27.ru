@@ -6,7 +6,6 @@
  *
  * @package hashtag
  */
-var_dump('content-search');
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

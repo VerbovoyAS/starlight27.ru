@@ -12,7 +12,7 @@ final class GutenbergBlock
 
     public static function imageBoxSection(): void
     {
-        Block::make('image_box_section', __('Image box'))
+        Block::make('image_box_section', __('Боксы с изображением'))
             ->add_tab("Боксы", [
                              Field::make('separator', 'separator', 'Боксы с изображением'),
                              Field::make('complex', 'blocks', 'Блоки')
@@ -35,6 +35,8 @@ final class GutenbergBlock
                 Field::make( 'select', 'carousel_mob', 'Мобильная версия')
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5]),
+                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(1),
+                Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
                 $blocks = [];
@@ -76,6 +78,9 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
+                        autoplay:<?= $fields['autoplay'] ?? true;?>,
+                        autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
+                        autoplayHoverPause:true,
                         responsive: {
                             0: {
                                 items: <?= $fields['carousel_mob'] ?? 1;?>
@@ -111,6 +116,8 @@ final class GutenbergBlock
                 Field::make( 'select', 'carousel_mob', 'Мобильная версия')
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5,]),
+                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(1),
+                Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
                 ?>
@@ -136,6 +143,9 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
+                        autoplay:<?= $fields['autoplay'] ?? true;?>,
+                        autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
+                        autoplayHoverPause:true,
                         responsive: {
                             0: {
                                 items: <?= $fields['carousel_mob'] ?? 1;?>
@@ -173,6 +183,8 @@ final class GutenbergBlock
                 Field::make( 'select', 'carousel_mob', 'Мобильная версия')
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5]),
+                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(1),
+                Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
                 $query = new WP_Query(
@@ -219,6 +231,9 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
+                        autoplay:<?= $fields['autoplay'] ?? true;?>,
+                        autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
+                        autoplayHoverPause:true,
                         responsive: {
                             0: {
                                 items: <?= $fields['carousel_mob'] ?? 1;?>
@@ -257,6 +272,8 @@ final class GutenbergBlock
                 Field::make( 'select', 'carousel_mob', 'Мобильная версия')
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5]),
+                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(1),
+                Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
                 $category = $fields['category_post'] ?: DEFAULT_CATEGORY;
@@ -324,6 +341,9 @@ final class GutenbergBlock
                             margin: 10,
                             nav: true,
                             autoHeight:true,
+                            autoplay:<?= $fields['autoplay'] ?? true;?>,
+                            autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
+                            autoplayHoverPause:true,
                             responsive: {
                                 0: {
                                     items: <?= $fields['carousel_mob'] ?? 1;?>

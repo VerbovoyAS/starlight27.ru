@@ -6,7 +6,6 @@
  *
  * @package hashtag
  */
-var_dump('content-page');
 ?>
 <div class="container ">
     <div class="row">

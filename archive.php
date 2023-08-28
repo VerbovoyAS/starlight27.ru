@@ -1,6 +1,5 @@
 <?php
 get_header();
-var_dump('archive');
 ?>
 
 	<main id="primary" class="site-main">

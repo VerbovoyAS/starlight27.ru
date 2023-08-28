@@ -6,7 +6,6 @@
  *
  * @package hashtag
  */
-var_dump('content-none');
 ?>
 
 <section class="no-results not-found">
