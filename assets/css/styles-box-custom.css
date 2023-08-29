@@ -41,3 +41,10 @@
 .hashtag-imagebox-1 .hashtag-imagebox-title h3 {
 	margin-top: 0.6em;
 }
+
+/* Стили для owl карусели, выравнивания элементов по центру  */
+.owl-carousel .owl-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
