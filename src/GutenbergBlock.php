@@ -35,7 +35,7 @@ final class GutenbergBlock
                 Field::make( 'select', 'carousel_mob', 'Мобильная версия')
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5]),
-                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(1),
+                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(true),
                 Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
@@ -78,7 +78,7 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
-                        autoplay:<?= $fields['autoplay'] ?? true;?>,
+                        autoplay:<?= $fields['autoplay'] ?: 'false';?>,
                         autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                         autoplayHoverPause:true,
                         responsive: {
@@ -116,7 +116,7 @@ final class GutenbergBlock
                 Field::make( 'select', 'carousel_mob', 'Мобильная версия')
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5,]),
-                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(1),
+                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(true),
                 Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
@@ -143,7 +143,7 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
-                        autoplay:<?= $fields['autoplay'] ?? true;?>,
+                        autoplay:<?= $fields['autoplay'] ?: 'false';?>,
                         autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                         autoplayHoverPause:true,
                         responsive: {
@@ -183,7 +183,7 @@ final class GutenbergBlock
                 Field::make( 'select', 'carousel_mob', 'Мобильная версия')
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5]),
-                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(1),
+                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(true),
                 Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
@@ -231,7 +231,7 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
-                        autoplay:<?= $fields['autoplay'] ?? true;?>,
+                        autoplay:<?= $fields['autoplay'] ?: 'false';?>,
                         autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                         autoplayHoverPause:true,
                         responsive: {
@@ -272,7 +272,7 @@ final class GutenbergBlock
                 Field::make( 'select', 'carousel_mob', 'Мобильная версия')
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5]),
-                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(1),
+                Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(true),
                 Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
@@ -341,7 +341,7 @@ final class GutenbergBlock
                             margin: 10,
                             nav: true,
                             autoHeight:true,
-                            autoplay:<?= $fields['autoplay'] ?? true;?>,
+                            autoplay:<?= $fields['autoplay'] ?: 'false';?>,
                             autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                             autoplayHoverPause:true,
                             responsive: {
