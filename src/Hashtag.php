@@ -35,7 +35,7 @@ class Hashtag {
         $getImageList = static::getImageList();
         $randomNum = rand(0, count($getImageList));
 
-        return $getImageList[$randomNum] ?? 'https://i.pinimg.com/originals/c3/5d/f3/c35df3a6a3b629a7170837d73ed41b93.jpg';
+        return $getImageList[$randomNum] ?? get_template_directory_uri() . '/assets/img/site/nasa/nasa-4.jpeg';
     }
 
     /**
