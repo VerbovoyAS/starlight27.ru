@@ -12,14 +12,11 @@ get_header();
 ?>
 <style>
     .gradient-custom {
-        /* fallback for old browsers */
-        background: #65e5f6;
-
-        /* Chrome 10-25, Safari 5.1-6 */
-        background: -webkit-linear-gradient(to right bottom, rgba(198, 101, 246, 1), rgba(133, 167, 253, 1));
-
-        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        background: linear-gradient(to right bottom, rgba(198, 101, 246, 1), rgba(133, 167, 253, 1))
+        background: #174a99;
+        background-image: url(<?= get_template_directory_uri() . '/assets/img/site/staff-bg.svg';?>);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 </style>
 
