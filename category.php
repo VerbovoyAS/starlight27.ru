@@ -8,7 +8,7 @@ global $wp_query;
         <div class="row">
             <div class="col px-0">
                 <div class="card rounded-0 rounded-bottom bg-dark text-white mb-2">
-                    <img src="https://creativo.one/lessons/les5669/01.jpg" class="card-img rounded-0 rounded-bottom" alt="...">
+                    <img src="<?= get_template_directory_uri(). '/assets/img/site/SVG/bg.jpeg';?>" class="card-img rounded-0 rounded-bottom" alt="...">
                     <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
                         <?php the_archive_title( '<h1 class="card-title 1">', '</h1>' ); ?>
                     </div>
