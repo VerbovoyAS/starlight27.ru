@@ -78,7 +78,7 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
-                        autoplay:<?= $fields['autoplay'] ?: 'false';?>,
+                        autoplay:<?= $fields['autoplay'] === true ? 'true' : 'false';?>,
                         autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                         autoplayHoverPause:true,
                         responsive: {
@@ -143,7 +143,7 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
-                        autoplay:<?= $fields['autoplay'] ?: 'false';?>,
+                        autoplay:<?= $fields['autoplay'] === true ? 'true' : 'false';?>,
                         autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                         autoplayHoverPause:true,
                         responsive: {
@@ -231,7 +231,7 @@ final class GutenbergBlock
                         margin: 10,
                         nav: true,
                         autoHeight:true,
-                        autoplay:<?= $fields['autoplay'] ?: 'false';?>,
+                        autoplay:<?= $fields['autoplay'] === true ? 'true' : 'false';?>,
                         autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                         autoplayHoverPause:true,
                         responsive: {
@@ -341,7 +341,7 @@ final class GutenbergBlock
                             margin: 10,
                             nav: true,
                             autoHeight:true,
-                            autoplay:<?= $fields['autoplay'] ?: 'false';?>,
+                            autoplay:<?= $fields['autoplay'] === true ? 'true' : 'false';?>,
                             autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                             autoplayHoverPause:true,
                             responsive: {
