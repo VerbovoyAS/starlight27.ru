@@ -21,6 +21,9 @@ const DEFAULT_EMAIL = "default_email";
 const DEFAULT_PHONE = "default_phone";
 const DEFAULT_WORK_TIME = "default_work_time";
 const DEFAULT_ADDRESSES = "default_addresses";
+const SITE_LOGO = "logo_site";
+const SITE_LOGO_WIDTH = "logo_site_width";
+const SITE_LOGO_HEIGHT = "logo_site_height";
 
 /** Название рубрики по умолчанию */
 const DEFAULT_CATEGORY = 'news';

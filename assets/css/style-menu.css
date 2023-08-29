@@ -33,11 +33,11 @@
         color: white;!important;
     }
 }
-
-.main-logo-menu {
-    width: 75px;
-    height: 75px;
-}
+/* Отключил временно */
+/*.main-logo-menu {*/
+/*    width: 75px;*/
+/*    height: 75px;*/
+/*}*/
 
 .navbar-dark .navbar-brand,
 .navbar-dark .navbar-nav .nav-link {

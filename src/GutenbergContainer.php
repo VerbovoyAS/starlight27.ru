@@ -20,6 +20,11 @@ final class GutenbergContainer
                 Field::make('text', DEFAULT_EMAIL, 'E-mail'),
                 Field::make('text', DEFAULT_ADDRESSES, 'Адрес'),
                 Field::make('rich_text', DEFAULT_WORK_TIME, 'Время работы (приёма)'),
+            ])
+            ->add_tab('Логотип', [
+                Field::make( 'image', SITE_LOGO, __( 'Логотип сайта' ) ),
+                Field::make( 'text', SITE_LOGO_WIDTH, __( 'Ширина логотипа сайта' ) )->set_default_value(88),
+                Field::make( 'text', SITE_LOGO_HEIGHT, __( 'Высота логотипа сайта' ) )->set_default_value(88),
             ]);
     }
 

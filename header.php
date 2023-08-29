@@ -16,6 +16,9 @@ if (is_archive()) {
     $title = get_the_archive_title();
 }
 
+//var_dump(wp_get_original_image_url(carbon_get_theme_option(SITE_LOGO)));
+//var_dump(carbon_get_theme_option(SITE_LOGO));
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -32,7 +35,7 @@ if (is_archive()) {
     <nav id="main-nav-menu" class="navbar navbar-expand-md navbar-dark fixed-top ">
         <div class="container-fluid container-lg">
             <a class="navbar-brand d-lg-block d-none" href="/">
-                <img class="main-logo-menu" src="https://starlight27.ru/wp-content/uploads/2018/10/герб-лицей-88.png" alt="" width="88" height="88">
+                <img src="<?= wp_get_original_image_url(carbon_get_theme_option(SITE_LOGO))?>" alt="" width="<?= carbon_get_theme_option(SITE_LOGO_WIDTH)?>" height="<?= carbon_get_theme_option(SITE_LOGO_HEIGHT)?>">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
