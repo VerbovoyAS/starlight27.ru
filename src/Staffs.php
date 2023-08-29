@@ -38,7 +38,7 @@ final class Staffs
                 'hierarchical'    => 1,
                 'show_option_all' => $text,
                 'value_field'     => 'term_id',
-                'selected'        => $_POST['positions_staffs_select'] ?: 0,
+                'selected'        => $_POST['positions_staffs_select'] ?? 0,
                 'name'            => $taxName . '_select'
             ]
         );
