@@ -6,6 +6,9 @@
  *
  * @package hashtag
  */
+
+use HashtagCore\Hashtag;
+
 ?>
 <div class="container ">
     <div class="row">
@@ -70,7 +73,7 @@
                         ?>
                         <?php
                         $img_url = get_the_post_thumbnail_url(
-                        ) ?: 'https://i.pinimg.com/originals/c3/5d/f3/c35df3a6a3b629a7170837d73ed41b93.jpg';
+                        ) ?: Hashtag::getDefaultImg();
                         ?>
 
                         <div class="col">
