@@ -13,7 +13,7 @@ get_header();
         <div class="col px-0">
             <div class="card card-custom-img rounded-0 rounded-bottom bg-dark text-white mb-2">
                 <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="card-title text-center"><?php the_archive_title(); ?></h1>
+                    <h1 class="card-title text-center" style="text-shadow: 2px 2px 2px black;"><?php the_archive_title(); ?></h1>
                 </div>
             </div>
         </div>

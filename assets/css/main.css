@@ -255,6 +255,7 @@ header object svg {
       }
 
     .card-custom-img {
+        background-position: left center;
         min-height: 250px;
         max-height: 300px;
     }
