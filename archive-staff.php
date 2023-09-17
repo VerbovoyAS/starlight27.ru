@@ -20,7 +20,7 @@ get_header();
     }
 </style>
 
-    <div class="container ">
+    <div class="container-lg">
         <div class="row">
             <div class="col px-0">
                 <div class="card card-custom-img rounded-0 rounded-bottom bg-dark text-white mb-2">
@@ -32,7 +32,7 @@ get_header();
         </div>
     </div>
 
-    <div class="container ">
+    <div class="container-lg">
         <div class="row ">
             <div class="col-12 col-lg-8 ps-lg-0">
                 <div class="row mb-3">

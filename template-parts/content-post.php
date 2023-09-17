@@ -10,7 +10,7 @@
 use HashtagCore\Hashtag;
 
 ?>
-    <div class="container ">
+    <div class="container-lg">
         <div class="row">
             <div class="col px-0">
                 <div class="card card-custom-img rounded-0 rounded-bottom bg-dark text-white mb-2">
@@ -23,8 +23,8 @@ use HashtagCore\Hashtag;
     </div>
     <!-- .entry-header -->
 
-    <div class="container ">
-        <div class="row pb-2 px-2 px-sm-0">
+    <div class="container-lg">
+        <div class="row pb-2 px-2 px-lg-0">
             <div class="col-12 col-lg-8 text-muted">
                 <!-- Breadcrumbs -->
                 <?php //TODO Сделать хлебные крошки на content-post.php ?>
@@ -47,7 +47,7 @@ use HashtagCore\Hashtag;
 
             </div>
         </div>
-        <div class="row px-2 px-sm-0">
+        <div class="row px-2 px-lg-0">
             <div class="col-12 col-lg-8 mb-2">
                 <div class="row me-lg-1">
                     <div class="col shadow mb-2 p-3 bg-body rounded-3"><?php the_content(); ?></div>
@@ -65,7 +65,7 @@ use HashtagCore\Hashtag;
                             <h4 class="text-center text-md-start">Предыдущая запись</h4>
                             <div class="col">
                                 <div class="d-flex row g-0">
-                                    <div class="col-md-4 d-flex align-items-start px-sm-0">
+                                    <div class="col-md-4 d-flex align-items-start px-lg-0">
                                         <a href="">
                                             <img src="<?php echo esc_html($prevPostImg); ?>" alt="..."
                                                  class="img-fluid rounded d-inline-block">
@@ -117,7 +117,7 @@ use HashtagCore\Hashtag;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 d-flex align-items-start px-sm-0">
+                                    <div class="col-md-4 d-flex align-items-start px-lg-0">
                                         <a href="">
                                             <img src="<?php echo esc_html($nextPostImg); ?>" alt="..."
                                                  class="img-fluid rounded d-inline-block">

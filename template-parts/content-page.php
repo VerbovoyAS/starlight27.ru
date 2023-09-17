@@ -10,7 +10,7 @@
 use HashtagCore\Hashtag;
 
 ?>
-<div class="container ">
+<div class="container-lg">
     <div class="row">
         <div class="col px-0">
             <div class="card card-custom-img rounded-0 rounded-bottom bg-dark text-white mb-2">
@@ -22,8 +22,8 @@ use HashtagCore\Hashtag;
     </div>
 </div>
 
-<div class="container ">
-    <div class="row pb-2 px-2 px-sm-0">
+<div class="container-lg">
+    <div class="row pb-2 px-2 px-lg-0">
         <div class="col-12 col-lg-8 text-muted">
             <!-- Breadcrumbs -->
             <?php if (function_exists('fw_ext_breadcrumbs')) {
@@ -48,7 +48,7 @@ use HashtagCore\Hashtag;
             </div>
         </div>
     </div>
-    <div class="row px-2 px-sm-0">
+    <div class="row px-2 px-lg-0">
         <div class="col-12 col-lg-8">
             <div class="row me-lg-1">
                 <div class="col shadow mb-2 p-3 bg-body rounded-3"><?php the_content(); ?></div>

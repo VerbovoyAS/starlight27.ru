@@ -17,7 +17,7 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
 
 ?>
 
-<div class="container ">
+<div class="container-lg">
     <div class="row">
         <div class="col px-0">
             <div class="card card-custom-img rounded-0 rounded-bottom bg-dark text-white mb-2">
@@ -30,7 +30,7 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
 </div>
 
 <section>
-    <div class="container">
+    <div class="container-lg">
         <div class="row">
             <div class="col-lg-4 ps-0">
                 <div class="card mb-4">

@@ -4,7 +4,7 @@ global $wp_query;
 ?>
 
 <?php if ( have_posts() ) : ?>
-    <div class="container">
+    <div class="container-lg">
         <div class="row">
             <div class="col px-0">
                 <div class="card card-custom-img rounded-0 rounded-bottom bg-dark text-white mb-2">
@@ -16,8 +16,8 @@ global $wp_query;
         </div>
     </div>
 
-    <div class="container mt-2">
-        <div class="row px-2 px-sm-0">
+    <div class="container-lg mt-2">
+        <div class="row px-2 px-lg-0">
             <div class="col-12 p-0">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
                         <?php
