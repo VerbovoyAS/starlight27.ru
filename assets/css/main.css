@@ -108,8 +108,17 @@ header object svg {
 /*    text-align: center;*/
 /*}*/
 
-.card-img {
-    max-height: 300px;
+/*.card-img {*/
+/*    max-height: 300px;*/
+/*}*/
+
+.card-custom-img {
+    background-image: url("../img/site/bg.jpeg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    min-height: 300px;
+    max-height: 350px;
 }
 
 /*для красивых карточек*/
@@ -244,6 +253,11 @@ header object svg {
          top: 35vh; 
          font-size: 3em!important;
       }
+
+    .card-custom-img {
+        min-height: 250px;
+        max-height: 300px;
+    }
      
 }
 
