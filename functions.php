@@ -334,3 +334,19 @@ function get_main_setting_shortcode($atts)
             return '';
     }
 }
+
+
+/** ОБНОВЛЕНИЯ WP */
+/** @see https://misha.agency/wordpress/avtomaticheskie-obnovlenie.html */
+
+/** отключить принудительные автообновления */
+function true_force_auto_update( $checkout, $context ) {
+    return false;
+}
+add_filter( 'automatic_updates_is_vcs_checkout', 'true_force_auto_update', 10, 2 );
+
+/** отключить автообновления для технических релизов */
+add_filter( 'allow_minor_auto_core_updates', '__return_false' );
+
+/** отключить автообновления для основных релизов */
+add_filter( 'allow_major_auto_core_updates', '__return_false' );
