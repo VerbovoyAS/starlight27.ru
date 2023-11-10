@@ -1,0 +1,47 @@
+.test {
+    color: red;
+    display: d-flex;
+}
+
+.column {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav ul li a {
+    color: #fff;
+    padding: 0.5em;
+    text-decoration: none;
+    transition: linear 1s;
+}
+
+nav ul li a:hover {
+    color: rgb(125, 177, 255);
+    padding: 0.5em;
+}
+
+.blc {
+    height: 3000px;
+}
+
+.bg-dark {
+    transition: 0.6s;
+    
+}
+
+.navbar-dark .navbar-brand {
+    color: #fff!important;
+}
+
+#navbarCollapse a {
+    color: #fff !important;
+}
+
+.bg-light #navbarCollapse a {
+    color: #000!important;
+}
+
+.bg-light .navbar-brand {
+    color: #000!important;
+}
