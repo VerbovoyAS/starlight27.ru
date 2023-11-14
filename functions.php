@@ -25,6 +25,12 @@ const SITE_LOGO = "logo_site";
 const SITE_LOGO_WIDTH = "logo_site_width";
 const SITE_LOGO_HEIGHT = "logo_site_height";
 
+const SET_TEMP = "set_temp";
+const SET_TEMP_block_A = "set_temp_block_a";
+const SET_TEMP_block_B = "set_temp_block_b";
+const SET_TEMP_block_V = "set_temp_block_v";
+const SET_TEMP_block_D = "set_temp_block_d";
+
 /** Название рубрики по умолчанию */
 const DEFAULT_CATEGORY = 'news';
 
@@ -350,3 +356,49 @@ add_filter( 'allow_minor_auto_core_updates', '__return_false' );
 
 /** отключить автообновления для основных релизов */
 add_filter( 'allow_major_auto_core_updates', '__return_false' );
+
+add_shortcode( 'get-temperature-mode', 'get_temperature_mode_shortcode' );
+
+/**
+ * Shortcode для вывода таблицы температуры
+ * Пример: [get-temperature-mode]
+ *
+ * @param $atts
+ * @return mixed|string|null
+ */
+function get_temperature_mode_shortcode($atts)
+{
+    $t = [
+        "Блок А" => explode(',', carbon_get_theme_option(SET_TEMP_block_A)),
+        "Блок Б" => explode(',', carbon_get_theme_option(SET_TEMP_block_B)),
+        "Блок В" => explode(',', carbon_get_theme_option(SET_TEMP_block_V)),
+        "Блок Д" => explode(',', carbon_get_theme_option(SET_TEMP_block_D))
+    ];
+
+    echo '<table class="table"><tbody>';
+    foreach ($t as $blockName => $kabinets) { ?>
+        <tr>
+            <th colspan="3" style="text-align: center"><?=$blockName;?></th>
+        </tr>
+        <tr>
+            <th style="text-align: center">кабинет - t&#176;</th>
+            <th style="text-align: center">кабинет - t&#176;</th>
+            <th style="text-align: center">кабинет - t&#176;</th>
+        </tr>
+        <?php
+        foreach (array_chunk($kabinets, 3) as $chunk) {
+            $kab = '';
+            foreach ($chunk as $c) {
+                if (empty($c)) {
+                    continue;
+                }
+
+                $r = rand(20,23);
+                $kab .= '<td style="text-align: center">' . $c . ' - ' . $r . '&#176;</td>';
+            }
+            echo '<tr>'.$kab.'</tr>';
+        }
+    }
+    echo '</tbody></table>';
+    return;
+}
