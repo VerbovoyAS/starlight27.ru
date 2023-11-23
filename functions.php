@@ -375,30 +375,47 @@ function get_temperature_mode_shortcode($atts)
         "Блок Д" => explode(',', carbon_get_theme_option(SET_TEMP_block_D))
     ];
 
-    echo '<table class="table"><tbody>';
-    foreach ($t as $blockName => $kabinets) { ?>
-        <tr>
-            <th colspan="3" style="text-align: center"><?=$blockName;?></th>
-        </tr>
-        <tr>
-            <th style="text-align: center">кабинет - t&#176;</th>
-            <th style="text-align: center">кабинет - t&#176;</th>
-            <th style="text-align: center">кабинет - t&#176;</th>
-        </tr>
-        <?php
-        foreach (array_chunk($kabinets, 3) as $chunk) {
-            $kab = '';
-            foreach ($chunk as $c) {
-                if (empty($c)) {
-                    continue;
-                }
-
-                $r = rand(20,23);
-                $kab .= '<td style="text-align: center">' . $c . ' - ' . $r . '&#176;</td>';
-            }
-            echo '<tr>'.$kab.'</tr>';
+    $tt = [];
+    foreach ($t as $blockName => $kabinets) {
+        $tt[$blockName] = [];
+        foreach ($kabinets as $c) {
+            $r = rand(20, 23);
+            $tt[$blockName][] = trim($c) . ' - ' . $r;
         }
     }
-    echo '</tbody></table>';
+
+    file_put_contents(get_theme_file_path() . "/temperature.json", json_encode($tt, JSON_UNESCAPED_UNICODE));
     return;
 }
+
+// если ещё не запланировано - планируем
+if( ! wp_next_scheduled( 'generate_temperature_hook' ) ) {
+    wp_schedule_event( time(), 'hourly', 'generate_temperature_hook' );
+}
+
+add_action( 'generate_temperature_hook', 'generate_temperature');
+
+function generate_temperature( $to, $subject, $msg ) {
+    $t = [
+        "Блок А" => explode(',', carbon_get_theme_option(SET_TEMP_block_A)),
+        "Блок Б" => explode(',', carbon_get_theme_option(SET_TEMP_block_B)),
+        "Блок В" => explode(',', carbon_get_theme_option(SET_TEMP_block_V)),
+        "Блок Д" => explode(',', carbon_get_theme_option(SET_TEMP_block_D))
+    ];
+
+    $tt = [];
+    foreach ($t as $blockName => $kabinets) {
+        $tt[$blockName] = [];
+        foreach ($kabinets as $c) {
+            $r = rand(20, 23);
+            $tt[$blockName][] = trim($c) . ' - ' . $r;
+        }
+    }
+
+    try {
+        file_put_contents(get_theme_file_path() . "/temperature.json", json_encode($tt, JSON_UNESCAPED_UNICODE));
+    } catch (Throwable $exception) {
+        // Пока не чего не делаем
+    }
+}
+
