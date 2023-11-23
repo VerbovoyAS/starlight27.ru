@@ -77,7 +77,7 @@ final class GutenbergBlock
                         loop: true,
                         margin: 10,
                         nav: true,
-                        autoHeight:true,
+                        // autoHeight:true,
                         autoplay:<?= $fields['autoplay'] === true ? 'true' : 'false';?>,
                         autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                         autoplayHoverPause:true,
