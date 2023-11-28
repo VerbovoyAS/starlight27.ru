@@ -62,6 +62,11 @@ get_header();
 
             <div class="col-12 col-lg-4">
                 <div class="row">
+                    <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
+                        <?php get_sidebar(); ?>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col shadow mb-2 p-3 bg-body rounded-3">
                         <h3 class="text-center">Свежие записи</h3>
 
@@ -105,11 +110,6 @@ get_header();
                             </div>
                         </div>
                     <?php endif; ?>
-                </div>
-                <div class="row">
-                    <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
-                        <?php get_sidebar(); ?>
-                    </div>
                 </div>
             </div>
         </div>
