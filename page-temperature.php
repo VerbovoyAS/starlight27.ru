@@ -1,14 +1,11 @@
 <?php
+$temp = file_get_contents(get_template_directory_uri() . "/temperature.json");
+
 $error = "";
-try
-{
-    $temp = file_get_contents(get_template_directory_uri() . "/temperature.json");
-} catch (Throwable $e) {
-    // пока ни чего не делаем, после надо будет отправлять письмо на почту
-    $error = "Ошибка получения файла";
-}
 $t = [];
-if ($temp !== false) {
+if (!$temp) {
+    $error = "Ошибка получения файла";
+} else {
     $t = json_decode($temp, true);
 }
 
