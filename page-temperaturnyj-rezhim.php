@@ -1,4 +1,7 @@
 <?php
+
+use HashtagCore\Hashtag;
+
 $temp = file_get_contents(get_template_directory_uri() . "/temperature.json");
 
 $error = "";
@@ -67,14 +70,59 @@ get_header();
                     </div>
                 </div>
             </div>
-
             <div class="col-12 col-lg-4">
+                <div class="row">
+                    <div class="col shadow mb-2 p-3 bg-body rounded-3">
+                        <h3 class="text-center">Свежие записи</h3>
+
+                        <?php
+                        $query = new WP_Query(['category_name' => DEFAULT_CATEGORY]);
+                        if ($query->have_posts()) :
+                        while ($query->have_posts()) : $query->the_post();
+                            $img_url = get_the_post_thumbnail_url() ?: Hashtag::getDefaultImg();
+                            ?>
+                            <div class="col">
+                                <div class="d-flex row g-0">
+                                    <div class="col-md-4 d-flex align-items-start p-1">
+                                        <a href="<?php the_permalink(); ?>">
+                                            <img src="<?php echo $img_url; ?>"
+                                                 alt="..." class="img-fluid rounded d-inline-block">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-8 p-1">
+                                        <div class="pb-2">
+                                            <a class="text-decoration-none link-secondary"
+                                               href="<?php the_permalink(); ?>">
+                                                <h5 class="card-title"><?php the_title(); ?></h5>
+                                            </a>
+                                            <div class="d-flex justify-content-between flex-column">
+                                                <p class="card-text"><small class="text-muted"><?php the_time(
+                                                            'j F Y'
+                                                        ); ?></small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <?php endwhile; ?>
+                    </div>
+
+                    <?php else: ?>
+                        <div class="col">
+                            <div class="alert alert-warning" role="alert">
+                                Записи не найдены
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
                 <div class="row">
                     <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
                         <?php get_sidebar(); ?>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 <?php
