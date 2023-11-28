@@ -1,5 +1,10 @@
 <?php
-$temp = file_get_contents(get_template_directory_uri() . "/temperature.json");
+try
+{
+    $temp = file_get_contents(get_template_directory_uri() . "/temperature.json");
+} catch (Throwable $e) {
+    // пока ни чего не делаем, после надо будет отправлять письмо на почту
+}
 $t = [];
 if ($temp !== false) {
     $t = json_decode($temp, true);
