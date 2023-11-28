@@ -1,9 +1,11 @@
 <?php
+$error = "";
 try
 {
     $temp = file_get_contents(get_template_directory_uri() . "/temperature.json");
 } catch (Throwable $e) {
     // пока ни чего не делаем, после надо будет отправлять письмо на почту
+    $error = "Ошибка получения файла";
 }
 $t = [];
 if ($temp !== false) {
@@ -32,6 +34,11 @@ get_header();
                 <div class="row me-1">
                     <div class="col shadow mb-2 p-3 bg-body rounded-3">
                         <?php the_content();?>
+                        <?php
+                        if (!empty($error)) {
+                            echo $error;
+                        }
+                        ?>
                         <table class="table">
                             <tbody>
                         <?php
