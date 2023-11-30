@@ -385,6 +385,10 @@ function get_temperature_mode_shortcode($atts)
     }
 
     file_put_contents(get_theme_file_path() . "/temperature.json", json_encode($tt, JSON_UNESCAPED_UNICODE));
+    $time = current_time('d-m-Y H:i:s');
+    carbon_set_theme_option(SET_TEMP, current_time('d-m-Y H:i:s'));
+
+    echo 'обновлено: '. $time;
     return;
 }
 

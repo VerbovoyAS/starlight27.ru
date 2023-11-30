@@ -27,7 +27,7 @@ final class GutenbergContainer
                 Field::make( 'text', SITE_LOGO_HEIGHT, __( 'Высота логотипа сайта' ) )->set_default_value(88),
             ])
             ->add_tab('Температура', [
-                Field::make( 'date_time', SET_TEMP, __( 'Время следующего обновления температуры' ) ),
+                Field::make( 'text', SET_TEMP, __( 'Дата и время последнего обновления температуры' ) )->set_attribute( 'readOnly', 'readonly' ),
                 Field::make( 'text', SET_TEMP_block_A, __( 'Список кабинетов блока А' ) ),
                 Field::make( 'text', SET_TEMP_block_B, __( 'Список кабинетов блока Б' ) ),
                 Field::make( 'text', SET_TEMP_block_V, __( 'Список кабинетов блока В' ) ),
