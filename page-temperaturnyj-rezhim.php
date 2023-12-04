@@ -67,6 +67,9 @@ get_header();
                         ?>
                             </tbody>
                         </table>
+                        <p>
+                            Дата обновления: <?= date("d-m-Y", strtotime(carbon_get_theme_option(SET_TEMP))) ?>
+                        </p>
                     </div>
                 </div>
             </div>
