@@ -25,6 +25,12 @@ const SITE_LOGO = "logo_site";
 const SITE_LOGO_WIDTH = "logo_site_width";
 const SITE_LOGO_HEIGHT = "logo_site_height";
 
+const SET_TEMP = "set_temp";
+const SET_TEMP_block_A = "set_temp_block_a";
+const SET_TEMP_block_B = "set_temp_block_b";
+const SET_TEMP_block_V = "set_temp_block_v";
+const SET_TEMP_block_D = "set_temp_block_d";
+
 /** Название рубрики по умолчанию */
 const DEFAULT_CATEGORY = 'news';
 
@@ -350,3 +356,70 @@ add_filter( 'allow_minor_auto_core_updates', '__return_false' );
 
 /** отключить автообновления для основных релизов */
 add_filter( 'allow_major_auto_core_updates', '__return_false' );
+
+add_shortcode( 'get-temperature-mode', 'get_temperature_mode_shortcode' );
+
+/**
+ * Shortcode для вывода таблицы температуры
+ * Пример: [get-temperature-mode]
+ *
+ * @param $atts
+ * @return mixed|string|null
+ */
+function get_temperature_mode_shortcode($atts)
+{
+    $t = [
+        "Блок А" => explode(',', carbon_get_theme_option(SET_TEMP_block_A)),
+        "Блок Б" => explode(',', carbon_get_theme_option(SET_TEMP_block_B)),
+        "Блок В" => explode(',', carbon_get_theme_option(SET_TEMP_block_V)),
+        "Блок Д" => explode(',', carbon_get_theme_option(SET_TEMP_block_D))
+    ];
+
+    $tt = [];
+    foreach ($t as $blockName => $kabinets) {
+        $tt[$blockName] = [];
+        foreach ($kabinets as $c) {
+            $r = rand(20, 23);
+            $tt[$blockName][] = trim($c) . ' - ' . $r;
+        }
+    }
+
+    file_put_contents(get_theme_file_path() . "/temperature.json", json_encode($tt, JSON_UNESCAPED_UNICODE));
+    $time = current_time('d-m-Y H:i:s');
+    carbon_set_theme_option(SET_TEMP, current_time('d-m-Y H:i:s'));
+
+    echo 'обновлено: '. $time;
+    return;
+}
+
+// если ещё не запланировано - планируем
+if( ! wp_next_scheduled( 'generate_temperature_hook' ) ) {
+    wp_schedule_event( time(), 'hourly', 'generate_temperature_hook' );
+}
+
+add_action( 'generate_temperature_hook', 'generate_temperature');
+
+function generate_temperature( $to, $subject, $msg ) {
+    $t = [
+        "Блок А" => explode(',', carbon_get_theme_option(SET_TEMP_block_A)),
+        "Блок Б" => explode(',', carbon_get_theme_option(SET_TEMP_block_B)),
+        "Блок В" => explode(',', carbon_get_theme_option(SET_TEMP_block_V)),
+        "Блок Д" => explode(',', carbon_get_theme_option(SET_TEMP_block_D))
+    ];
+
+    $tt = [];
+    foreach ($t as $blockName => $kabinets) {
+        $tt[$blockName] = [];
+        foreach ($kabinets as $c) {
+            $r = rand(20, 23);
+            $tt[$blockName][] = trim($c) . ' - ' . $r;
+        }
+    }
+
+    try {
+        file_put_contents(get_theme_file_path() . "/temperature.json", json_encode($tt, JSON_UNESCAPED_UNICODE));
+    } catch (Throwable $exception) {
+        // Пока не чего не делаем
+    }
+}
+

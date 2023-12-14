@@ -23,6 +23,7 @@
         <div class="col-12 col-lg-4 d-flex align-items-center justify-content-end">
             <div class="row w-100">
                 <div class="col">
+                    <!--
                         <span class="d-flex align-items-center justify-content-end ms-3 text-muted"
                               title="<?php the_time('l, j F Y'); ?>">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -32,6 +33,7 @@
                             </svg>
                             <?php the_time('j F Y'); ?>
                         </span>
+                        -->
                 </div>
             </div>
         </div>

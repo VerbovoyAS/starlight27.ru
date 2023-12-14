@@ -36,6 +36,7 @@ final class GutenbergBlock
                     ->set_default_value('1')
                     ->set_options([ '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5]),
                 Field::make( 'checkbox', 'autoplay', 'Включить авто прокрутку' )->set_default_value(true),
+                Field::make( 'checkbox', 'auto_height', 'Включить авто высоту' )->set_default_value(true),
                 Field::make('text', 'autoplay_time', 'Время задержки')->set_default_value(3000),
             ])
             ->set_render_callback(function ($fields) {
@@ -77,7 +78,7 @@ final class GutenbergBlock
                         loop: true,
                         margin: 10,
                         nav: true,
-                        autoHeight:true,
+                        autoHeight:<?= $fields['auto_height'] === true ? 'true' : 'false';?>,
                         autoplay:<?= $fields['autoplay'] === true ? 'true' : 'false';?>,
                         autoplayTimeout:<?= $fields['autoplay_time'] ?? 3000;?>,
                         autoplayHoverPause:true,
