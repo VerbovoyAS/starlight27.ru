@@ -149,13 +149,7 @@ function hashtag_scripts()
     wp_enqueue_style('hashtag-style-menu-css', get_template_directory_uri() . '/assets/css/style-menu.css');
 
     /** Parallax для главной страницы */
-    wp_enqueue_script(
-        'hashtag-parallax-js',
-        'https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js',
-        [],
-        '',
-        true
-    );
+    wp_enqueue_script('hashtag-parallax-js', get_template_directory_uri() . '/assets/js/parallax.min.js');
 
     wp_enqueue_script(
         'hashtag-boostrap-5-bundle-js',
@@ -175,33 +169,33 @@ function hashtag_scripts()
     );
 
     /** Подключение OWL карусели */
-    $path = get_template_directory_uri() . '/assets/owl-carousel/';
+    $owlPath = get_template_directory_uri() . '/assets/owl-carousel/';
 
     if (!wp_script_is('custom-script-owl-jquery')) {
         wp_enqueue_script(
             'custom-script-owl-jquery',
-            'https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js'
+            $owlPath . 'js/jquery.min.js'
         );
     }
 
     if (!wp_script_is('custom-script-owl-lightgallery')) {
         wp_enqueue_script(
             'custom-script-owl-lightgallery',
-            $path . 'js/owl.carousel.min.js'
+            $owlPath . 'js/owl.carousel.min.js'
         );
     }
 
     if (!wp_style_is('custom-style-owl-carousel')) {
         wp_enqueue_style(
             'custom-style-owl-carousel',
-            $path . 'css/owl.carousel.min.css',
+            $owlPath . 'css/owl.carousel.min.css',
         );
     }
 
     if (!wp_style_is('custom-style-owl-theme-default')) {
         wp_enqueue_style(
             'custom-style-owl-theme-default',
-            $path . 'css/owl.theme.default.min.css',
+            $owlPath . 'css/owl.theme.default.min.css',
         );
     }
 
