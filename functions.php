@@ -34,13 +34,13 @@ const SET_TEMP_block_D = "set_temp_block_d";
 /** Название рубрики по умолчанию */
 const DEFAULT_CATEGORY = 'news';
 
-if ( ! defined( '_S_VERSION' ) ) {
-	define( '_S_VERSION', '1.0.0' );
+if (!defined('_S_VERSION')) {
+    define('_S_VERSION', '1.0.0');
 }
 
-function hashtag_setup() {
-
-	load_theme_textdomain( 'hashtag', get_template_directory() . '/languages' );
+function hashtag_setup()
+{
+    load_theme_textdomain('hashtag', get_template_directory() . '/languages');
 
     register_nav_menus(
         [
@@ -50,41 +50,41 @@ function hashtag_setup() {
     );
 
     // Позволяет устанавливать миниатюру в записях
-    add_theme_support( 'post-thumbnails' );
+    add_theme_support('post-thumbnails');
 
     // Удаляет префикс заголовка архивов
-    add_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
+    add_filter('get_the_archive_title_prefix', '__return_empty_string');
 }
 
-add_action( 'after_setup_theme', 'hashtag_setup' );
+add_action('after_setup_theme', 'hashtag_setup');
 
 /**
  * Задаем дополнительные атрибуты для записей с типом пост
  */
-add_action( 'admin_init', 'hashtag_posts_order' );
+add_action('admin_init', 'hashtag_posts_order');
 function hashtag_posts_order()
 {
-    add_post_type_support( 'post', 'page-attributes' );
-    add_post_type_support( POST_TYPE_STAFF, 'page-attributes' );
-    add_post_type_support( POST_TYPE_BASIC_INFO, 'page-attributes' );
+    add_post_type_support('post', 'page-attributes');
+    add_post_type_support(POST_TYPE_STAFF, 'page-attributes');
+    add_post_type_support(POST_TYPE_BASIC_INFO, 'page-attributes');
 }
 
 /**
  * Register widget area.
- *
  */
-function hashtag_widgets_init() {
-	register_sidebar(
-		array(
-			'name'          => esc_html__( 'Sidebar', 'hashtag' ),
-			'id'            => 'sidebar-1',
-			'description'   => esc_html__( 'Add widgets here.', 'hashtag' ),
-			'before_widget' => '<section id="%1$s" class="widget %2$s">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h2 class="widget-title">',
-			'after_title'   => '</h2>',
-		)
-	);
+function hashtag_widgets_init()
+{
+    register_sidebar(
+        [
+            'name'          => esc_html__('Sidebar', 'hashtag'),
+            'id'            => 'sidebar-1',
+            'description'   => esc_html__('Add widgets here.', 'hashtag'),
+            'before_widget' => '<section id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</section>',
+            'before_title'  => '<h2 class="widget-title">',
+            'after_title'   => '</h2>',
+        ]
+    );
 
     register_sidebar(
         [
@@ -123,38 +123,28 @@ function hashtag_widgets_init() {
     );
 
     register_sidebar(
-        array(
-            'name'          => esc_html__( 'Sidebar info edu', 'hashtag' ),
+        [
+            'name'          => esc_html__('Sidebar info edu', 'hashtag'),
             'id'            => 'sidebar-info-edu',
-            'description'   => esc_html__( 'Add widgets here.', 'hashtag' ),
+            'description'   => esc_html__('Add widgets here.', 'hashtag'),
             'before_widget' => '<section id="%1$s" class="widget %2$s">',
             'after_widget'  => '</section>',
             'before_title'  => '<h2 class="widget-title">',
             'after_title'   => '</h2>',
-        )
+        ]
     );
 }
-add_action( 'widgets_init', 'hashtag_widgets_init' );
+
+add_action('widgets_init', 'hashtag_widgets_init');
 
 /**
  * Enqueue scripts and styles.
  */
-function hashtag_scripts() {
-
-    wp_enqueue_style(
-        'hashtag-style-boostrap-5',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css'
-    );
-    wp_enqueue_style(
-        'hashtag-font-awesome',
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css'
-    );
-
-    wp_enqueue_style(
-        'hashtag-bootstrap-icons',
-        'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css'
-    );
-
+function hashtag_scripts()
+{
+    wp_enqueue_style('hashtag-style-boostrap-5', get_template_directory_uri() . '/assets/css/bootstrap.min.css');
+    wp_enqueue_style('hashtag-font-awesome', get_template_directory_uri() . '/assets/css/font-awesome.css');
+    wp_enqueue_style('hashtag-bootstrap-icons', get_template_directory_uri() . '/assets/css/bootstrap-icons.css');
     wp_enqueue_style('hashtag-style-main-css', get_template_directory_uri() . '/assets/css/main.css');
     wp_enqueue_style('hashtag-style-menu-css', get_template_directory_uri() . '/assets/css/style-menu.css');
 
@@ -169,14 +159,14 @@ function hashtag_scripts() {
 
     wp_enqueue_script(
         'hashtag-boostrap-5-bundle-js',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+        get_template_directory_uri() . '/assets/js/bootstrap.bundle.min.js'
     );
 
-    wp_enqueue_script('hashtag-boostrap-5-js', 'https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js', [], '', true);
+    wp_enqueue_script('hashtag-boostrap-5-js', get_template_directory_uri() . '/assets/js/bootstrap.min.js');
 
-    if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
 
     /** Подключение styles-box-custom */
     wp_enqueue_style(
@@ -187,28 +177,28 @@ function hashtag_scripts() {
     /** Подключение OWL карусели */
     $path = get_template_directory_uri() . '/assets/owl-carousel/';
 
-    if( !wp_script_is( 'custom-script-owl-jquery' ) ){
+    if (!wp_script_is('custom-script-owl-jquery')) {
         wp_enqueue_script(
             'custom-script-owl-jquery',
             'https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js'
         );
     }
 
-    if( ! wp_script_is( 'custom-script-owl-lightgallery' ) ){
+    if (!wp_script_is('custom-script-owl-lightgallery')) {
         wp_enqueue_script(
             'custom-script-owl-lightgallery',
             $path . 'js/owl.carousel.min.js'
         );
     }
 
-    if( ! wp_style_is( 'custom-style-owl-carousel' ) ){
+    if (!wp_style_is('custom-style-owl-carousel')) {
         wp_enqueue_style(
             'custom-style-owl-carousel',
             $path . 'css/owl.carousel.min.css',
         );
     }
 
-    if( ! wp_style_is( 'custom-style-owl-theme-default' ) ){
+    if (!wp_style_is('custom-style-owl-theme-default')) {
         wp_enqueue_style(
             'custom-style-owl-theme-default',
             $path . 'css/owl.theme.default.min.css',
@@ -219,7 +209,7 @@ function hashtag_scripts() {
     wp_enqueue_script(
         'custom-gallery-lightgallery-js',
         get_template_directory_uri() . '/assets/gallery/js/lightgallery-all.min.js',
-        array(),
+        [],
         false,
         true
     );
@@ -227,7 +217,7 @@ function hashtag_scripts() {
     wp_enqueue_script(
         'custom-gallery-setting',
         get_template_directory_uri() . '/assets/gallery/js/gallery-setting.js',
-        array(),
+        [],
         false,
         true
     );
@@ -238,13 +228,13 @@ function hashtag_scripts() {
     );
 
     /** Загрузка постов */
-    wp_enqueue_script( 'true_loadmore', get_template_directory_uri() . '/assets/js/loadmore.js', array('jquery') );
-
+    wp_enqueue_script('true_loadmore', get_template_directory_uri() . '/assets/js/loadmore.js', ['jquery']);
 }
-add_action( 'wp_enqueue_scripts', 'hashtag_scripts' );
 
-function hashtag_create_post_type() {
+add_action('wp_enqueue_scripts', 'hashtag_scripts');
 
+function hashtag_create_post_type()
+{
     $taxonomy = new TaxonomyCreate();
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Должность', 'positions_staffs');
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Образование', 'taxonomy_education');
@@ -273,12 +263,12 @@ function hashtag_create_post_type() {
     ]);
 }
 
-add_action( 'init', 'hashtag_create_post_type' );
+add_action('init', 'hashtag_create_post_type');
 
-
-add_action( 'after_setup_theme', 'crb_load' );
-function crb_load() {
-    require_once( 'vendor/autoload.php' );
+add_action('after_setup_theme', 'crb_load');
+function crb_load()
+{
+    require_once('vendor/autoload.php');
     Carbon_Fields::boot();
 
     GutenbergBlock::imageBoxSection();
@@ -296,27 +286,28 @@ function crb_load() {
     GutenbergContainer::settingSite();
     GutenbergContainer::fieldsStaff();
     GutenbergContainer::fieldsBasicInfo();
-
 }
 
 /** Автозагрузка постов */
-function true_load_posts(){
-    $args = unserialize( stripslashes( $_POST['query'] ) );
+function true_load_posts()
+{
+    $args = unserialize(stripslashes($_POST['query']));
     $args['paged'] = $_POST['page'] + 1; // следующая страница
     $args['post_status'] = 'publish';
 
-    query_posts( $args );
-    if( have_posts() ) :
-        while( have_posts() ): the_post();
-            get_template_part( 'template-parts/category/category', get_post_type() );
+    query_posts($args);
+    if (have_posts()) :
+        while (have_posts()): the_post();
+            get_template_part('template-parts/category/category', get_post_type());
         endwhile;
     endif;
     die();
 }
+
 add_action('wp_ajax_loadmore', 'true_load_posts');
 add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
 
-add_shortcode( 'get-main-site', 'get_main_setting_shortcode' );
+add_shortcode('get-main-site', 'get_main_setting_shortcode');
 
 /**
  * Shortcode для вывода значений по умолчанию
@@ -341,23 +332,24 @@ function get_main_setting_shortcode($atts)
     }
 }
 
-
 /** ОБНОВЛЕНИЯ WP */
 /** @see https://misha.agency/wordpress/avtomaticheskie-obnovlenie.html */
 
 /** отключить принудительные автообновления */
-function true_force_auto_update( $checkout, $context ) {
+function true_force_auto_update($checkout, $context)
+{
     return false;
 }
-add_filter( 'automatic_updates_is_vcs_checkout', 'true_force_auto_update', 10, 2 );
+
+add_filter('automatic_updates_is_vcs_checkout', 'true_force_auto_update', 10, 2);
 
 /** отключить автообновления для технических релизов */
-add_filter( 'allow_minor_auto_core_updates', '__return_false' );
+add_filter('allow_minor_auto_core_updates', '__return_false');
 
 /** отключить автообновления для основных релизов */
-add_filter( 'allow_major_auto_core_updates', '__return_false' );
+add_filter('allow_major_auto_core_updates', '__return_false');
 
-add_shortcode( 'get-temperature-mode', 'get_temperature_mode_shortcode' );
+add_shortcode('get-temperature-mode', 'get_temperature_mode_shortcode');
 
 /**
  * Shortcode для вывода таблицы температуры
@@ -388,18 +380,19 @@ function get_temperature_mode_shortcode($atts)
     $time = current_time('d-m-Y H:i:s');
     carbon_set_theme_option(SET_TEMP, current_time('d-m-Y H:i:s'));
 
-    echo 'обновлено: '. $time;
+    echo 'обновлено: ' . $time;
     return;
 }
 
 // если ещё не запланировано - планируем
-if( ! wp_next_scheduled( 'generate_temperature_hook' ) ) {
-    wp_schedule_event( time(), 'hourly', 'generate_temperature_hook' );
+if (!wp_next_scheduled('generate_temperature_hook')) {
+    wp_schedule_event(time(), 'hourly', 'generate_temperature_hook');
 }
 
-add_action( 'generate_temperature_hook', 'generate_temperature');
+add_action('generate_temperature_hook', 'generate_temperature');
 
-function generate_temperature( $to, $subject, $msg ) {
+function generate_temperature($to, $subject, $msg)
+{
     $t = [
         "Блок А" => explode(',', carbon_get_theme_option(SET_TEMP_block_A)),
         "Блок Б" => explode(',', carbon_get_theme_option(SET_TEMP_block_B)),
