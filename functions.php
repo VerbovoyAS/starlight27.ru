@@ -149,11 +149,13 @@ function hashtag_scripts()
     wp_enqueue_style('hashtag-style-menu-css', get_template_directory_uri() . '/assets/css/style-menu.css');
 
     /** Parallax для главной страницы */
-    wp_enqueue_script('hashtag-parallax-js', get_template_directory_uri() . '/assets/js/parallax.min.js');
+    wp_enqueue_script('hashtag-parallax-js', get_template_directory_uri() . '/assets/js/parallax.min.js', [], null);
 
     wp_enqueue_script(
         'hashtag-boostrap-5-bundle-js',
-        get_template_directory_uri() . '/assets/js/bootstrap.bundle.min.js'
+        get_template_directory_uri() . '/assets/js/bootstrap.bundle.min.js',
+        [],
+        null
     );
 
     // TODO временно за комментирую
