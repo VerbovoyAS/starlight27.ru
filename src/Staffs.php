@@ -17,6 +17,8 @@ final class Staffs
     const  STAFF_CABINET = 'staff_cabinet';
     const  STAFF_SPECIALITY = 'staff_speciality';
     const  STAFF_ACTIVE = 'staff_active';
+    // Реализация общеобразовательных программ
+    const  STAFF_EDU_PROGRAM = 'staff_edu_program';
 
     /**
      * Выпадающий список таксона

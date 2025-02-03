@@ -88,6 +88,7 @@ get_header();
                         $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
                         $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
                         $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
+                        $staff_edu_program = carbon_get_the_post_meta( Staffs::STAFF_EDU_PROGRAM);
                         ?>
                         <div class="col">
                             <div class="card h-100">
@@ -139,10 +140,18 @@ get_header();
                                                 <td class="p-1"><?= Staffs::getTermsParameters($taxonomy_education_category); ?></td>
                                             </tr>
                                             <?php endif;?>
+                                            <?php if($staff_edu_program):?>
+                                                <tr>
+                                                    <th scope="row"  class="p-1" style="width: 35%;">Реализация ОП:</th>
+                                                    <td class="p-1">
+                                                        <?= $staff_edu_program;?>
+                                                    </td>
+                                                </tr>
+                                            <?php endif;?>
                                             <?php if($year_advanced_training):?>
                                             <tr>
                                                 <th scope="row"  class="p-1" style="width: 35%;">Год повышения квалификации:</th>
-                                                <td class="p-1"><?= $year_advanced_training; ?></td>
+                                                <td class="p-1"><?= (new DateTime($year_advanced_training))->format('Y'); ?></td>
                                             </tr>
                                             <?php endif;?>
                                             <tr>

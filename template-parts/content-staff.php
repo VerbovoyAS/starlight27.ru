@@ -14,6 +14,7 @@ $speciality = carbon_get_the_post_meta( Staffs::STAFF_SPECIALITY);
 $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
 $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
 $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
+$staff_edu_program = carbon_get_the_post_meta( Staffs::STAFF_EDU_PROGRAM);
 
 ?>
 
@@ -60,13 +61,23 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
                             echo "<hr>";
                         }
                         ?>
+                        <hr>
+                        <?php if($staff_edu_program):?>
+                            <tr>
+                                <th scope="row"  class="p-1" style="width: 35%;">Реализация ОП:</th>
+                                <td class="p-1">
+                                    <?= $staff_edu_program;?>
+                                </td>
+                            </tr>
+                        <?php endif;?>
+                        <hr>
                         <?php Staffs::getParametersHtml('Телефон:', $phone ?: carbon_get_theme_option(DEFAULT_PHONE)); ?>
                         <hr>
                         <?php Staffs::getParametersHtml('E-mail:', $mail ?: carbon_get_theme_option(DEFAULT_EMAIL)); ?>
                         <hr>
                         <?php
                         if ($year_advanced_training) {
-                            Staffs::getParametersHtml('Год повышения квалификации:', $year_advanced_training ?: ' ');
+                            Staffs::getParametersHtml('Год повышения квалификации:', (new DateTime($year_advanced_training))->format('Y') ?: ' ');
                             echo "<hr>";
                         }
 

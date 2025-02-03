@@ -60,6 +60,7 @@ final class GutenbergContainer
                              ),
                              Field::make('text', Staffs::STAFF_CABINET, 'Кабинет'),
                              Field::make('checkbox', Staffs::STAFF_ACTIVE, 'Активировать')->set_default_value(true),
+                             Field::make('text', Staffs::STAFF_EDU_PROGRAM, 'Реализация ОП'),
                          ]);
     }
 

@@ -640,7 +640,18 @@ final class GutenbergBlock
                 $arg = [
                     'post_type'      => POST_TYPE_STAFF,
                     'posts_per_page' => -1,
-                    'orderby'        => 'menu_order',
+                    'orderby'        => ['menu_order' => 'DESC', 'meta_value_num' => 'DESC'],
+                    'meta_query'     => [
+                        'relation' => 'OR',
+                        [
+                            'key'     => '_thumbnail_id',
+                            'compare' => 'NOT EXISTS',
+                        ],
+                        [
+                            'key'     => '_thumbnail_id',
+                            'compare' => 'EXISTS',
+                        ]
+                    ],
                     'order'          => 'DESC',
                 ];
 
@@ -699,7 +710,7 @@ final class GutenbergBlock
                     $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
                     $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
                     $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
-
+                    $staff_edu_program = carbon_get_the_post_meta( Staffs::STAFF_EDU_PROGRAM);
                     ?>
 
                     <div class="col search-block">
@@ -709,7 +720,11 @@ final class GutenbergBlock
                                     <img src="<?php echo get_the_post_thumbnail_url() ?? '' ?>" class="img-fluid rounded-3 my-3" alt="">
                                 </div>
                                 <div class="col-12 col-lg-8 ps-3">
-                                    <h3 class="py-2 border-bottom text-black-75"><?php the_title('','');?></h3>
+                                    <h3 class="py-2 border-bottom text-black-75">
+                                        <a href="<?= get_post_permalink(); ?>">
+                                            <?php the_title('','');?>
+                                        </a>
+                                    </h3>
                                     <h5 class="text-secondary"><?= Staffs::getTermsParameters($positions_staffs);?></h5>
                                     <p class="text-secondary"></p>
                                     <?php if ($fields['small_version']): ?>
@@ -783,10 +798,18 @@ final class GutenbergBlock
                                                 <td class="p-1"><?= $speciality; ?></td>
                                             </tr>
                                         <?php endif;?>
+                                        <?php if($staff_edu_program):?>
+                                            <tr>
+                                                <th scope="row"  class="p-1" style="width: 35%;">Реализация ОП:</th>
+                                                <td class="p-1">
+                                                    <?= $staff_edu_program;?>
+                                                </td>
+                                            </tr>
+                                        <?php endif;?>
                                         <?php if($year_advanced_training):?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Год повышения квалификации:</th>
-                                            <td class="p-1"><?= $year_advanced_training; ?></td>
+                                            <td class="p-1"><?= (new DateTime($year_advanced_training))->format('Y'); ?></td>
                                         </tr>
                                         <?php endif;?>
                                         <tr>
