@@ -640,18 +640,7 @@ final class GutenbergBlock
                 $arg = [
                     'post_type'      => POST_TYPE_STAFF,
                     'posts_per_page' => -1,
-                    'orderby'        => ['menu_order' => 'DESC', 'meta_value_num' => 'DESC'],
-                    'meta_query'     => [
-                        'relation' => 'OR',
-                        [
-                            'key'     => '_thumbnail_id',
-                            'compare' => 'NOT EXISTS',
-                        ],
-                        [
-                            'key'     => '_thumbnail_id',
-                            'compare' => 'EXISTS',
-                        ]
-                    ],
+                    'orderby'        => 'menu_order',
                     'order'          => 'DESC',
                 ];
 
@@ -721,7 +710,7 @@ final class GutenbergBlock
                                 </div>
                                 <div class="col-12 col-lg-8 ps-3">
                                     <h3 class="py-2 border-bottom text-black-75">
-                                        <a href="<?= get_post_permalink(); ?>">
+                                        <a href="<?= get_post_permalink(); ?>" class="text-decoration-none link-secondary">
                                             <?php the_title('','');?>
                                         </a>
                                     </h3>
