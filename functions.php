@@ -228,12 +228,16 @@ function hashtag_scripts()
 
 add_action('wp_enqueue_scripts', 'hashtag_scripts');
 
+
+const  TAXONOMY_EDUCATION_PROGRAM = 'taxonomy_education_program';
+
 function hashtag_create_post_type()
 {
     $taxonomy = new TaxonomyCreate();
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Должность', 'positions_staffs');
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Образование', 'taxonomy_education');
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Категория образования', 'taxonomy_education_category');
+    $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Реализация ОП', TAXONOMY_EDUCATION_PROGRAM);
 
     register_post_type(POST_TYPE_STAFF, [
         'public'      => true,

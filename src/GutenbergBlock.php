@@ -686,10 +686,13 @@ final class GutenbergBlock
                         continue;
                     }
 
+                    $getTheID = get_the_ID();
+
                     //  Получаем terms таксонов
-                    $positions_staffs = Staffs::get_terms_by_tax(get_the_ID(), 'positions_staffs');
-                    $taxonomy_education = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education');
-                    $taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education_category');
+                    $positions_staffs = Staffs::get_terms_by_tax($getTheID, 'positions_staffs');
+                    $taxonomy_education = Staffs::get_terms_by_tax($getTheID, 'taxonomy_education');
+                    $taxonomy_education_category = Staffs::get_terms_by_tax($getTheID, 'taxonomy_education_category');
+                    $taxonomy_edu_program = Staffs::get_terms_by_tax($getTheID, TAXONOMY_EDUCATION_PROGRAM);
                     //  Получаем metaBox
                     $phone = carbon_get_the_post_meta( Staffs::STAFF_PHONE);
                     $mail = carbon_get_the_post_meta( Staffs::STAFF_MAIL);
@@ -699,7 +702,6 @@ final class GutenbergBlock
                     $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
                     $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
                     $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
-                    $staff_edu_program = carbon_get_the_post_meta( Staffs::STAFF_EDU_PROGRAM);
                     ?>
 
                     <div class="col search-block">
@@ -787,11 +789,11 @@ final class GutenbergBlock
                                                 <td class="p-1"><?= $speciality; ?></td>
                                             </tr>
                                         <?php endif;?>
-                                        <?php if($staff_edu_program):?>
+                                        <?php if($taxonomy_edu_program):?>
                                             <tr>
                                                 <th scope="row"  class="p-1" style="width: 35%;">Реализация ОП:</th>
                                                 <td class="p-1">
-                                                    <?= $staff_edu_program;?>
+                                                    <?= Staffs::getTermsParameters($taxonomy_edu_program); ?>
                                                 </td>
                                             </tr>
                                         <?php endif;?>
