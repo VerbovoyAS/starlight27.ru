@@ -65,7 +65,9 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
                         }
 
                         if ($taxonomy_edu_program) {
+                            var_dump($taxonomy_edu_program);
                             Staffs::getParametersHtml('Реализация ОП:', $taxonomy_edu_program);
+                            var_dump(Staffs::getParametersHtml('Реализация ОП:', $taxonomy_edu_program));
                             echo "<hr>";
                         }
                         ?>
