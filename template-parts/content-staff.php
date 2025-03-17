@@ -69,7 +69,6 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
                             echo "<hr>";
                         }
                         ?>
-                        <hr>
                         <?php Staffs::getParametersHtml('Телефон:', $phone ?: carbon_get_theme_option(DEFAULT_PHONE)); ?>
                         <hr>
                         <?php Staffs::getParametersHtml('E-mail:', $mail ?: carbon_get_theme_option(DEFAULT_EMAIL)); ?>
