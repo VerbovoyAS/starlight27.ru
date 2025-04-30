@@ -82,23 +82,22 @@ final class Staffs
      */
     public static function getTimeDiff(string $dateNew): string
     {
-        $result = '';
         try {
             $now = new DateTime();
             $date = new DateTime($dateNew);
+            $diff = $date->diff($now);
 
-            $diff = $date->diff($now)->format("%a");
+            $year = $diff->y;
+            $month = $diff->m;
+
+            $result = '';
+            $result .= $year . self::ending($year, ' год', ' года', ' лет');
+            $result .= ' ';
+            $result .= $month . self::ending($month, ' месяц', ' месяца', ' месяцев');
+            return $result;
         } catch (Exception $exception) {
             return ' ';
         }
-
-        $year = round($diff / 365);
-        $month = round($diff % 365 / 30);
-
-        $result .= $year . self::ending($year, ' год', ' года', ' лет');
-        $result .= ' ';
-        $result .= $month . self::ending($month, ' месяц', ' месяца', ' месяцев');
-        return $result;
     }
 
     /**
