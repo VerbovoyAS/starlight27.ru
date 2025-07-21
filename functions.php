@@ -224,10 +224,12 @@ function hashtag_scripts()
 
     /** Загрузка постов */
     wp_enqueue_script('true_loadmore', get_template_directory_uri() . '/assets/js/loadmore.js', ['jquery']);
+
+    wp_enqueue_script('schedule-js', get_template_directory_uri() . '/assets/js/schedule.js', [], null, true);
+    wp_localize_script('schedule-js', 'schedule_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
 }
 
 add_action('wp_enqueue_scripts', 'hashtag_scripts');
-
 
 const  TAXONOMY_EDUCATION_PROGRAM = 'taxonomy_education_program';
 
@@ -415,3 +417,104 @@ function generate_temperature($to, $subject, $msg)
     }
 }
 
+add_action('wp_ajax_load_schedule_table', 'ajax_load_schedule_table');
+add_action('wp_ajax_nopriv_load_schedule_table', 'ajax_load_schedule_table');
+
+function ajax_load_schedule_table()
+{
+    $classGroup = sanitize_text_field($_POST['class_group']);
+    $week = sanitize_text_field($_POST['week_offset']);
+
+    // Преобразуем week -> offset
+    $offsetMap = [
+        'Пред.'   => -1,
+        'Текущая' => 0,
+        'След.'   => 1,
+    ];
+    $offset = $offsetMap[$week] ?? 0;
+
+    $now = new DateTime();
+    $weekDays = getWeekDays($now, $offset);
+
+    // Преобразуем class group, после надо будет получать список классов через http метод
+    $classMap = [
+        '1-4'   => ["1.1", "1.2", "1.3", "1.4", "1.5","2.1", "2.2", "2.3", "2.4", "2.5","3.1", "3.2", "3.3", "3.4","4.1", "4.2", "4.3", "4.4", "4.5", "4.5Э"],
+        '5-9'   => ["5.1", "5.2", "5.3", "5.4", "5.5", "5.К","6.1", "6.2", "6.3", "6.4", "6.5", "6.К","7.1", "7.2", "7.3", "7.4", "7.5","8.1", "8.2", "8.3", "8.4","9.1", "9.2", "9.3", "9.4"],
+        '10-11' => ["10ГИМ", "10ЕН", "10ИНЖ", "10ИТ", "10ЮР","11.1"],
+    ];
+    $classList = $classMap[$classGroup] ?? [];
+    $classQuery = "";
+    foreach ($classList as $v) {
+        $classQuery .= "&class=$v";
+    }
+
+    // Сформировать $weekDays
+    $query = [
+        //'date_from' => $start->format('Y-m-d'),
+        //'date_to' => $end->format('Y-m-d'),
+        // Пока нет расписание фиксируем даты
+        'date_from' => '2025-04-21',
+        'date_to'   => '2025-04-27',
+    ];
+
+    // Получаем данные из API
+    $url = DS_HOST . '/api/v1/schedule-class?' . http_build_query($query) . $classQuery;
+
+    $response = wp_remote_get($url, [
+        'headers' => [
+            'Authorization' => 'Bearer ' . DS_API_TOKEN,
+            'Accept'        => 'application/json'
+        ],
+        'timeout' => 15,
+        'sslverify' => false,
+    ]);
+
+    // Обработка ответа
+    if (is_wp_error($response)) {
+        echo 'Ошибка запроса: ' . $response->get_error_message();
+    } else {
+        $status_code = wp_remote_retrieve_response_code($response);
+        $body = wp_remote_retrieve_body($response);
+
+        if ($status_code === 200) {
+            $data = json_decode($body, true);
+        } else {
+            echo "Ошибка: HTTP $status_code<br>";
+            echo "Ответ сервера: $body";
+        }
+    }
+
+    include get_template_directory() . '/template-parts/schedule-table.php';
+    wp_die();
+}
+
+function getWeekDays(DateTime $now, int $offset): array
+{
+    $monday = clone $now;
+    $monday->modify('monday this week')->modify("+$offset week");
+
+    $weekDays = [];
+    for ($i = 0; $i < 6; $i++) { // Понедельник по Субботу
+        $day = clone $monday;
+        $day->modify("+$i days");
+        $weekDays[] = $day;
+    }
+
+    return $weekDays;
+}
+
+function getRussianWeekday(DateTime $date): string
+{
+    $days = [
+        1 => 'Понедельник',
+        2 => 'Вторник',
+        3 => 'Среда',
+        4 => 'Четверг',
+        5 => 'Пятница',
+        6 => 'Суббота',
+        7 => 'Воскресенье',
+    ];
+
+    $dayNumber = (int)$date->format('N'); // 1 (Mon) до 7 (Sun)
+    return $days[$dayNumber];
+}
