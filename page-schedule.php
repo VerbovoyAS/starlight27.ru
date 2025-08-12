@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?>
 
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php the_title(); ?>></title>
+    <title><?php the_title(); ?></title>
     <?php wp_head();?>
 </head>
 
@@ -77,7 +77,7 @@
             </div>
         </div>
     </div>
-
+л
 <?php wp_footer();?>
 
 </body>

@@ -227,6 +227,9 @@ function hashtag_scripts()
 
     wp_enqueue_script('schedule-js', get_template_directory_uri() . '/assets/js/schedule.js', [], null, true);
     wp_localize_script('schedule-js', 'schedule_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
+
+    wp_enqueue_script('single-schedule-js', get_template_directory_uri() . '/assets/js/single-schedule.js', [], null, true);
+    wp_localize_script('single-schedule-js', 'schedule_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
 }
 
 add_action('wp_enqueue_scripts', 'hashtag_scripts');
@@ -436,26 +439,83 @@ function ajax_load_schedule_table()
     $now = new DateTime();
     $weekDays = getWeekDays($now, $offset);
 
-    // Преобразуем class group, после надо будет получать список классов через http метод
-    $classMap = [
-        '1-4'   => ["1.1", "1.2", "1.3", "1.4", "1.5","2.1", "2.2", "2.3", "2.4", "2.5","3.1", "3.2", "3.3", "3.4","4.1", "4.2", "4.3", "4.4", "4.5", "4.5Э"],
-        '5-9'   => ["5.1", "5.2", "5.3", "5.4", "5.5", "5.К","6.1", "6.2", "6.3", "6.4", "6.5", "6.К","7.1", "7.2", "7.3", "7.4", "7.5","8.1", "8.2", "8.3", "8.4","9.1", "9.2", "9.3", "9.4"],
-        '10-11' => ["10ГИМ", "10ЕН", "10ИНЖ", "10ИТ", "10ЮР","11.1"],
-    ];
+    // Получим список классов разбитые по группам
+    $classMap = getGroupClassV1();
+
     $classList = $classMap[$classGroup] ?? [];
-    $classQuery = "";
-    foreach ($classList as $v) {
-        $classQuery .= "&class=$v";
-    }
 
     // Сформировать $weekDays
+    // TODO поправить после тестов
+//    $query = [
+//        //'date_from' => $start->format('Y-m-d'),
+//        //'date_to' => $end->format('Y-m-d'),
+//        // Пока нет расписание фиксируем даты
+//        'date_from' => '2025-04-21',
+//        'date_to'   => '2025-04-27',
+//    ];
+
+    // Получаем данные из API
+
+    $data = getScheduleClassV1('2025-04-21', '2025-04-27', $classList);
+
+    include get_template_directory() . '/template-parts/schedule-table.php';
+    wp_die();
+}
+
+add_action('wp_ajax_load_class_schedule', 'ajax_load_class_schedule');
+add_action('wp_ajax_nopriv_load_class_schedule', 'ajax_load_class_schedule');
+
+function ajax_load_class_schedule() {
+    $class = sanitize_text_field($_POST['class']);
+    $week = intval($_POST['week']);
+
+    $dataClasses = getScheduleClassV1('2025-04-21', '2025-04-27', [$class]);
+
+    if (empty($dataClasses)) {
+        $message = sprintf(
+            '🏫 Расписание для класса <b>%s</b> отсутствует.<br>Выберите другой класс и нажмите кнопку <i class="bi bi-arrow-clockwise"></i>, чтобы обновить данные.',
+            esc_html($class)
+        );
+
+        echo '<div class="alert alert-info text-center" role="alert">' . $message . '</div>';
+        wp_die();
+    }
+
+    $data = $dataClasses[0]['lessons'] ?? [];
+
+    // Список всех дат недели
+    $dates = array_column($data, 'date');
+
+    // Определим максимальный номер урока
+    $max_lesson_number = 0;
+    $lessons_by_day = [];
+
+    foreach ($data as $day) {
+        $date = $day['date'];
+        foreach ($day['lessons'] as $lesson) {
+            $num = $lesson['lesson_number'];
+            $lessons_by_day[$date][$num] = $lesson['items'];
+            $max_lesson_number = max($max_lesson_number, $num);
+        }
+    }
+
+    $classMap = getGroupClassV1();
+
+    include get_template_directory() . '/template-parts/schedule-class.php';
+    wp_die();
+}
+
+function getScheduleClassV1(string $dateFrom, string $dateTo, array $classes): mixed
+{
     $query = [
-        //'date_from' => $start->format('Y-m-d'),
-        //'date_to' => $end->format('Y-m-d'),
-        // Пока нет расписание фиксируем даты
-        'date_from' => '2025-04-21',
-        'date_to'   => '2025-04-27',
+        'date_from' => $dateFrom,
+        'date_to'   => $dateTo,
     ];
+
+    $classQuery = "";
+    foreach ($classes as $v) {
+        $classQuery .= "&class=$v";
+    }
 
     // Получаем данные из API
     $url = DS_HOST . '/api/v1/schedule-class?' . http_build_query($query) . $classQuery;
@@ -471,21 +531,57 @@ function ajax_load_schedule_table()
 
     // Обработка ответа
     if (is_wp_error($response)) {
+        // TODO надо бы писать в лог
         echo 'Ошибка запроса: ' . $response->get_error_message();
-    } else {
-        $status_code = wp_remote_retrieve_response_code($response);
-        $body = wp_remote_retrieve_body($response);
 
-        if ($status_code === 200) {
-            $data = json_decode($body, true);
-        } else {
-            echo "Ошибка: HTTP $status_code<br>";
-            echo "Ответ сервера: $body";
-        }
+        return null;
     }
 
-    include get_template_directory() . '/template-parts/schedule-table.php';
-    wp_die();
+    $status_code = wp_remote_retrieve_response_code($response);
+    $body = wp_remote_retrieve_body($response);
+
+    $data = null;
+    if ($status_code === 200) {
+        $data = json_decode($body, true);
+    } else {
+        // TODO надо бы писать в лог
+//        echo "Ошибка: HTTP $status_code<br>";
+//        echo "Ответ сервера: $body";
+    }
+
+    return $data;
+}
+
+function getGroupClassV1(): mixed
+{
+    $response = wp_remote_get(DS_HOST . '/api/v1/group-class', [
+        'headers' => [
+            'Authorization' => 'Bearer ' . DS_API_TOKEN,
+            'Accept'        => 'application/json'
+        ],
+        'timeout' => 15,
+        'sslverify' => false,
+    ]);
+
+    // Обработка ответа
+    if (is_wp_error($response)) {
+        // TODO надо бы писать в лог
+//        echo 'Ошибка запроса: ' . $response->get_error_message();
+    }
+
+    $status_code = wp_remote_retrieve_response_code($response);
+    $body = wp_remote_retrieve_body($response);
+
+    $data = null;
+    if ($status_code === 200) {
+        $data = json_decode($body, true);
+    } else {
+        // TODO надо бы писать в лог
+//        echo "Ошибка: HTTP $status_code<br>";
+//        echo "Ответ сервера: $body";
+    }
+
+    return $data;
 }
 
 function getWeekDays(DateTime $now, int $offset): array
