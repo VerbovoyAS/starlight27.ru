@@ -56,7 +56,7 @@
 }
 
 .stars-img li a:not(.dropdown-toggle, .dropdown-item):after{
-    content: url("http://localhost/wp-content/themes/hashtag/assets/img/site/stars.svg");
+    content: url("../img/site/stars.svg");
     display: block;
     width: 20px;
     height: 20px;

@@ -2,9 +2,12 @@
 
 use HashtagCore\Staffs;
 
-$positions_staffs = Staffs::get_terms_by_tax(get_the_ID(), 'positions_staffs');
-$taxonomy_education = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education');
-$taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education_category');
+$getTheID = get_the_ID();
+
+$positions_staffs = Staffs::get_terms_by_tax($getTheID, 'positions_staffs');
+$taxonomy_education = Staffs::get_terms_by_tax($getTheID, 'taxonomy_education');
+$taxonomy_education_category = Staffs::get_terms_by_tax($getTheID, 'taxonomy_education_category');
+$taxonomy_edu_program = Staffs::get_terms_by_tax($getTheID, TAXONOMY_EDUCATION_PROGRAM);
 //  Получаем дополнительные поля
 $phone = carbon_get_the_post_meta( Staffs::STAFF_PHONE);
 $mail = carbon_get_the_post_meta( Staffs::STAFF_MAIL);
@@ -14,6 +17,7 @@ $speciality = carbon_get_the_post_meta( Staffs::STAFF_SPECIALITY);
 $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
 $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
 $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
+
 
 ?>
 
@@ -59,6 +63,11 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
                             Staffs::getParametersHtml('Специальность:', $speciality);
                             echo "<hr>";
                         }
+
+                        if ($taxonomy_edu_program) {
+                            Staffs::getParametersHtml('Реализация ОП:', Staffs::getTermsParameters($taxonomy_edu_program));
+                            echo "<hr>";
+                        }
                         ?>
                         <?php Staffs::getParametersHtml('Телефон:', $phone ?: carbon_get_theme_option(DEFAULT_PHONE)); ?>
                         <hr>
@@ -66,7 +75,7 @@ $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIEN
                         <hr>
                         <?php
                         if ($year_advanced_training) {
-                            Staffs::getParametersHtml('Год повышения квалификации:', $year_advanced_training ?: ' ');
+                            Staffs::getParametersHtml('Год повышения квалификации:', (new DateTime($year_advanced_training))->format('Y') ?: ' ');
                             echo "<hr>";
                         }
 

@@ -5,6 +5,7 @@ namespace HashtagCore;
 use Carbon_Fields\Block;
 use Carbon_Fields\Field\Complex_Field;
 use Carbon_Fields\Field\Field;
+use DateTime;
 use WP_Query;
 
 final class GutenbergBlock
@@ -686,10 +687,13 @@ final class GutenbergBlock
                         continue;
                     }
 
+                    $getTheID = get_the_ID();
+
                     //  Получаем terms таксонов
-                    $positions_staffs = Staffs::get_terms_by_tax(get_the_ID(), 'positions_staffs');
-                    $taxonomy_education = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education');
-                    $taxonomy_education_category = Staffs::get_terms_by_tax(get_the_ID(), 'taxonomy_education_category');
+                    $positions_staffs = Staffs::get_terms_by_tax($getTheID, 'positions_staffs');
+                    $taxonomy_education = Staffs::get_terms_by_tax($getTheID, 'taxonomy_education');
+                    $taxonomy_education_category = Staffs::get_terms_by_tax($getTheID, 'taxonomy_education_category');
+                    $taxonomy_edu_program = Staffs::get_terms_by_tax($getTheID, TAXONOMY_EDUCATION_PROGRAM);
                     //  Получаем metaBox
                     $phone = carbon_get_the_post_meta( Staffs::STAFF_PHONE);
                     $mail = carbon_get_the_post_meta( Staffs::STAFF_MAIL);
@@ -699,7 +703,6 @@ final class GutenbergBlock
                     $year_advanced_training = carbon_get_the_post_meta( Staffs::STAFF_YEAR_ADVANCED_TRAINING);
                     $general_experience = carbon_get_the_post_meta( Staffs::STAFF_GENERAL_EXPERIENCE);
                     $teaching_experience = carbon_get_the_post_meta( Staffs::STAFF_TEACHING_EXPERIENCE);
-
                     ?>
 
                     <div class="col search-block">
@@ -709,7 +712,11 @@ final class GutenbergBlock
                                     <img src="<?php echo get_the_post_thumbnail_url() ?? '' ?>" class="img-fluid rounded-3 my-3" alt="">
                                 </div>
                                 <div class="col-12 col-lg-8 ps-3">
-                                    <h3 class="py-2 border-bottom text-black-75"><?php the_title('','');?></h3>
+                                    <h3 class="py-2 border-bottom text-black-75">
+                                        <a href="<?= get_post_permalink(); ?>" class="text-decoration-none link-secondary">
+                                            <?php the_title('','');?>
+                                        </a>
+                                    </h3>
                                     <h5 class="text-secondary"><?= Staffs::getTermsParameters($positions_staffs);?></h5>
                                     <p class="text-secondary"></p>
                                     <?php if ($fields['small_version']): ?>
@@ -783,10 +790,18 @@ final class GutenbergBlock
                                                 <td class="p-1"><?= $speciality; ?></td>
                                             </tr>
                                         <?php endif;?>
+                                        <?php if($taxonomy_edu_program):?>
+                                            <tr>
+                                                <th scope="row"  class="p-1" style="width: 35%;">Реализация ОП:</th>
+                                                <td class="p-1">
+                                                    <?= Staffs::getTermsParameters($taxonomy_edu_program); ?>
+                                                </td>
+                                            </tr>
+                                        <?php endif;?>
                                         <?php if($year_advanced_training):?>
                                         <tr>
                                             <th scope="row"  class="p-1" style="width: 35%;">Год повышения квалификации:</th>
-                                            <td class="p-1"><?= $year_advanced_training; ?></td>
+                                            <td class="p-1"><?= (new DateTime($year_advanced_training))->format('Y'); ?></td>
                                         </tr>
                                         <?php endif;?>
                                         <tr>
