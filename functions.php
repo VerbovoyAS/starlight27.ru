@@ -12,6 +12,7 @@ use HashtagCore\TaxonomyCreate;
 
 /** Тип записи - Сотрудники */
 const POST_TYPE_STAFF = 'staff';
+const POST_TYPE_MO = 'mo_page';
 
 /** Тип записи - Основные сведения */
 const POST_TYPE_BASIC_INFO = 'info_edu';
@@ -228,7 +229,13 @@ function hashtag_scripts()
     wp_enqueue_script('schedule-js', get_template_directory_uri() . '/assets/js/schedule.js', [], null, true);
     wp_localize_script('schedule-js', 'schedule_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
 
-    wp_enqueue_script('single-schedule-js', get_template_directory_uri() . '/assets/js/single-schedule.js', [], null, true);
+    wp_enqueue_script(
+        'single-schedule-js',
+        get_template_directory_uri() . '/assets/js/single-schedule.js',
+        [],
+        null,
+        true
+    );
     wp_localize_script('single-schedule-js', 'schedule_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
 }
 
@@ -236,6 +243,7 @@ add_action('wp_enqueue_scripts', 'hashtag_scripts');
 
 const  TAXONOMY_EDUCATION_PROGRAM = 'taxonomy_education_program';
 
+add_action('init', 'hashtag_create_post_type');
 function hashtag_create_post_type()
 {
     $taxonomy = new TaxonomyCreate();
@@ -243,6 +251,19 @@ function hashtag_create_post_type()
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Образование', 'taxonomy_education');
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Категория образования', 'taxonomy_education_category');
     $taxonomy->createTaxonomy(POST_TYPE_STAFF, 'Реализация ОП', TAXONOMY_EDUCATION_PROGRAM);
+
+    $taxonomy->createTaxonomy(POST_TYPE_MO, 'Методические объединения', 'mo_group', [
+        'labels'       => [
+            'name'          => 'Методические объединения',
+            'singular_name' => 'МО',
+        ],
+        'hierarchical' => true,
+        'rewrite'      => [
+            'slug' => 'mo-group',
+        ],
+        'show_in_rest' => true,
+        'meta_box_cb'  => [$taxonomy, 'staffs_taxonomy_select_meta_box'],
+    ]);
 
     register_post_type(POST_TYPE_STAFF, [
         'public'      => true,
@@ -262,12 +283,156 @@ function hashtag_create_post_type()
             'singular_name' => 'Сведения ОУ',
             'menu_name'     => 'Сведения ОУ'
         ],
-        'show_in_rest' => true,
+        'show_in_rest' => true, // включаем Gutenberg
         'supports'     => ['title', 'editor', 'thumbnail', 'post-formats']
+    ]);
+
+    register_post_type(POST_TYPE_MO, [
+        'labels'       => [
+            'name'          => 'Страницы МО',
+            'singular_name' => 'Страница МО',
+        ],
+        'public'       => true,
+        'has_archive'  => false,
+        'rewrite'      => [
+            'slug' => 'mo',
+        ],
+        'menu_icon'    => 'dashicons-admin-multisite',
+        'hierarchical' => true,
+        'supports'     => ['title', 'editor', 'thumbnail', 'page-attributes'],
     ]);
 }
 
-add_action('init', 'hashtag_create_post_type');
+// Хук на создание терма
+add_action('created_mo_group', 'create_mo_pages_for_term', 10, 2);
+function create_mo_pages_for_term($term_id, $tt_id)
+{
+    $taxonomy = 'mo_group';
+    $term = get_term($term_id, $taxonomy);
+
+    if (!$term || is_wp_error($term)) {
+        return;
+    }
+
+    $mo_slug = transliterateForUrl($term->name);
+
+    wp_update_term($term_id, $taxonomy, [
+        'slug' => $mo_slug,
+    ]);
+
+    // Шаблон страниц и вложенности
+    $pages = [
+        'О нас'            => [],
+        'Нормативная база' => [],
+        'План работы'      => [
+            'Документы',
+            'Календарь событий',
+            'Архив'
+        ],
+        'Деятельность'     => [
+            'Рабочие программы',
+            'Методический кейс',
+            'Работа с родителями',
+            'НПК',
+            'Конкурсы',
+            'Олимпиады'
+        ],
+        'Одаренные дети'   => [],
+        'Аттестация'       => [],
+        'Обратная связь'   => []
+    ];
+
+    // Создаем страницы рекурсивно
+    foreach ($pages as $title => $children) {
+        $parent_id = wp_insert_post(
+            [
+                'post_title'  => $title,
+                'post_name'   => $mo_slug . '-' . transliterateForUrl($title),
+                'post_type'   => 'mo_page',
+                'post_status' => 'publish',
+            ]
+        );
+
+        // Привязка к МО через таксономию
+        wp_set_object_terms($parent_id, [$term_id], $taxonomy);
+
+        // Создаем дочерние страницы, если есть
+        foreach ($children as $child_title) {
+            $child_id = wp_insert_post(
+                [
+                    'post_title'  => $child_title,
+                    'post_name'   => $mo_slug . '-' . transliterateForUrl($child_title),
+                    'post_type'   => 'mo_page',
+                    'post_status' => 'publish',
+                    'post_parent' => $parent_id,
+                ]
+            );
+
+            wp_set_object_terms($child_id, [$term_id], $taxonomy);
+        }
+    }
+}
+
+// Добавляем фильтр по таксономии в админке
+add_action('restrict_manage_posts', 'mo_filter_by_taxonomy');
+function mo_filter_by_taxonomy($post_type)
+{
+    if ($post_type === POST_TYPE_MO) {
+        $taxonomy = 'mo_group';
+        $selected = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
+        $info_taxonomy = get_taxonomy($taxonomy);
+
+        wp_dropdown_categories(
+            [
+                'show_option_all' => "Все {$info_taxonomy->label}",
+                'taxonomy'        => $taxonomy,
+                'name'            => $taxonomy,
+                'orderby'         => 'name',
+                'selected'        => $selected,
+                'hierarchical'    => true,
+                'show_count'      => true,
+                'hide_empty'      => false,
+            ]
+        );
+    }
+}
+
+// Реакция на выбранный фильтр
+add_filter('parse_query', 'mo_convert_taxonomy_id_to_term_in_query');
+function mo_convert_taxonomy_id_to_term_in_query($query)
+{
+    global $pagenow;
+    $taxonomy = 'mo_group';
+    $q_vars = &$query->query_vars;
+    if ($pagenow == 'edit.php'
+        && isset($q_vars['post_type']) && $q_vars['post_type'] == 'mo_page'
+        && isset($q_vars[$taxonomy]) && is_numeric($q_vars[$taxonomy]) && $q_vars[$taxonomy] != 0
+    ) {
+        $term = get_term_by('id', $q_vars[$taxonomy], $taxonomy);
+        $q_vars[$taxonomy] = $term->slug;
+    }
+}
+
+// Добавляем колонку "МО" после "Название"
+add_filter('manage_mo_page_posts_columns', function ($columns) {
+    $new_columns = [];
+    foreach ($columns as $key => $title) {
+        $new_columns[$key] = $title;
+        // После колонки title вставляем колонку mo_group
+        if ($key === 'title') {
+            $new_columns['mo_group'] = 'МО';
+        }
+    }
+    return $new_columns;
+});
+
+// Вывод данных в колонку
+add_action('manage_mo_page_posts_custom_column', function ($column, $post_id) {
+    if ($column === 'mo_group') {
+        $terms = get_the_term_list($post_id, 'mo_group', '', ', ', '');
+        echo $terms ?: '—';
+    }
+},         10, 2);
 
 add_action('after_setup_theme', 'crb_load');
 function crb_load()
@@ -465,7 +630,8 @@ function ajax_load_schedule_table()
 add_action('wp_ajax_load_class_schedule', 'ajax_load_class_schedule');
 add_action('wp_ajax_nopriv_load_class_schedule', 'ajax_load_class_schedule');
 
-function ajax_load_class_schedule() {
+function ajax_load_class_schedule()
+{
     $class = sanitize_text_field($_POST['class']);
     $week = intval($_POST['week']);
 
@@ -521,11 +687,11 @@ function getScheduleClassV1(string $dateFrom, string $dateTo, array $classes): m
     $url = DS_HOST . '/api/v1/schedule-class?' . http_build_query($query) . $classQuery;
 
     $response = wp_remote_get($url, [
-        'headers' => [
+        'headers'   => [
             'Authorization' => 'Bearer ' . DS_API_TOKEN,
             'Accept'        => 'application/json'
         ],
-        'timeout' => 15,
+        'timeout'   => 15,
         'sslverify' => false,
     ]);
 
@@ -560,7 +726,6 @@ function getGroupClassV1(): mixed
             'Accept'        => 'application/json'
         ],
         'timeout' => 15,
-        'sslverify' => false,
     ]);
 
     // Обработка ответа
@@ -613,4 +778,64 @@ function getRussianWeekday(DateTime $date): string
 
     $dayNumber = (int)$date->format('N'); // 1 (Mon) до 7 (Sun)
     return $days[$dayNumber];
+}
+
+function transliterateForUrl($string)
+{
+    // Массив для транслитерации кириллицы (только строчные)
+    $translitMap = [
+        'а' => 'a',
+        'б' => 'b',
+        'в' => 'v',
+        'г' => 'g',
+        'д' => 'd',
+        'е' => 'e',
+        'ё' => 'yo',
+        'ж' => 'zh',
+        'з' => 'z',
+        'и' => 'i',
+        'й' => 'y',
+        'к' => 'k',
+        'л' => 'l',
+        'м' => 'm',
+        'н' => 'n',
+        'о' => 'o',
+        'п' => 'p',
+        'р' => 'r',
+        'с' => 's',
+        'т' => 't',
+        'у' => 'u',
+        'ф' => 'f',
+        'х' => 'h',
+        'ц' => 'ts',
+        'ч' => 'ch',
+        'ш' => 'sh',
+        'щ' => 'sch',
+        'ъ' => '',
+        'ы' => 'y',
+        'ь' => '',
+        'э' => 'e',
+        'ю' => 'yu',
+        'я' => 'ya'
+    ];
+
+    // Приводим строку к нижнему регистру ДО транслитерации
+    $string = mb_strtolower($string, 'UTF-8');
+
+    // Заменяем кириллические символы
+    $string = strtr($string, $translitMap);
+
+    // Заменяем пробелы и другие разделители на дефисы
+    $string = preg_replace('/[\s\-_]+/', '-', $string);
+
+    // Удаляем все не-ASCII символы (оставляем только латиницу, цифры и дефисы)
+    $string = preg_replace('/[^a-z0-9\-]/', '', $string);
+
+    // Убираем множественные дефисы
+    $string = preg_replace('/\-+/', '-', $string);
+
+    // Убираем дефисы в начале и конце строки
+    $string = trim($string, '-');
+
+    return $string;
 }

@@ -11,9 +11,13 @@ class TaxonomyCreate
      * @param string $taxonomyName
      * @return void
      */
-    public function createTaxonomy(string $postType, string $name, string $taxonomyName): void
+    public function createTaxonomy(string $postType, string $name, string $taxonomyName, array $args = []): void
     {
-        $this->registerTaxonomy($postType, $this->getDefaultArg($name), $taxonomyName);
+        if (empty($args)) {
+            $args = $this->getDefaultArg($name);
+        }
+
+        $this->registerTaxonomy($postType, $args, $taxonomyName);
     }
 
     /**
