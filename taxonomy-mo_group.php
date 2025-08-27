@@ -1,7 +1,7 @@
 <?php
-
 use HashtagCore\Hashtag;
 
+get_header();
 ?>
 <div class="container-lg">
     <div class="row">
@@ -9,7 +9,7 @@ use HashtagCore\Hashtag;
             <div class="card card-custom-img rounded-0 rounded-bottom bg-dark text-white mb-2">
                 <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
                     <h1 class="card-title text-center" style="text-shadow: 2px 2px 2px black;">
-                        <?php the_title(); ?>
+                        <?php single_term_title(); ?>
                     </h1>
                 </div>
             </div>
@@ -35,7 +35,7 @@ use HashtagCore\Hashtag;
         </div>
     </div>
     <div class="row px-2 px-lg-0">
-        <div class="col-lg-4">
+        <div class="col-lg-12">
             <div class="row me-lg-1">
                 <div class="col shadow mb-2 p-3 bg-body rounded-3 stars">
                     <?php
@@ -102,11 +102,7 @@ use HashtagCore\Hashtag;
                 </div>
             </div>
         </div>
-
-        <div class="col-12 col-lg-8">
-            <div class="row">
-                <div class="col shadow mb-2 p-3 bg-body rounded-3"><?php the_content(); ?></div>
-            </div>
-        </div>
     </div>
 </div>
+<?php
+get_footer();

@@ -25,12 +25,11 @@ use HashtagCore\Hashtag;
 <div class="container-lg">
     <div class="row pb-2 px-2 px-lg-0">
         <div class="col-12 col-lg-8 text-muted">
-            <!-- Breadcrumbs -->
-            <?php if (function_exists('fw_ext_breadcrumbs')) {
-                fw_ext_breadcrumbs();
-            } ?>
-            <!-- /breadcrumb -->
-
+            <div class="h-breadcrumb col-12 text-muted">
+                <!-- Breadcrumbs -->
+                <?php Hashtag::breadcrumbs(); ?>
+                <!-- /breadcrumb -->
+            </div>
         </div>
         <div class="col-12 col-lg-4 d-flex align-items-center justify-content-end">
             <div class="row w-100">
