@@ -262,7 +262,6 @@ function hashtag_create_post_type()
             'slug' => 'mo-group',
         ],
         'show_in_rest' => true,
-        'meta_box_cb'  => [$taxonomy, 'staffs_taxonomy_select_meta_box'],
     ]);
 
     register_post_type(POST_TYPE_STAFF, [
@@ -299,6 +298,7 @@ function hashtag_create_post_type()
         ],
         'menu_icon'    => 'dashicons-admin-multisite',
         'hierarchical' => true,
+        'show_in_rest' => true, // включаем Gutenberg
         'supports'     => ['title', 'editor', 'thumbnail', 'page-attributes'],
     ]);
 }

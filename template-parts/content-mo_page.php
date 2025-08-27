@@ -6,7 +6,9 @@
         <div class="col px-0">
             <div class="card card-custom-img rounded-0 rounded-bottom bg-dark text-white mb-2">
                 <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="card-title text-center" style="text-shadow: 2px 2px 2px black;"><?php the_title(); ?></h1>
+                    <h1 class="card-title text-center" style="text-shadow: 2px 2px 2px black;">
+                        <?php the_title(); ?>
+                    </h1>
                 </div>
             </div>
         </div>
@@ -43,43 +45,49 @@
                         $mo_term = $terms[0];
 
                         // Получаем все страницы CPT mo_page с этим термином
-                        $mo_pages = get_posts([
-                            'post_type'   => 'mo_page',
-                            'numberposts' => -1,
-                            'orderby'     => 'menu_order',
-                            'order'       => 'ASC',
-                            'tax_query'   => [[
-                                'taxonomy' => 'mo_group',
-                                'field'    => 'term_id',
-                                'terms'    => $mo_term->term_id,
-                            ]],
-                            'post_status' => 'publish',
-                            'post_parent' => 0, // только верхнеуровневые страницы
-                        ]);
+                        $mo_pages = get_posts(
+                            [
+                                'post_type'   => 'mo_page',
+                                'numberposts' => -1,
+                                'orderby'     => 'menu_order',
+                                'order'       => 'ASC',
+                                'tax_query'   => [
+                                    [
+                                        'taxonomy' => 'mo_group',
+                                        'field'    => 'term_id',
+                                        'terms'    => $mo_term->term_id,
+                                    ]
+                                ],
+                                'post_status' => 'publish',
+                                'post_parent' => 0, // только верхнеуровневые страницы
+                            ]
+                        );
 
                         if ($mo_pages) {
                             echo '<ul class="mo-menu">';
                             foreach ($mo_pages as $page) {
                                 // Если нужны вложенные страницы
-                                $children = get_posts([
-                                                          'post_type'   => 'mo_page',
-                                                          'numberposts' => -1,
-                                                          'post_parent' => $page->ID,
-                                                          'orderby'     => 'menu_order',
-                                                          'order'       => 'ASC',
-                                                          'post_status' => 'publish',
-                                                      ]);
+                                $children = get_posts(
+                                    [
+                                        'post_type'   => 'mo_page',
+                                        'numberposts' => -1,
+                                        'post_parent' => $page->ID,
+                                        'orderby'     => 'menu_order',
+                                        'order'       => 'ASC',
+                                        'post_status' => 'publish',
+                                    ]
+                                );
 
-
-
-                                echo '<li><a  href="' . get_permalink($page->ID) . '">' . esc_html($page->post_title) . '</a>';
-
-
+                                echo '<li><a  href="' . get_permalink($page->ID) . '">' . esc_html(
+                                        $page->post_title
+                                    ) . '</a>';
 
                                 if ($children) {
                                     echo '<ul>';
                                     foreach ($children as $child) {
-                                        echo '<li><a href="' . get_permalink($child->ID) . '">' . esc_html($child->post_title) . '</a></li>';
+                                        echo '<li><a href="' . get_permalink($child->ID) . '">' . esc_html(
+                                                $child->post_title
+                                            ) . '</a></li>';
                                     }
                                     echo '</ul>';
                                 }
@@ -89,7 +97,6 @@
                             echo '</ul>';
                         }
                     }
-
                     ?>
                 </div>
             </div>
