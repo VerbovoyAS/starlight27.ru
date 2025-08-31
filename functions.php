@@ -337,7 +337,7 @@ function create_mo_pages_for_term($term_id, $tt_id)
             'Конкурсы',
             'Олимпиады'
         ],
-        'Наши достижения'   => [],
+        'Наши достижения'  => [],
         'Одаренные дети'   => [],
         'Аттестация'       => [],
         'Обратная связь'   => []
@@ -610,19 +610,16 @@ function ajax_load_schedule_table()
 
     $classList = $classMap[$classGroup] ?? [];
 
-    // Сформировать $weekDays
-    // TODO поправить после тестов
-//    $query = [
-//        //'date_from' => $start->format('Y-m-d'),
-//        //'date_to' => $end->format('Y-m-d'),
-//        // Пока нет расписание фиксируем даты
-//        'date_from' => '2025-04-21',
-//        'date_to'   => '2025-04-27',
-//    ];
+    $date_from = $now;
+    $date_to = $now;
+    if (!empty($weekDays)) {
+        $date_from = $weekDays[0];
+
+        $date_to = $weekDays[count($weekDays) - 1];
+    }
 
     // Получаем данные из API
-
-    $data = getScheduleClassV1('2025-04-21', '2025-04-27', $classList);
+    $data = getScheduleClassV1($date_from->format('Y-m-d'), $date_to->format('Y-m-d'), $classList);
 
     include get_template_directory() . '/template-parts/schedule-table.php';
     wp_die();
@@ -636,7 +633,18 @@ function ajax_load_class_schedule()
     $class = sanitize_text_field($_POST['class']);
     $week = intval($_POST['week']);
 
-    $dataClasses = getScheduleClassV1('2025-04-21', '2025-04-27', [$class]);
+    $now = new DateTime();
+    $weekDays = getWeekDays($now, $week);
+
+    $date_from = $now;
+    $date_to = $now;
+    if (!empty($weekDays)) {
+        $date_from = $weekDays[0];
+
+        $date_to = $weekDays[count($weekDays) - 1];
+    }
+
+    $dataClasses = getScheduleClassV1($date_from->format('Y-m-d'), $date_to->format('Y-m-d'), [$class]);
 
     if (empty($dataClasses)) {
         $message = sprintf(
