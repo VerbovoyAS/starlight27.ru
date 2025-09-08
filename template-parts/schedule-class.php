@@ -121,9 +121,9 @@ function getScheduleStyleWeekday(DateTime $date): string
                     // Объединим уроки с одинаковыми названиями
                     if ($allSameName): ?>
                         <div class="card border-<?= $color ?> mb-2 shadow-sm">
-                            <div class="card-header"><?= $i ?>. <?= htmlspecialchars($item['name']) ?></div>
+                            <div class="card-header"><?= $i ?>. <?= htmlspecialchars($items[0]['name'] ?? '---') ?></div>
                             <div class="card-body p-2">
-                                <?php foreach ($lessons[$i] as $item): ?>
+                                <?php foreach ($items as $item): ?>
                                     <div class="d-flex justify-content-end small ">
 <!--                                        <span>--><?php //= $item['teacher'] ?? '---' ?><!--</span>-->
                                         <span><?= $item['cabinet'] ?? '---' ?></span>
@@ -132,7 +132,7 @@ function getScheduleStyleWeekday(DateTime $date): string
                             </div>
                         </div>
                     <?php else: ?>
-                        <?php foreach ($lessons[$i] as $item): ?>
+                        <?php foreach ($items as $item): ?>
                             <div class="card border-<?= $color ?> mb-2 shadow-sm">
                                 <div class="card-header"><?= $i ?>. <?= htmlspecialchars($item['name']) ?></div>
                                 <div class="card-body p-2">
