@@ -67,8 +67,8 @@ function getScheduleStyleWeekday(DateTime $date): string
                                         <div class="d-flex flex-wrap">
                                             <div class="fw-bold"><?= $items[0]['name'] ?? '---' ?></div>
                                             <?php foreach ($items as $item): ?>
-                                                <div class="d-flex justify-content-between w-100 flex-wrap">
-                                                    <div><?= $item['teacher'] ?? '---' ?></div>
+                                                <div class="d-flex justify-content-end w-100 flex-wrap">
+<!--                                                    <div>--><?php //= $item['teacher'] ?? '---' ?><!--</div>-->
                                                     <div><?= $item['cabinet'] ?? '---' ?></div>
                                                 </div>
                                             <?php endforeach; ?>
@@ -79,8 +79,8 @@ function getScheduleStyleWeekday(DateTime $date): string
                                         <div class="alert alert-<?= $color ?> mb-1">
                                             <div class="d-flex flex-wrap">
                                                 <div class="fw-bold"><?= $item['name'] ?? '---' ?></div>
-                                                <div class="d-flex justify-content-between w-100 flex-wrap">
-                                                    <div><?= $item['teacher'] ?? '---' ?></div>
+                                                <div class="d-flex justify-content-end w-100 flex-wrap">
+<!--                                                    <div>--><?php //= $item['teacher'] ?? '---' ?><!--</div>-->
                                                     <div><?= $item['cabinet'] ?? '---' ?></div>
                                                 </div>
                                             </div>
@@ -124,8 +124,8 @@ function getScheduleStyleWeekday(DateTime $date): string
                             <div class="card-header"><?= $i ?>. <?= htmlspecialchars($item['name']) ?></div>
                             <div class="card-body p-2">
                                 <?php foreach ($lessons[$i] as $item): ?>
-                                    <div class="d-flex justify-content-between small ">
-                                        <span><?= $item['teacher'] ?? '---' ?></span>
+                                    <div class="d-flex justify-content-end small ">
+<!--                                        <span>--><?php //= $item['teacher'] ?? '---' ?><!--</span>-->
                                         <span><?= $item['cabinet'] ?? '---' ?></span>
                                     </div>
                                 <?php endforeach; ?>
@@ -136,8 +136,8 @@ function getScheduleStyleWeekday(DateTime $date): string
                             <div class="card border-<?= $color ?> mb-2 shadow-sm">
                                 <div class="card-header"><?= $i ?>. <?= htmlspecialchars($item['name']) ?></div>
                                 <div class="card-body p-2">
-                                    <div class="d-flex justify-content-between small ">
-                                        <span><?= $item['teacher'] ?? '---' ?></span>
+                                    <div class="d-flex justify-content-end small ">
+<!--                                        <span>--><?php //= $item['teacher'] ?? '---' ?><!--</span>-->
                                         <span><?= $item['cabinet'] ?? '---' ?></span>
                                     </div>
                                 </div>
